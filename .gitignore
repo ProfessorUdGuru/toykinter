@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# my additions 20210712
+
+etc_not_in_git/
