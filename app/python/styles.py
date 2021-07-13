@@ -174,6 +174,9 @@ class ThemeStyles:
                 bg=formats['fg'],
                 fg=formats['bg'])
 
+        def config_labelstay2(lab):
+            lab.config(fg=formats['fg'])
+
         def config_heading1(lab):
             lab.config(bg=formats['bg'], 
             fg=formats['fg'], 
@@ -291,6 +294,9 @@ class ThemeStyles:
                 activebackground=formats['bg'],
                 fg=formats['fg'],
                 selectcolor=formats['bg']) 
+
+        def config_fg_standard(widg):
+            widg.config(fg=formats['fg'])
 
         def config_bg_only_bg(widg):
             widg.config(bg=formats['bg'])
@@ -435,6 +441,8 @@ class ThemeStyles:
                 # widgets.Label is subclass
                 if widg.winfo_subclass() in bg_fg_only_standard: # new way
                     config_bg_fg_only_standard(widg)
+                elif widg.winfo_subclass() == 'LabelStay2':
+                    config_labelstay2(widg)
                 elif widg.winfo_subclass() == 'LabelH2': # old way
                     config_heading2(widg)
                 elif widg.winfo_subclass() == 'LabelH3':

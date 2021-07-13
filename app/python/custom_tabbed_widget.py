@@ -1,6 +1,6 @@
 # custom_tabbed_widget.py
 
-from widgets import Framex, Frame, FrameHilited2, LabelStay, Label
+from widgets import Framex, Frame, FrameHilited2, LabelStay2
 from styles import make_formats_dict
 from utes import create_tooltip
 from dev_tools import looky, seeline
@@ -8,7 +8,8 @@ from dev_tools import looky, seeline
 '''
     This is a Frame that can be gridded anywhere. No scrollbar needed, because
     tabbed widgets are meant to retain a fixed size and the space they are in
-    has a scrollbar of its own. The space they are in should not resize.
+    has a scrollbar of its own. The space they are in should not resize, so set
+    `minx` and `miny` to accomodate the tab with the biggest content.
 '''
 
 class TabBook(Framex):
@@ -81,7 +82,7 @@ class TabBook(Framex):
         c = 0
         for tab in self.tabdict:
             print("line", looky(seeline()).lineno, "tab:", tab)
-            lab = LabelStay(
+            lab = LabelStay2(
                 self.tab_frame,
                 width=int(self.tabwidth),
                 takefocus=1)  
