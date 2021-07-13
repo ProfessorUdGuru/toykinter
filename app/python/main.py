@@ -113,8 +113,8 @@ class Main(Frame):
             side="se",
             case="upper",
             selected="colors",
-            minx=0.5,
-            miny=0.5)
+            minx=0.55,
+            miny=0.55)
         prefs.columnconfigure(0, weight=1)
         prefs.rowconfigure(0, weight=1)
         self.prefsbook.grid(column=0, row=0)
@@ -167,7 +167,10 @@ class Main(Frame):
         canvas.configure(scrollregion=canvas.bbox("all"))
 
     def make_font_picker(self):
-        font_picker = FontPicker(self.prefsbook.store["fonts"], self.view)
+        tab3_1 = self.prefsbook.store["fonts"]
+        tab3_1.columnconfigure(0, weight=1)
+        tab3_1.rowconfigure(0, weight=1)
+        font_picker = FontPicker(tab3_1, self.view)
         font_picker.grid(column=0, row=0, sticky="news")
 
     def make_colorizer(self):

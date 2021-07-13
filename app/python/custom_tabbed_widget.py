@@ -1,6 +1,6 @@
 # custom_tabbed_widget.py
 
-from widgets import Framex, Frame, FrameHilited2, Label
+from widgets import Framex, Frame, FrameHilited2, LabelStay, Label
 from styles import make_formats_dict
 from utes import create_tooltip
 from dev_tools import looky, seeline
@@ -53,7 +53,7 @@ class TabBook(Framex):
 
         self.store = {}
 
-        self.active = None
+        # self.active = None
 
         self.make_widgets()   
         self.open_tab_alt(root)
@@ -81,7 +81,7 @@ class TabBook(Framex):
         c = 0
         for tab in self.tabdict:
             print("line", looky(seeline()).lineno, "tab:", tab)
-            lab = Label(
+            lab = LabelStay(
                 self.tab_frame,
                 width=int(self.tabwidth),
                 takefocus=1)  
@@ -176,8 +176,9 @@ class TabBook(Framex):
         self.posx = self.winfo_rootx()
         self.posy = self.winfo_rooty()    
 
-        # if not running on load
+        # if this method is not running on load
         if evt:
+            print("line", looky(seeline()).lineno, "evt:", evt)
             self.active = evt.widget
             self.active.focus_set()
 
@@ -202,17 +203,27 @@ class TabBook(Framex):
                     v[2].grid()
 
         # unhighlight all tabs
-        for tab in self.tabdict.values():            
+        for tab in self.tabdict.values():
+            print("line", looky(seeline()).lineno, "tab:", tab)
+            print("line", looky(seeline()).lineno, "self.active:", self.active) 
+            print("line", looky(seeline()).lineno, "tab[1]:", tab[1])
+            # if tab[1] is not self.active:
             tab[1].config(
-                bg=self.formats['highlight_bg'])
+                bg=self.formats['highlight_bg'],
+                font=self.formats['output_font'])
 
         # highlight active tab
         self.active.config(
             bg=self.formats['bg'],
             font=self.formats['heading3'])
 
+        # self.active.focus_set()
+
+
+
     def open_tab_alt(self, root_window):
         ''' Bindings for notebook tab accelerators. '''
+
         for k,v in self.tabdict.items():
             key_combo_upper = '<Alt-Key-{}>'.format(v[0])  
             root_window.bind(key_combo_upper, self.make_active)

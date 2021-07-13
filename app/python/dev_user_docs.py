@@ -122,12 +122,10 @@ DO LIST
 \u2022 The active title bar color should be right with somewhat less encouragement.
 \u2022 The logo is yuck.
 \u2022 The font on the TabBook tabs could be smaller.
-\u2022 The Colors and Fonts tab pages should be the same size.
+\u2022 Center content on fonts tab.
 \u2022 Every module should have a separate demo i.e. `if __name__ == "__main__"` at bottom.
 \u2022 Changing font size should change title bar size.
 \u2022 Mousewheel scrolling needs to be activated on the Docs tab.
-\u2022 TabBook tabs get bold on select but don't unbold on deselect.
-\u2022 Add the code for the TabBook tab accelerators e.g. Alt+D etc.
 \u2022 Add a scrollbar to each tab where there's a lot of text which can be reconfigured to a larger size thus overflowing the fixed size of the tab.
 \u2022 The statusbar tooltips on colorizer.py don't work, probably still using the old version.
 
