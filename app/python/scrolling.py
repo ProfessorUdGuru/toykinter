@@ -3,7 +3,7 @@
 import tkinter as tk
 from widgets import (Canvas, FrameHilited3, Entry, ToplevelHilited, Text,
     LabelHilited, ButtonFlatHilited, LabelTip2, CanvasHilited, Framex, Frame)
-from styles import ThemeStyles, make_formats_dict
+from styles import config_generic, make_formats_dict
 import dev_tools as dt
 
 
@@ -177,8 +177,6 @@ import dev_tools as dt
 '''
 
 formats = make_formats_dict()
-ST = ThemeStyles()
-
 
 def resize_scrolled_content(toplevel, canvas, window): 
     '''
@@ -593,6 +591,6 @@ if __name__ == '__main__':
     scroll_mouse.append_to_list(canvas3, resizable=False)
     scroll_mouse.configure_mousewheel_scrolling(in_root=True)
     
-    ST.config_generic(root)
+    config_generic(root)
     root.mainloop()
 

@@ -6,7 +6,7 @@ from files import current_file, project_path
 from widgets import (
     LabelButtonImage, Frame, FrameTitleBar, LabelTitleBar, 
     StatusbarTooltips, run_statusbar_tooltips, Toplevel, Canvas)
-from styles import make_formats_dict, ThemeStyles, NEUTRAL_COLOR
+from styles import make_formats_dict, NEUTRAL_COLOR, config_generic
 from PIL import Image, ImageTk
 import dev_tools as dt
 from dev_tools import looky, seeline
@@ -14,7 +14,6 @@ from dev_tools import looky, seeline
 
 
 formats = make_formats_dict()
-ST = ThemeStyles()
 
 def close(evt):
     dlg = evt.widget.winfo_toplevel()
@@ -198,7 +197,7 @@ class Border(Canvas):
             self.statusbar.status_label, 
             self.statusbar.tooltip_label)
 
-        ST.config_generic(self.master)
+        config_generic(self.master)
 
     def recolorize_on_restore(self, evt):
         evt.widget.config(bg=NEUTRAL_COLOR)

@@ -3,7 +3,8 @@ from tkinter import colorchooser
 import sqlite3
 from widgets import (
     Frame, Canvas, Button, LabelH3, Label, FrameStay, LabelStay, Entry)
-from styles import get_color_schemes, get_color_schemes_plus, make_formats_dict, ThemeStyles
+from styles import (get_color_schemes, get_color_schemes_plus, make_formats_dict, 
+    get_all_descends, config_generic)
 from files import current_file
 from query_strings import (
     update_format_color_scheme, delete_color_scheme, select_color_scheme_current, 
@@ -186,9 +187,7 @@ class Colorizer(Frame):
         thbg = color_scheme[2]
         fg = color_scheme[3]
 
-        self.new_theme_styles = ThemeStyles(app=self.root)
-
-        self.new_theme_styles.config_generic(self.root)
+        config_generic(self.root)
         self.root.config(bg=mbg)
 
     def make_samples(self):
@@ -266,7 +265,7 @@ class Colorizer(Frame):
     def preview_scheme(self, scheme):
         
         trial_widgets = []
-        all_widgets_in_tab1 = self.trial_theme_styles.get_all_descends(
+        all_widgets_in_tab1 = get_all_descends(
             self.parent, trial_widgets)
         all_widgets_in_tab1.append(self.parent)
 
@@ -295,8 +294,6 @@ class Colorizer(Frame):
                 widg.config(bg=scheme[0])
 
     def config_local(self, evt=None):
-
-        self.trial_theme_styles = ThemeStyles(app=self.parent)
 
         all_schemes = get_color_schemes()
 

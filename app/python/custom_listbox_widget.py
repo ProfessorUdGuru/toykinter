@@ -5,14 +5,13 @@ from widgets import (
     Canvas, FrameHilited4, CanvasHilited, 
     FrameHilited3, LabelHilited, Frame, Text, Button, Entry)
 from scrolling import Scrollbar
-from styles import make_formats_dict, ThemeStyles
+from styles import make_formats_dict, config_generic
 from utes import create_tooltip
 import dev_tools as dt
 
 
 
 formats = make_formats_dict()
-ST = ThemeStyles()
 
 class Listbox(FrameHilited4):
     '''
@@ -448,7 +447,7 @@ if __name__ == '__main__':
     i = Button(test_box, text='Test Get', command=test_get)
     i.grid(column=3, row=1)
 
-    ST.config_generic(root)
+    config_generic(root)
 
     root.mainloop()
 

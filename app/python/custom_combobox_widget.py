@@ -27,14 +27,13 @@ import tkinter as tk
 from widgets import (FrameHilited3, Entry, ToplevelHilited, Frame,
     LabelHilited, ButtonFlatHilited, LabelTip2, CanvasHilited)
 from scrolling import Scrollbar
-from styles import ThemeStyles, make_formats_dict
+from styles import config_generic, make_formats_dict
 import dev_tools as dt
 from dev_tools import looky, seeline
 
 
 
 formats = make_formats_dict()
-ST = ThemeStyles()    
 
 class Combobox(FrameHilited3):
     hive = []
@@ -156,7 +155,7 @@ class Combobox(FrameHilited3):
 
         self.config_values(self.values)
 
-        ST.config_generic(self.drop)
+        config_generic(self.drop)
 
     def unbind_combo_parts(self, evt):
         self.master.unbind_all('<ButtonRelease-1>')

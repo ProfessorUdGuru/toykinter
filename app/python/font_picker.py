@@ -6,14 +6,13 @@ import sqlite3
 from files import current_file
 from query_strings import update_format_fonts, select_font_scheme
 from widgets import Label, Frame, Scale, Entry, Button
-from styles import make_formats_dict, ThemeStyles
+from styles import make_formats_dict, config_generic
 from custom_combobox_widget import Combobox
 from dev_tools import looky, seeline
 
 
 
 formats = make_formats_dict()
-TS = ThemeStyles()
 
 class FontPicker(Frame):
     def __init__(self, master, view, *args, **kwargs):
@@ -111,7 +110,7 @@ class FontPicker(Frame):
 
         Combobox.combobox_selected = combobox_selected
 
-        TS.config_generic(self.view)
+        config_generic(self.view)
 
     def apply(self):
         self.font_scheme[0] = self.fontSizeVar.get()
@@ -127,9 +126,7 @@ class FontPicker(Frame):
         cur.close()
         conn.close()
 
-        self.new_theme_styles = ThemeStyles(app=self.view)
-
-        self.new_theme_styles.config_generic(self.view)
+        config_generic(self.view)
 
     def show_font_size(self, evt):
         self.fontSize = self.fontSizeVar.get()
@@ -145,6 +142,6 @@ if __name__ == "__main__":
         "font picker.\n It doesn't change until you click the APPLY button.")
     q.grid(padx=24, pady=48)
 
-    TS.config_generic(root)
+    config_generic(root)
 
     root.mainloop()

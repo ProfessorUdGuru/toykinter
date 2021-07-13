@@ -4,15 +4,21 @@ import tkinter as tk
 from files import project_path
 from window_border import Border
 from scrolling import MousewheelScrolling
+from styles import config_generic
 from main import Main
 from widgets import Toplevel
 from dev_tools import looky, seeline
+
+
+
 
 class Toykinter():
     def __init__(self, view):
         self.view = view
         self.make_main_canvas_and_border()
         self.configure_mousewheel_scrolling()
+
+        config_generic(self.view)
 
     def make_main_canvas_and_border(self):
         self.canvas = Border(

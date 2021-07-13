@@ -12,6 +12,8 @@ from dev_tools import looky, seeline
 
 
 
+
+
 class Main(Frame):
     def __init__(self, master, view, treebard, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
@@ -24,6 +26,8 @@ class Main(Frame):
         self.make_scrollbars_docs()
         self.make_font_picker()
         self.make_colorizer()
+
+
 
 
     def make_scrollbars(self):

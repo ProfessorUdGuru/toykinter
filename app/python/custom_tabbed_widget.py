@@ -54,9 +54,7 @@ class TabBook(Framex):
 
         self.store = {}
 
-        # self.active = None
-
-        self.make_widgets()   
+        self.make_widgets() 
         self.open_tab_alt(root)
 
     def make_widgets(self):
@@ -179,7 +177,6 @@ class TabBook(Framex):
 
         # if this method is not running on load
         if evt:
-            print("line", looky(seeline()).lineno, "evt:", evt)
             self.active = evt.widget
             self.active.focus_set()
 
@@ -205,9 +202,6 @@ class TabBook(Framex):
 
         # unhighlight all tabs
         for tab in self.tabdict.values():
-            print("line", looky(seeline()).lineno, "tab:", tab)
-            print("line", looky(seeline()).lineno, "self.active:", self.active) 
-            print("line", looky(seeline()).lineno, "tab[1]:", tab[1])
             # if tab[1] is not self.active:
             tab[1].config(
                 bg=self.formats['highlight_bg'],

@@ -111,6 +111,7 @@ Nothing in this collection of widget classes is completely finished or perfect. 
 
 DO LIST
 
+\u2022 Lately I've been having a problem using config_generic(). Possibly started when I stopped using root as root? Try to simplify the solution by eliminating the ThemeStyles class and only using procedural functions on the styles module. If this doesn't solve the problem, it should at least make the solution more obvious.
 \u2022 create new color sample not working
 \u2022 There's an icky Tkinter scrollbar on the Colors tab.
 \u2022 The tabs have to be clicked to make the non-active ones the right color.
