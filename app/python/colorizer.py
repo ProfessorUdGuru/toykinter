@@ -219,7 +219,7 @@ class Colorizer(Frame):
                     bg=color, 
                     text=color, fg=scheme[3])
                 lab.grid(column=y, row=z, ipadx=6, ipady=6)
-                lab.bind('<Double-Button-1>', self.config_local)
+                lab.bind('<Button-1>', self.config_local)
                 z += 1
             y += 1
 
@@ -233,21 +233,24 @@ class Colorizer(Frame):
                 widg.delete(0, tk.END)
 
     def move_right(self, evt):
-        if evt.widget.winfo_x() > PORTWIDTH-250:
-            self.colors_canvas.xview_moveto(1.0)
-        self.old_col = evt.widget.grid_info()['column']
+        # if evt.widget.winfo_x() > PORTWIDTH-250:
+            # self.colors_canvas.xview_moveto(1.0)
+        # self.old_col = evt.widget.grid_info()['column']
+        pass
 
     def move_left(self, evt):
-        if evt.widget.winfo_x() < PORTWIDTH:
-            self.colors_canvas.xview_moveto(0.0)
-        self.old_col = evt.widget.grid_info()['column']
+        # if evt.widget.winfo_x() < PORTWIDTH:
+            # self.colors_canvas.xview_moveto(0.0)
+        # self.old_col = evt.widget.grid_info()['column']
+        pass
        
     def locate_focus(self, event):
-        new_col = event.widget.grid_info()['column']
-        if new_col > self.old_col + 1:
-            self.colors_canvas.xview_moveto(1.0)
-        elif new_col < self.old_col - 1:
-            self.colors_canvas.xview_moveto(0.0)
+        # new_col = event.widget.grid_info()['column']
+        # if new_col > self.old_col + 1:
+            # self.colors_canvas.xview_moveto(1.0)
+        # elif new_col < self.old_col - 1:
+            # self.colors_canvas.xview_moveto(0.0)
+        pass
 
     def detect_colors(self, frm):
 
@@ -263,6 +266,9 @@ class Colorizer(Frame):
         return color_scheme
 
     def preview_scheme(self, scheme):
+        '''
+
+        '''
         
         trial_widgets = []
         all_widgets_in_tab1 = get_all_descends(
