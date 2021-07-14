@@ -1,6 +1,6 @@
 # custom_tabbed_widget.py
 
-from widgets import Framex, Frame, FrameHilited2, LabelStay2
+from widgets import Framex, Frame, FrameHilited2, Label
 from styles import make_formats_dict
 from utes import create_tooltip
 from dev_tools import looky, seeline
@@ -80,7 +80,7 @@ class TabBook(Framex):
         c = 0
         for tab in self.tabdict:
             print("line", looky(seeline()).lineno, "tab:", tab)
-            lab = LabelStay2(
+            lab = Label(
                 self.tab_frame,
                 width=int(self.tabwidth),
                 takefocus=1)  

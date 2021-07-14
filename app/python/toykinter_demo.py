@@ -18,7 +18,7 @@ class Toykinter():
         self.make_main_canvas_and_border()
         self.configure_mousewheel_scrolling()
 
-        config_generic(self.view)
+        # config_generic(self.view)
 
     def make_main_canvas_and_border(self):
         self.canvas = Border(
@@ -66,7 +66,7 @@ def main():
 
     icon = tk.Tk()
 
-    view = tk.Toplevel(icon, name='view')
+    view = Toplevel(icon, name='view')
     view.geometry('+100+50')
     view.overrideredirect(1)
 
@@ -74,6 +74,7 @@ def main():
 
     make_taskbar_flyout_image()
     configure_root()
+    config_generic(view)
 
     icon.mainloop()
 

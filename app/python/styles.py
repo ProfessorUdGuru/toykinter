@@ -6,7 +6,11 @@ from query_strings import(
     select_all_color_schemes_plus)
 from dev_tools import looky, seeline
 
-
+'''
+    When making a new subclass it has to have its own config_* sub-function
+    added to config_generic, even if the class it's inheriting from is already
+    a sub-class that already has its own config sub-function.
+'''
 
 
 MAX_WINDOW_HEIGHT = 0.95
@@ -60,7 +64,7 @@ bg_only_bg = (
     'StatusBarTooltips', 'Colorizer', 'Search', 
     'Notebook', 'Toplevel', 'LabelEntryPair', 
     'PersonAdd', 'EditablePairs', 'LabelGoTo',
-    'CanvasScrolledBG1')
+    'CanvasScrolledBG1', 'FontPicker')
 
 # change background to formats['table_head_bg']:
 bg_only_table_head = ('FrameHilited2',)
@@ -522,14 +526,14 @@ def config_generic(parent):
 
     config_bg_only_bg(parent) # important
 
-def set_window_max_size(parent):
+# def set_window_max_size(parent):
 
-    if parent.winfo_class() == 'Toplevel':
-        parent.maxsize(
-            width=int(
-                parent.winfo_screenwidth()*MAX_WINDOW_WIDTH), 
-            height=int(
-                parent.winfo_screenheight()*MAX_WINDOW_HEIGHT))
+    # if parent.winfo_class() == 'Toplevel':
+        # parent.maxsize(
+            # width=int(
+                # parent.winfo_screenwidth()*MAX_WINDOW_WIDTH), 
+            # height=int(
+                # parent.winfo_screenheight()*MAX_WINDOW_HEIGHT))
 
 def get_opening_settings():
     conn = sqlite3.connect(current_file)

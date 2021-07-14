@@ -18,6 +18,7 @@ class FontPicker(Frame):
     def __init__(self, master, view, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
 
+        self.master = master
         self.view = view
         self.all_fonts = font.families()
 
