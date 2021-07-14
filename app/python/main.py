@@ -12,8 +12,6 @@ from dev_tools import looky, seeline
 
 
 
-# tabbed_widgets = {}
-
 class Main(Frame):
     def __init__(self, master, view, treebard, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
@@ -57,13 +55,14 @@ class Main(Frame):
         self.notebook = TabBook(
             self,
             root=self.view, 
-            tabs=[("toykinter", "T"), ("autofill", "A"), ("docs", "D"), ("settings", "S")],
+            tabs=[
+                ("toykinter", "T"), ("autofill", "A"), 
+                ("docs", "D"), ("settings", "S")],
             side="nw",
             case="upper", 
-            selected="toykinter",
+            selected="docs",
             minx=0.66, 
             miny=0.66)
-        print("line", looky(seeline()).lineno, "self.notebook:", self.notebook)
         prefs = self.notebook.store['settings']
 
         self.prefsbook = TabBook(
@@ -150,7 +149,6 @@ class Main(Frame):
             xscrollcommand=hsb_docs.set, 
             yscrollcommand=vsb_docs.set)
 
-
         canvas.grid(column=1, row=1, sticky="news")
 
         # children of docs
@@ -158,7 +156,6 @@ class Main(Frame):
         scridth_w.grid(column=0, row=1, sticky='ns')
         docs.columnconfigure(1, weight=1)
         docs.rowconfigure(1, weight=1)
-
 
         vsb_docs.grid(column=2, row=1, sticky='ns')
         hsb_docs.grid(column=1, row=2, sticky='ew')

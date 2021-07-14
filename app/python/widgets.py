@@ -342,8 +342,6 @@ class LabelTip(LabelHilited):
     def __init__(self, master, *args, **kwargs):
         LabelHilited.__init__(self, master, *args, **kwargs)
         self.config(font=formats['status'], bd=0, relief='solid')
-        # changed bd to 0 20210425 so KinTip interior labels would
-        #   not have borders
 
 class LabelTip2(LabelHilited2):
     ''' 
@@ -465,9 +463,6 @@ class LabelTitleBar(Labelx):
 
     def __init__(self, master, size='tiny', *args, **kwargs):
         Labelx.__init__(self, master, *args, **kwargs)
-
-        # self.config(
-            # bg=formats['table_head_bg'], fg=formats['fg'])
 
         self.config(
             bg=NEUTRAL_COLOR, fg=formats['fg'])
@@ -937,14 +932,12 @@ class EntryAutofill(EntryUnhilited):
         if self.autofill is False:
             return
         key = event.keysym
-        # if len(key) == 1 and self.filled is True:
         pos = self.index('insert')
         self.delete(pos, 'end') 
 
     def show_hit(self, lst):
         if len(lst) == 1:
             self.var.set(lst[0])
-            # self.filled = True
 
 class EntryAutofillHilited(EntryAutofill):
     ''' 

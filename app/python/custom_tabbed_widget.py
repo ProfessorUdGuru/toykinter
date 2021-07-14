@@ -213,11 +213,6 @@ class TabBook(Framex):
                     for widg in self.tabdict.values():
                         widg[2].grid_remove()
                     v[2].grid()
-
-
-
-
-
         
         # unhighlight all tabs
         for tab in self.tabdict.values():
@@ -230,29 +225,16 @@ class TabBook(Framex):
         #   so config_generic will give it the right background color when
         #   color_scheme is changed
         for tab in self.tabdict.values():
-            if tab[1].chosen is True:
-                print("line", looky(seeline()).lineno, "tab[1], self.active:", tab[1], self.active)
             if tab[1] == self.active:
                 tab[1].chosen = True
             else:
                 tab[1].chosen = False
-
-
-
 
         # highlight active tab; doesn't work on load due to config_generic()
         #   but does work on user-initiated events
         self.active.config(
             bg=self.formats['bg'],
             font=self.formats['heading3'])
-
-
-
-
-
-
-
-
 
     def open_tab_alt(self, root_window):
         ''' Bindings for notebook tab accelerators. '''

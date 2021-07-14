@@ -311,10 +311,6 @@ def config_generic(parent):
             so needs its own reconfigure method 
         '''
         sep.colorize() 
-    
-    # # this and more was needed for ttk.Combobox, just replace this
-    # def config_combos(ent):
-        # ent.config(font=formats['input_font']) 
 
     def config_messages(widg):
         widg.config( 
@@ -487,9 +483,6 @@ def config_generic(parent):
             elif widg.winfo_subclass() in ('EntryUnhilited', 'EntryAutofill'):
                 config_unhilited_entry(widg)
 
-        # elif widg.winfo_class() == 'TCombobox':
-            # config_combos(widg)
-
         elif widg.winfo_class() == 'Text':
             if widg.winfo_subclass() in bg_fg_standard_font_input:
                 config_text(widg)
@@ -536,15 +529,6 @@ def config_generic(parent):
             config_bg_only_bg(widg)
 
     config_bg_only_bg(parent) # important
-
-# def set_window_max_size(parent):
-
-    # if parent.winfo_class() == 'Toplevel':
-        # parent.maxsize(
-            # width=int(
-                # parent.winfo_screenwidth()*MAX_WINDOW_WIDTH), 
-            # height=int(
-                # parent.winfo_screenheight()*MAX_WINDOW_HEIGHT))
 
 def get_opening_settings():
     conn = sqlite3.connect(current_file)
