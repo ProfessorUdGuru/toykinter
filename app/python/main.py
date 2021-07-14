@@ -60,7 +60,7 @@ class Main(Frame):
                 ("docs", "D"), ("settings", "S")],
             side="nw",
             case="upper", 
-            selected="docs",
+            selected="toykinter",
             minx=0.66, 
             miny=0.66)
         prefs = self.notebook.store['settings']
