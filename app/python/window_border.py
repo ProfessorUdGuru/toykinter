@@ -24,7 +24,9 @@ def close(evt):
 
 class Border(Canvas):
 
-    def __init__(self, master, size=3, menubar=False, ribbon_menu=False, *args, **kwargs):
+    def __init__(
+            self, master, size=3, menubar=False, 
+            ribbon_menu=False, *args, **kwargs):
         Canvas.__init__(self, master, *args, **kwargs)
 
         '''

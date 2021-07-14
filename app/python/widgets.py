@@ -318,13 +318,17 @@ class LabelItalicHilited(Labelx):
             font=formats['show_font'],
             bg=formats['table_head_bg'])
 
-class LabelHilited(Label):
+class LabelHilited(Labelx):
     ''' 
         Like Label with a different background. 
     '''
     def __init__(self, master, *args, **kwargs):
-        Label.__init__(self, master, *args, **kwargs)
-        self.config(bg=formats['highlight_bg'])
+        Labelx.__init__(self, master, *args, **kwargs)
+        self.config(
+            bg=formats['highlight_bg'], 
+            fg=formats['fg'],
+            font=formats['output_font'])
+
 
 class LabelHilited2(Label):
     ''' 

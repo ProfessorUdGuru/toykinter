@@ -8,8 +8,8 @@ from styles import (get_color_schemes, get_color_schemes_plus, make_formats_dict
 from files import current_file
 from query_strings import (
     update_format_color_scheme, delete_color_scheme, select_color_scheme_current, 
-    update_color_scheme_null, insert_color_scheme, 
-)
+    update_color_scheme_null, insert_color_scheme)
+from dev_tools import looky, seeline
 
 PORTWIDTH = 840 # make this bigger if tab gets bigger for ex. if another tab gets bigger this one will too; if it doesn't work out, get rid of move_right & move_left, just a toy not important; if something user can do has the power to make the tabs bigger, then this won't work or at least has to be made into a class or something
 
@@ -229,7 +229,7 @@ class Colorizer(Frame):
 
     def clear_entries(self):
         for widg in self.colors_table.winfo_children():
-            if widg.winfo_class() == 'TEntry':
+            if widg.winfo_class() == 'Entry':
                 widg.delete(0, tk.END)
 
     def move_right(self, evt):
@@ -288,6 +288,8 @@ class Colorizer(Frame):
                         bg=scheme[1], 
                         fg=scheme[3],
                         activebackground=scheme[2])
+            elif widg.winfo_class() == 'Entry':
+                widg.config(bg=scheme[1]),
             elif widg in self.colors_content.winfo_children():
                 widg.config(bg='lightgray')
             elif widg.winfo_class() in ('Frame', 'Toplevel', 'Canvas'):
@@ -307,18 +309,18 @@ class Colorizer(Frame):
             color_scheme = self.detect_colors(evt.widget)
             self.preview_scheme(color_scheme)
 
-        # if TRIAL button
+        # if TRY button
         else:
-
+            print("line", looky(seeline()).lineno, "self.colors_content.focus_get().winfo_class():", self.colors_content.focus_get().winfo_class())
             for widg in self.colors_table.winfo_children():
 
                 # if entries not all filled out
-                if (widg.winfo_class() == 'TEntry' and
-                    len(widg.get()) == 0):
+                if (widg.winfo_class() == 'Entry' and
+                    len(widg.get()) == 0): # prob. shd be break or continue
                         pass
 
                 # if new scheme to try
-                if (widg.winfo_class() == 'TEntry' and
+                if (widg.winfo_class() == 'Entry' and
                     len(widg.get()) > 0):
                         inputs = []
                         inputs = tuple(inputs)
@@ -334,7 +336,7 @@ class Colorizer(Frame):
                 # if no sample hilited
                 elif self.colors_content.focus_get().winfo_class() != 'Frame':
                     return
-                elif (widg.winfo_class() == 'TEntry' and
+                elif (widg.winfo_class() == 'Entry' and
                     len(widg.get()) == 0):
                             color_scheme = self.detect_colors(
                                 self.parent.focus_get())
@@ -375,8 +377,7 @@ class Colorizer(Frame):
                 anchor='w',
                 text=name)
             lab.grid(column=0, row=j, sticky='ew', padx=(6,12), pady=3)
-            ent = Entry(
-                self.colors_table, width=12)
+            ent = Entry(self.colors_table, width=12)
             self.r_col[name] = ent
             ent.grid(column=1, row=j, pady=3)
             entries_combos.append(ent)
@@ -427,7 +428,7 @@ class Colorizer(Frame):
                 fix.append(child['fg'])
                 entries = []
                 for child in self.colors_table.winfo_children():
-                    if child.winfo_class() == 'TEntry':
+                    if child.winfo_class() == 'Entry':
                         entries.append(child)
                 self.b6.invoke()
 
@@ -435,7 +436,7 @@ class Colorizer(Frame):
         all_schemes = get_color_schemes()
         inputs = []
         for widg in self.colors_table.winfo_children():
-            if widg.winfo_class() == 'TEntry':
+            if widg.winfo_class() == 'Entry':
                 inputs.append(widg.get())
         inputs = tuple(inputs)
         for scheme in all_schemes:

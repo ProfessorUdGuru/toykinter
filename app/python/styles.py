@@ -60,20 +60,19 @@ NEUTRAL_COLOR = '#878787'
 # change background to formats['bg']:
 bg_only_bg = (
     'Frame', 'DatePrefsWidgets', 'PersonsTab', 
-    'NamesTab', 'Treebard', 'IconMenu', 'Main', 
+    'NamesTab', 'Toykinter', 'IconMenu', 'Main', 
     'StatusBarTooltips', 'Colorizer', 'Search', 
     'Notebook', 'Toplevel', 'LabelEntryPair', 
-    'PersonAdd', 'EditablePairs', 'LabelGoTo',
-    'CanvasScrolledBG1', 'FontPicker')
+    'PersonAdd', 'EditablePairs', 'LabelGoTo', 'FontPicker')
 
 # change background to formats['table_head_bg']:
 bg_only_table_head = ('FrameHilited2',)
 
 # change background to formats['highlight_bg']:
 bg_only_hilited = (
-    'FrameHilited', 'FrameHilited1', 'FrameHilited4', 
+    'FrameHilited', 'FrameHilited1', 'FrameHilited3', 'FrameHilited4', 
     'LabelTitleBar', 'Sizer', 'KinTip', 'ToolTip',
-    'ToplevelHilited', 'CanvasScrolledBG2')
+    'ToplevelHilited')
 
 # change background, foreground to standard:
 bg_fg_only_standard = ('Label', 'LabelFrame', 'Sizer')
@@ -81,6 +80,12 @@ bg_fg_only_standard = ('Label', 'LabelFrame', 'Sizer')
 # change background, foreground to standard and font to input
 bg_fg_standard_font_input = (
     'Table', 'FindingsTable', 'AttributesTable', 'LabelEntrylike')
+
+# change background to hilited, foreground to standard, font to input
+bg_hilite_fg_std_font_input = ('Entry', )
+
+# change background to highlighted, foreground to standard and font to output
+bg_highlighted_fg_standard_font_output = ('LabelHilited', )
 
 # change background, foreground to standard,
 #    font to output, and normally disabled:    
@@ -120,10 +125,13 @@ def config_generic(parent):
         This is also called in colorizer to change the color of 
         everything instantly. '''
 
-    def config_labelhilited(lab):
-        lab.config(
-            bg=formats['highlight_bg'],
-            fg=formats['fg'])
+    print("line", looky(seeline()).lineno, "parent:", parent)
+
+    # def config_labelhilited(lab):
+        # lab.config(
+            # bg=formats['highlight_bg'],
+            # fg=formats['fg'],
+            # font=formats['output_font'])
 
     def config_labelhilited2(lab):
             bg=formats['table_head_bg']
@@ -211,11 +219,12 @@ def config_generic(parent):
     # bg=self.formats['blah'] ...instead of bg=formats['blah']
     # And give them their very own config function here:
 
-    def config_labelhilited3(lab): # I think this function should be deleted?
-        lab.formats = formats # maybe was intended for tabbook tabs?
+    def config_comboboxarrow(lab):
+        lab.formats = formats 
         lab.config(
             bg=formats['highlight_bg'],
-            fg=formats['fg']) 
+            fg=formats['fg'],
+            font=formats['output_font']) 
 
     def config_labeltab(lab):
         lab.formats = formats
@@ -292,6 +301,12 @@ def config_generic(parent):
 
     def config_fg_standard(widg):
         widg.config(fg=formats['fg'])
+
+    def config_bg_hilite_fg_std_font_output(widg):
+        widg.config(
+            bg=formats['highlight_bg'], 
+            fg=formats['fg'],
+            font=formats['output_font'])        
 
     def config_bg_only_bg(widg):
         widg.config(bg=formats['bg'])
@@ -432,6 +447,8 @@ def config_generic(parent):
             # widgets.Label is subclass
             if widg.winfo_subclass() in bg_fg_only_standard: # new way
                 config_bg_fg_only_standard(widg)
+            elif widg.winfo_subclass() in bg_highlighted_fg_standard_font_output:
+                config_bg_hilite_fg_std_font_output(widg)
             elif widg.winfo_subclass() == 'LabelH2': # old way
                 config_heading2(widg)
             elif widg.winfo_subclass() == 'LabelH3':
@@ -446,12 +463,10 @@ def config_generic(parent):
                 config_labelitalic(widg)
             elif widg.winfo_subclass() == 'LabelButtonText':
                 config_buttonlabel(widg)
-            elif widg.winfo_subclass() == 'LabelHilited':
-                config_labelhilited(widg)
             elif widg.winfo_subclass() == 'LabelHilited2':
                 config_labelhilited2(widg)
-            elif widg.winfo_subclass() == 'LabelHilited3':
-                config_labelhilited3(widg)
+            elif widg.winfo_subclass() == 'ComboboxArrow':
+                config_comboboxarrow(widg)
             elif widg.winfo_subclass() == 'LabelTab':
                 config_labeltab(widg)
             elif widg.winfo_subclass() == 'LabelTip':
@@ -517,16 +532,14 @@ def config_generic(parent):
                 config_bg_only_bg(widg)
             elif widg.winfo_subclass() == 'CanvasHilited':
                 config_bg_only_hilited(widg)
-            elif widg.winfo_subclass() == 'PedigreeChart':
+            elif widg.winfo_subclass() == 'Border':
                 widg.config(bg=formats['bg'])
-                for obj in widg.find_all():
-                    widg.itemconfigure(obj, fill=formats['fg'])                 
-                    if widg.itemcget(obj, 'tags') == 'current_person':
-                        widg.itemconfigure(obj, fill=formats['table_head_bg'])
             elif widg.winfo_subclass() == 'Scrollbar':
                 widg.colorize()
-        elif widg.winfo_class() in ('Frame', 'Toplevel', 'Canvas'):
-            config_bg_only_bg(widg)
+        # elif widg.winfo_class() in ('Frame', 'Toplevel', 'Canvas'):
+            # print("line", looky(seeline()).lineno, "widg:", widg)
+            # if widg.winfo_subclass() == 'Toplevel':
+                # config_bg_only_bg(widg)
 
     config_bg_only_bg(parent) # important
 

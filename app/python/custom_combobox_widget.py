@@ -25,15 +25,26 @@
 
 import tkinter as tk
 from widgets import (FrameHilited3, Entry, ToplevelHilited, Frame,
-    LabelHilited, ButtonFlatHilited, LabelTip2, CanvasHilited)
+    Labelx, ButtonFlatHilited, LabelTip2, CanvasHilited)
 from scrolling import Scrollbar
 from styles import config_generic, make_formats_dict
 import dev_tools as dt
 from dev_tools import looky, seeline
 
 
-
-formats = make_formats_dict()
+class ComboboxArrow(Labelx):
+    def __init__(self, master, *args, **kwargs):
+        Labelx.__init__(self, master, *args, **kwargs)
+        '''
+            Formatted same as LabelHilited except it has to respond to events.
+            So instead of doing special formatting on all LabelHilited where
+            it isn't needed, this is a special case.
+        '''
+        self.formats = make_formats_dict()
+        self.config(
+            bg=self.formats['highlight_bg'], 
+            fg=self.formats['fg'],
+            font=self.formats['output_font'])
 
 class Combobox(FrameHilited3):
     hive = []
@@ -58,6 +69,8 @@ class Combobox(FrameHilited3):
         self.height = height
         self.values = values
         self.scrollbar_size = scrollbar_size
+    
+        self.formats = make_formats_dict()
 
         self.buttons = []
         self.selected = None
@@ -100,7 +113,8 @@ class Combobox(FrameHilited3):
 
     def make_widgets(self):
         self.entry = Entry(self, textvariable=self.var)
-        self.arrow = LabelHilited(self, text='\u25BC', width=2)
+        self.arrow = ComboboxArrow(self, text='\u25BC', width=2)
+        # self.arrow = LabelHilited(self, text='\u25BC', width=2)
 
         self.entry.grid(column=0, row=0)
         self.arrow.grid(column=1, row=0)
@@ -165,7 +179,7 @@ class Combobox(FrameHilited3):
 
     def unhighlight_all_drop_items(self, evt):
         for child in self.content.winfo_children():
-            child.config(bg=formats['highlight_bg'])
+            child.config(bg=self.formats['highlight_bg'])
 
     def clear_reference_to_dropdown(self, evt):
         dropdown = evt.widget
@@ -256,10 +270,10 @@ class Combobox(FrameHilited3):
             tip.destroy() 
 
     def highlight_arrow(self, evt):
-        self.arrow.config(bg=formats['table_head_bg'])
+        self.arrow.config(bg=self.formats['table_head_bg'])
 
     def unhighlight_arrow(self, evt):
-        self.arrow.config(bg=formats['highlight_bg'])
+        self.arrow.config(bg=self.formats['highlight_bg'])
 
     def focus_entry_on_arrow_click(self, evt):
         self.focus_set()
@@ -345,11 +359,11 @@ class Combobox(FrameHilited3):
             elif first is None or last is None:
                 pass
             elif evt_sym == 'Down':
-                first.config(bg=formats['bg'])
+                first.config(bg=self.formats['bg'])
                 first.focus_set()
                 self.canvas.yview_moveto(0.0)
             elif evt_sym == 'Up':
-                last.config(bg=formats['bg'])
+                last.config(bg=self.formats['bg'])
                 last.focus_set()
                 self.canvas.yview_moveto(1.0)
 
@@ -382,10 +396,10 @@ class Combobox(FrameHilited3):
 
     def highlight(self, evt):
         for widg in self.buttons:
-            widg.config(bg=formats['highlight_bg'])
+            widg.config(bg=self.formats['highlight_bg'])
         widg = evt.widget
         self.update_idletasks()
-        widg.config(bg=formats['bg'])
+        widg.config(bg=self.formats['bg'])
         self.selected = widg
         widg.focus_set()
 
@@ -394,7 +408,7 @@ class Combobox(FrameHilited3):
         x, y = self.winfo_pointerxy()
         hovered = self.winfo_containing(x,y)
         if hovered in self.buttons:
-            widg.config(bg=formats['highlight_bg'])
+            widg.config(bg=self.formats['highlight_bg'])
 
     def hide_drops_on_title_bar_click(self, evt):
         x, y = self.winfo_pointerxy()
@@ -445,7 +459,7 @@ class Combobox(FrameHilited3):
         evt_sym = evt.keysym # 2 is key press, 4 is button press
 
         for widg in self.buttons:
-            widg.config(bg=formats['highlight_bg'])
+            widg.config(bg=self.formats['highlight_bg'])
         if evt_type == '4':
             self.selected = evt.widget
         elif evt_type == '2' and evt_sym == 'Down':
@@ -453,7 +467,7 @@ class Combobox(FrameHilited3):
         elif evt_type == '2' and evt_sym == 'Up':
             self.selected = prev_item
 
-        self.selected.config(bg=formats['bg'])
+        self.selected.config(bg=self.formats['bg'])
         self.widg_height = int(self.fit_height / self.lenval)
         widg_screenpos = self.selected.winfo_rooty()
         widg_listpos = self.selected.winfo_y()
@@ -489,7 +503,7 @@ class Combobox(FrameHilited3):
             else:
                 next_item = self.buttons[0]
                 next_item.focus_set()
-                next_item.config(bg=formats['bg'])
+                next_item.config(bg=self.formats['bg'])
                 self.canvas.yview_moveto(0.0)
 
         elif sym == 'Up':
@@ -498,7 +512,7 @@ class Combobox(FrameHilited3):
             else:
                 prev_item = self.buttons[self.lenval-1]
                 prev_item.focus_set()
-                prev_item.config(bg=formats['bg'])
+                prev_item.config(bg=self.formats['bg'])
                 self.canvas.yview_moveto(1.0)
 
     def callback(self):

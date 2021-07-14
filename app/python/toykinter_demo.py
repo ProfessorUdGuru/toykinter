@@ -4,13 +4,13 @@ import tkinter as tk
 from files import project_path
 from window_border import Border
 from scrolling import MousewheelScrolling
-from styles import config_generic
+from styles import config_generic, make_formats_dict
 from main import Main
 from widgets import Toplevel
 from dev_tools import looky, seeline
 
 
-
+formats = make_formats_dict()
 
 class Toykinter():
     def __init__(self, view):
