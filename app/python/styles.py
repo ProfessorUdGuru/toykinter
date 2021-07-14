@@ -211,11 +211,22 @@ def config_generic(parent):
     # bg=self.formats['blah'] ...instead of bg=formats['blah']
     # And give them their very own config function here:
 
-    def config_notebook_tabs(lab):
-        lab.formats = formats # bec. of color change on click
+    def config_labelhilited3(lab): # I think this function should be deleted?
+        lab.formats = formats # maybe was intended for tabbook tabs?
         lab.config(
             bg=formats['highlight_bg'],
-            fg=formats['fg'])
+            fg=formats['fg']) 
+
+    def config_labeltab(lab):
+        lab.formats = formats
+        if lab.chosen is False:
+            lab.config(
+                bg=formats['highlight_bg'],
+                fg=formats['fg'])
+        else:
+            lab.config(
+                bg=formats['bg'],
+                fg=formats['fg'])
 
     def config_labelsearch(lab):
         lab.formats = formats
@@ -301,9 +312,9 @@ def config_generic(parent):
         '''
         sep.colorize() 
     
-    # this and more was needed for ttk.Combobox, just replace this
-    def config_combos(ent):
-        ent.config(font=formats['input_font']) 
+    # # this and more was needed for ttk.Combobox, just replace this
+    # def config_combos(ent):
+        # ent.config(font=formats['input_font']) 
 
     def config_messages(widg):
         widg.config( 
@@ -420,13 +431,11 @@ def config_generic(parent):
             elif widg.winfo_subclass() == 'EntryDefaultText':
                 config_entrydefaulttext(widg)
         
-        # tk.Label is class
+        # tkinter.Label is class
         elif widg.winfo_class() == 'Label':
             # widgets.Label is subclass
             if widg.winfo_subclass() in bg_fg_only_standard: # new way
                 config_bg_fg_only_standard(widg)
-            elif widg.winfo_subclass() == 'LabelStay2':
-                config_labelstay2(widg)
             elif widg.winfo_subclass() == 'LabelH2': # old way
                 config_heading2(widg)
             elif widg.winfo_subclass() == 'LabelH3':
@@ -446,7 +455,9 @@ def config_generic(parent):
             elif widg.winfo_subclass() == 'LabelHilited2':
                 config_labelhilited2(widg)
             elif widg.winfo_subclass() == 'LabelHilited3':
-                config_notebook_tabs(widg)
+                config_labelhilited3(widg)
+            elif widg.winfo_subclass() == 'LabelTab':
+                config_labeltab(widg)
             elif widg.winfo_subclass() == 'LabelTip':
                 config_labeltip(widg)
             elif widg.winfo_subclass() == 'LabelTip2':
@@ -476,8 +487,8 @@ def config_generic(parent):
             elif widg.winfo_subclass() in ('EntryUnhilited', 'EntryAutofill'):
                 config_unhilited_entry(widg)
 
-        elif widg.winfo_class() == 'TCombobox':
-            config_combos(widg)
+        # elif widg.winfo_class() == 'TCombobox':
+            # config_combos(widg)
 
         elif widg.winfo_class() == 'Text':
             if widg.winfo_subclass() in bg_fg_standard_font_input:

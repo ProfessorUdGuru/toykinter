@@ -563,18 +563,6 @@ class LabelStay(Labelx):
 
         pass
 
-class LabelStay2(Labelx):
-    ''' 
-        If this subclass is detected its background won't be reconfigured
-        but its font color still needs to reconfigure in case the user has
-        changed from dark to light bg or vice versa. 
-    '''
-
-    def __init__(self, master, *args, **kwargs):
-        Labelx.__init__(self, master, *args, **kwargs)
-
-        self.config(fg=formats['fg'])
-
 class LabelButtonImage(Labelx):
     ''' 
         A label that looks and works like a button. Good for

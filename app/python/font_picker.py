@@ -111,8 +111,6 @@ class FontPicker(Frame):
 
         Combobox.combobox_selected = combobox_selected
 
-        config_generic(self.view)
-
     def apply(self):
         self.font_scheme[0] = self.fontSizeVar.get()
         if len(self.combos["output_font_chooser"].get()) != 0:

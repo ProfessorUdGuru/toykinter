@@ -18,8 +18,6 @@ class Toykinter():
         self.make_main_canvas_and_border()
         self.configure_mousewheel_scrolling()
 
-        # config_generic(self.view)
-
     def make_main_canvas_and_border(self):
         self.canvas = Border(
             self.view, 

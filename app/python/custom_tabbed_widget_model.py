@@ -1,52 +1,59 @@
-# custom_tabbed_widget.py
+# custom_notebook_widget
 
-from widgets import Framex, Frame, FrameHilited2, Labelx
+import tkinter as tk
+from widgets import Framex, Frame, FrameHilited2, Label, LabelHilited, LabelStay
 from styles import make_formats_dict, config_generic
 from utes import create_tooltip
 from dev_tools import looky, seeline
 
 '''
-    This is a Frame that can be gridded anywhere. No scrollbar needed, because
-    tabbed widgets are meant to retain a fixed size and the space they are in
-    has a scrollbar of its own. The space they are in should not resize, so set
-    `minx` and `miny` to accomodate the tab with the biggest content.
+    Reasons I don't use ttk.Notebook. 1) It's ttk. To configure 
+    ttk widgets, it's necessary to use ttk.Style (which doesn't 
+    work on non-ttk Tkinter widgets) and/or use whichever Windows 
+    theme allows me to make the most design choices of my own 
+    (then that's the theme, i.e. set of constraints, I'm stuck with). 
+    On the other hand, non-ttk Tkinter widgets are easily styled 
+    by class without having to stand on your head to do it. I don't 
+    want to run two configuration systems; the tkinter widgets are 
+    easier to configure, and there are many more options available
+    since the creators of ttk widgets felt they should look like
+    the rest of Windows. I am not beholden to the flavor of the week. 
+    2) It's easier to make widgets by inheritance that will do what I 
+    want than it is to make some ttk widgets the color I want. When
+    ttk.Notebook is formatted completely it still has gaps (in the 
+    border) so looks like it's cobbled together partially and then 
+    left hanging. 3) In this case I wanted to put the tabs on the 
+    bottom of the notebook 
+    frame which is possible with ttk.Notebook, but the only Windows 
+    theme that makes a ttk.Notebook I can use (due to enforced 
+    color schemes) is the 'alt' theme, and its tabs don't have 
+    square corners. Which is fine, but since the rounded alt tabs 
+    don't rotate 180 degrees when moved to the bottom of the frame, 
+    they can't be moved to the bottom of the frame. They'd work, 
+    but they'd look upside-down because they are. 4) Configuring ttk 
+    widgets is a rabbit hole complete with gaps in documentation as 
+    to what can be expected, for example which options can be used 
+    with which widgets and which themes. Inexplicable inconsistencies, 
+    and a lack of error messages for things that don't work, are 
+    the norm in the ttk side of tkinter. Since everyone keeps expecting
+    Python to stop using Tkinter anyway, these problems might not 
+    go away. On the other hand, making my own widgets is fun. 
 '''
-
-class LabelTab(Labelx):
-    def __init__(self, master, *args, **kwargs):
-        Labelx.__init__(self, master, *args, **kwargs)
-    
-        self.formats = make_formats_dict()
-        self.chosen = False
-
-        if self.chosen is False:
-            self.config(bg=self.formats['bg'], fg=self.formats['fg'])
-        else: 
-            self.config(bg=self.formats['highlight_bg'])
-            
-
 
 class TabBook(Framex):
 
     def __init__(
-            self, master, root=None, side='nw', bd=0, tabwidth=12, 
+            self, master, root=None, side='nw', bd=0, tabwidth=9, 
             selected='', tabs=[],  minx=0.90, 
-            miny=0.85, case='title', *args, **kwargs):
-        Framex.__init__(self, master, *args, **kwargs)
+            miny=0.85, case='title', *args, **options):
+        Framex.__init__(self, master, **options)
         '''
             The tab is the part that sticks out with the title 
             you click to activate the page which holds that 
             tab's content. To add widgets grid them with 
-            instance.store[page] as the master. For example: 
+            instance.store[page] as the parent. For example: 
             inst.store['place'] where 'place' is a string from 
-            the original tabs parameter (list of tuples containing
-            tab title and accelerator e.g.:
-            `[('images', 'I'), ('attributes', 'A')]`). The default
-            value of `selected` should not be an empty string since
-            a string here is not optional, it has to be the title
-            of one of the tabs, the one that is to be open by default. 
-            `minx` and `miny` are minimum sizes as proportions of the
-            screen size.
+            the original tabs parameter (list of tuples). 
         '''
 
         self.master = master
@@ -63,11 +70,13 @@ class TabBook(Framex):
         self.tabdict = {}
         for tab in tabs:
             self.tabdict[tab[0]] = [tab[1]]
+            # key is 'title', value is ['acceLerator']
+            # value will have page appended to it
 
         self.store = {}
-        
+
         self.active = None
-        self.make_widgets() 
+        self.make_widgets()   
         self.open_tab_alt(root)
 
     def make_widgets(self):
@@ -91,12 +100,10 @@ class TabBook(Framex):
 
         c = 0
         for tab in self.tabdict:
-            lab = LabelTab(
+            lab = LabelHilited(
                 self.tab_frame,
                 width=int(self.tabwidth),
                 takefocus=1)  
-            if c == 0:
-                lab.chosen = True
             if self.case == 'title':
                 lab.config(text=tab.title())   
             elif self.case == 'lower':
@@ -121,9 +128,10 @@ class TabBook(Framex):
             page.grid(column=0, row=0, sticky='news')
             page.grid_remove()
             self.tabdict[tab].append(page)
+            # simplify tab references w/ a dict whose value is just a widget
             self.store[tab] = page
             c += 1
-
+        
         selected_page = self.tabdict[self.selected][2] # page
         selected_page.grid()
 
@@ -172,24 +180,20 @@ class TabBook(Framex):
 
     def highlight_tab(self, evt):
         # accelerators don't work if notebook not visible
+        print('184 evt.widget is', evt.widget)
         if evt.widget in self.store.values():
             evt.widget.config(fg='yellow')
 
     def unhighlight_tab(self, evt):
         # accelerators don't work if notebook not visible
+        print('190 evt.widget is', evt.widget)
         if evt.widget in self.store.values():
             evt.widget.config(fg=self.formats['fg'])
 
     def make_active(self, evt=None):
-        ''' Open the selected tab & reconfigure it to look open. '''
+        ''' Open the selected tab & reconfigure it to look open. '''        
 
-        self.formats= make_formats_dict()
-
-        # position attributes are needed in the instance
-        self.posx = self.winfo_rootx()
-        self.posy = self.winfo_rooty()    
-
-        # if this method is not running on load
+        # if not running on load
         if evt:
             self.active = evt.widget
             self.active.focus_set()
@@ -205,7 +209,7 @@ class TabBook(Framex):
                         
             # if evt was spacebar, return key, or mouse button
             elif evt.type in ('2', '4'):
-                self.active.config(fg=formats['fg'])
+                self.active.config(fg=self.formats['fg'])
 
             # remove all pages and regrid the right one
             for k,v in self.tabdict.items():
@@ -214,49 +218,21 @@ class TabBook(Framex):
                         widg[2].grid_remove()
                     v[2].grid()
 
-
-
-
-
-        
         # unhighlight all tabs
-        for tab in self.tabdict.values():
+        for tab in self.tabdict.values():            
             tab[1].config(
                 bg=self.formats['highlight_bg'],
                 font=self.formats['output_font'])
 
-
-        # detect which tab is active and set its tab.chosen attribute to True
-        #   so config_generic will give it the right background color when
-        #   color_scheme is changed
-        for tab in self.tabdict.values():
-            if tab[1].chosen is True:
-                print("line", looky(seeline()).lineno, "tab[1], self.active:", tab[1], self.active)
-            if tab[1] == self.active:
-                tab[1].chosen = True
-            else:
-                tab[1].chosen = False
-
-
-
-
-        # highlight active tab; doesn't work on load due to config_generic()
-        #   but does work on user-initiated events
+        # highlight active tab
         self.active.config(
-            bg=self.formats['bg'],
+            bg=self.formats['bg'], 
             font=self.formats['heading3'])
-
-
-
-
-
-
-
-
 
     def open_tab_alt(self, root_window):
         ''' Bindings for notebook tab accelerators. '''
-
+        print('229 self.tabdict is', self.tabdict)
+        print('230 self.master is', self.master)
         for k,v in self.tabdict.items():
             key_combo_upper = '<Alt-Key-{}>'.format(v[0])  
             root_window.bind(key_combo_upper, self.make_active)
@@ -270,9 +246,6 @@ class TabBook(Framex):
 
 if __name__ == '__main__':
 
-    import tkinter as tk
-    from widgets import LabelStay, Label
-
     formats = make_formats_dict()
 
     root = tk.Tk()
@@ -280,6 +253,7 @@ if __name__ == '__main__':
 
     root.grid_columnconfigure(0, weight=1)
     root.grid_rowconfigure(0, weight=1)
+
     titles = [
         ('person', 'P'), ('place', 'L'), ('source', 'S'), 
         ('reports', 'R'), ('charts', 'C'), ('graphics', 'G'), 
@@ -288,11 +262,11 @@ if __name__ == '__main__':
     tab_book = TabBook(
         root,
         root=root,
-        tabwidth=12,
+        tabwidth=18,
         selected='place', 
         case='title',
         side='se',
-        minx=0.57,
+        minx=0.87,
         miny=0.45,
         tabs=titles)
     tab_book.grid(column=0, row=0, padx=48, pady=48, sticky='news')
@@ -311,6 +285,7 @@ if __name__ == '__main__':
         text='say goodbye to ttk.Notebook')
     mm.grid(column=0, row=1)
 
-    config_generic(root)
+    config_generic(root) 
 
     root.mainloop()
+
