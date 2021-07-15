@@ -111,17 +111,18 @@ Nothing in this collection of widget classes is completely finished or perfect. 
 
 DO LIST
 
-\u2022 Scrollbar.colorize is running nine times on load and 7 more times when changing the color scheme. I only count 6 scrollbars including the comboboxes. Look at what's printing in scrollbar.colorize() to see what all the scrollbars are.
+\u2022 make fonts tab smaller so it's not bigger than colors tab
+\u2022 delete_sample() not working in colorizer.py
+\u2022 Combobox dropdown and arrow not recolorizing. Add a combobox.colorize() method, see Scrollbar and Separator for examples.
 \u2022 title bar is not recolorizing
+\u2022 merge colors branch; add another tab called widgets to display a Text, Separator, and other misc. widgets
+\u2022 Scrollbar.colorize is running nine times on load and 7 more times when changing the color scheme. I only count 6 scrollbars including the comboboxes. Look at what's printing in scrollbar.colorize() to see what all the scrollbars are.
 \u2022 change "table_head_bg" to "head_bg" also in db
 \u2022 colorizer preview area: The buttons and header background in the preview area are right as shown in preview_scheme() but then on APPLY they don't actually use that color. There are three background colors and they actually use one of the others on APPLY. Before changing this, figure out a place in the preview area to show all three background colors and then fix it so when APPLY is pressed, these chosen colors remain as shown in the preview.
 \u2022 There are 2 ways of detecting subclass in styles.py. The old way is a long switch statement in config_generic. The new way is a set of hard-coded global tuples at top of styles.py. Change as much as possible to the new way.
-\u2022 Combobox dropdown and arrow not recolorizing. Add a combobox.colorizer() method, see Scrollbar and Separator for examples.
 \u2022 add a status message to some of the widgets
-\u2022 add another tab called widgets to display a Text, Separator, and other misc. widgets
 \u2022 TabBook tabs don't take focus (not important, use the mouse)
-\u2022 The statusbar tooltips on colorizer.py don't work, probably still using the old version.
-\u2022 There's an icky Tkinter scrollbar on the Colors tab.
+\u2022 The statusbar tooltips on colorizer.py don't work, probably still using the old version. On title bar they work but seem to be too big and not flush w/ bottom of status bar.
 \u2022 Make sure separator.colorize() is working.
 \u2022 Some of the backgrounds are not changing color instantly upon applying a new color scheme.
 \u2022 The active title bar color should be right with somewhat less encouragement.
@@ -135,5 +136,6 @@ DO LIST
 \u2022 Mousewheel scrolling needs to be activated on the Docs tab.
 \u2022 Add a scrollbar to each tab where there's a lot of text which can be reconfigured to a larger font size thus overflowing the fixed size of the tab.
 \u2022 Unused classes and styles need to be weeded out of widgets.py and styles.py. Also in treebard project separate widgets.py into toykinter_widgets.py and treebard_widgets.py so changes in toykinter widgets can be copied easily to the other project.
+\u2022 Combobox is bogging down. Is it because of the large list of values? Is the list being repopulated each time I click to open the dropdown? Can it be fixed? Test it with smaller lists of values.
 
 '''

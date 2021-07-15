@@ -303,14 +303,23 @@ class LabelItalic(Labelx):
 
 class LabelHilited(Labelx):
     ''' 
-        Like Label with a different background. 
+        Like Label with a different background.  
     '''
     def __init__(self, master, *args, **kwargs):
         Labelx.__init__(self, master, *args, **kwargs)
+
+        self.formats = make_formats_dict()
+
         self.config(
-            bg=formats['highlight_bg'], 
-            fg=formats['fg'],
-            font=formats['output_font'])
+            bg=self.formats['highlight_bg'], 
+            fg=self.formats['fg'],
+            font=self.formats['output_font'])
+
+    def highlight(self, evt):
+        self.config(bg=self.formats['table_head_bg'])
+
+    def unhighlight(self, evt):
+        self.config(bg=self.formats['highlight_bg'])
 
 
 class LabelHilited2(Labelx):

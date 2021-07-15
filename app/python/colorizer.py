@@ -414,6 +414,7 @@ class Colorizer(Frame):
         conn.close()    
 
     def delete_sample(self, evt):
+        print("line", looky(seeline()).lineno, "evt:", evt)
         dflt = self.colors_content.winfo_children()[0]
         drop_me = self.colors_content.focus_get()
         all_schemes_plus = get_color_schemes_plus()

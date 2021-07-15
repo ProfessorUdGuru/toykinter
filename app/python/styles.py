@@ -93,7 +93,8 @@ bgLite_fgStd_fontIn_insFg = ('Entry', 'Text')
 
 bgStd_fgStd_fontIn_insFg = ('EntryAutofill', 'EntryUnhilited')
 
-bgLite_fgStd_fontOut = ('LabelHilited', )
+# bgLite_fgStd_fontOut = ('LabelHilited', )
+bgLite_fgStd_fontOut = ()
 
 bgHead_fgStd_fontOut = ('LabelHilited2', )
     
@@ -254,9 +255,11 @@ def config_generic(parent):
     # self.formats = make_formats_dict()
     # And in the highlight/unhighlight methods do this:
     # bg=self.formats['blah'] ...instead of bg=formats['blah']
-    # And give them their very own config function here:
+    # And give them their own config function here:
 
-    def config_comboboxarrow(lab):
+    def config_labelhilited(lab):
+    # def config_comboboxarrow(lab):
+        print("line", looky(seeline()).lineno, "running:")
         lab.formats = formats 
         lab.config(
             bg=formats['highlight_bg'],
@@ -275,14 +278,14 @@ def config_generic(parent):
                 fg=formats['fg'])
 
     def config_labelmovable(lab):
-        lab.formats = formats # bec. of FocusIn/FocusOut...
+        lab.formats = formats
         lab.config(
-            bg=formats['highlight_bg'],
-            font=formats['output_font'], 
-            fg=formats['fg'])
+            bg=formats['highlight_bg'], 
+            fg=formats['fg'],
+            font=formats['output_font'])
 
     def config_entrydefaulttext(ent):
-        ent.formats = formats # bec. of FocusIn/FocusOut...
+        ent.formats = formats
         ent.config(
             background=formats['highlight_bg'],
             font=formats['show_font'])
@@ -383,6 +386,9 @@ def config_generic(parent):
             elif widg.winfo_subclass() in bgLite:
                 config_bgLite(widg)
 
+            elif widg.winfo_subclass() == 'Combobox':
+                widg.colorize()
+
             elif widg.winfo_subclass() == 'Separator':
                 config_separator(widg)
 
@@ -414,8 +420,10 @@ def config_generic(parent):
                 config_boilerplate(widg)
             elif widg.winfo_subclass() == 'LabelItalic':
                 config_labelitalic(widg)
-            elif widg.winfo_subclass() == 'ComboboxArrow':
-                config_comboboxarrow(widg)
+            elif widg.winfo_subclass() == 'LabelHilited':
+                config_labelhilited(widg)
+            # elif widg.winfo_subclass() == 'ComboboxArrow':
+                # config_comboboxarrow(widg)
             elif widg.winfo_subclass() == 'LabelTab':
                 config_labeltab(widg)
             elif widg.winfo_subclass() == 'LabelTip':
@@ -496,7 +504,7 @@ def config_generic(parent):
 
             elif widg.winfo_subclass() == 'Scrollbar':
                 # to figure out where all the scrollbars are:
-                print("line", looky(seeline()).lineno, "widg:", widg)
+                # print("line", looky(seeline()).lineno, "widg:", widg)
                 # this is called in `styles.config_generic()`:
                 widg.colorize()
 

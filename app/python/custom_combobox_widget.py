@@ -25,26 +25,26 @@
 
 import tkinter as tk
 from widgets import (FrameHilited3, Entry, ToplevelHilited, Frame,
-    Labelx, ButtonFlatHilited, LabelTip2, CanvasHilited)
+    LabelHilited, ButtonFlatHilited, LabelTip2, CanvasHilited)
 from scrolling import Scrollbar
 from styles import config_generic, make_formats_dict
 import dev_tools as dt
 from dev_tools import looky, seeline
 
 
-class ComboboxArrow(Labelx):
-    def __init__(self, master, *args, **kwargs):
-        Labelx.__init__(self, master, *args, **kwargs)
-        '''
-            Formatted same as LabelHilited except it has to respond to events.
-            So instead of doing special formatting on all LabelHilited where
-            it isn't needed, this is a special case.
-        '''
-        self.formats = make_formats_dict()
-        self.config(
-            bg=self.formats['highlight_bg'], 
-            fg=self.formats['fg'],
-            font=self.formats['output_font'])
+# class ComboboxArrow(Labelx):
+    # def __init__(self, master, *args, **kwargs):
+        # Labelx.__init__(self, master, *args, **kwargs)
+        # '''
+            # Formatted same as LabelHilited except it has to respond to events.
+            # So instead of doing special formatting on all LabelHilited where
+            # it isn't needed, this is a special case.
+        # '''
+        # self.formats = make_formats_dict()
+        # self.config(
+            # bg=self.formats['highlight_bg'], 
+            # fg=self.formats['fg'],
+            # font=self.formats['output_font'])
 
 class Combobox(FrameHilited3):
     hive = []
@@ -113,8 +113,8 @@ class Combobox(FrameHilited3):
 
     def make_widgets(self):
         self.entry = Entry(self, textvariable=self.var)
-        self.arrow = ComboboxArrow(self, text='\u25BC', width=2)
-        # self.arrow = LabelHilited(self, text='\u25BC', width=2)
+        self.arrow = LabelHilited(self, text='\u25BC', width=2)
+        # self.arrow = ComboboxArrow(self, text='\u25BC', width=2)
 
         self.entry.grid(column=0, row=0)
         self.arrow.grid(column=1, row=0)
@@ -156,8 +156,10 @@ class Combobox(FrameHilited3):
         self.arrow.bind('<Button-1>', self.focus_entry_on_arrow_click, add='+')        
 
         for frm in (self, self.content):
-            frm.bind('<FocusIn>', self.highlight_arrow)
-            frm.bind('<FocusOut>', self.unhighlight_arrow)
+            # frm.bind('<FocusIn>', self.highlight_arrow)
+            # frm.bind('<FocusOut>', self.unhighlight_arrow)
+            frm.bind('<FocusIn>', self.arrow.highlight)
+            frm.bind('<FocusOut>', self.arrow.unhighlight)
 
         self.drop.bind('<FocusIn>', self.focus_dropdown)
         self.drop.bind('<Unmap>', self.unhighlight_all_drop_items)
@@ -196,6 +198,7 @@ class Combobox(FrameHilited3):
             appears and disappears.
         '''
 
+        # a sample button is made to get its height, then destroyed
         b = ButtonFlatHilited(self.content, text='Sample')
         one_height = b.winfo_reqheight()
         b.destroy()
@@ -515,6 +518,27 @@ class Combobox(FrameHilited3):
                 prev_item.config(bg=self.formats['bg'])
                 self.canvas.yview_moveto(1.0)
 
+    def colorize(self):
+        # print("line", looky(seeline()).lineno, "self:", self)
+        # print("line", looky(seeline()).lineno, "self.entry:", self.entry)
+        # print("line", looky(seeline()).lineno, "self.arrow:", self.arrow)
+        # print("line", looky(seeline()).lineno, "self.drop:", self.drop)
+        # print("line", looky(seeline()).lineno, "self.canvas:", self.canvas)
+        # print("line", looky(seeline()).lineno, "self.scrollv_combo:", self.scrollv_combo)
+        # print("line", looky(seeline()).lineno, "self.content:", self.content)
+        # print("line", looky(seeline()).lineno, "self.buttons:", self.buttons)
+        print("line", looky(seeline()).lineno, "running:")
+        # the ones that don't respond to events are working
+        # the scrollbar, which has its own colorize method, is working
+        self.config(bg=self.formats['bg'])
+        self.entry.config(bg=self.formats['highlight_bg'])
+        # these respond to events, they aren't working
+        # self.arrow.config(bg=self.formats['highlight_bg'])
+        self.drop.config(bg=self.formats['highlight_bg'])
+        for child in self.content.winfo_children():
+            child.config(bg=self.formats['highlight_bg'])
+        
+
     def callback(self):
         '''
             A function specified on instantiation.
@@ -696,7 +720,7 @@ if __name__ == '__main__':
 
     short_list = ('yellow', 'red', 'blue')
 
-    def colorize(button=None, combo=None):
+    def color_background(button=None, combo=None):
         '''
             Selects the right widget because only one at a time is not None.
         '''
@@ -742,12 +766,12 @@ if __name__ == '__main__':
     b = Combobox(
         content,
         root,
-        callback=colorize,
+        callback=color_background,
         height=75, 
         values=caseless_colors,
         scrollbar_size=16)
     flat = ButtonFlatHilited(content, text='Apply Combo 1')
-    flat.config(command=lambda button=flat: colorize(button))
+    flat.config(command=lambda button=flat: color_background(button))
     b.config_values(short_list)
 
     # You can't do this in ttk.Combobox:
@@ -757,7 +781,7 @@ if __name__ == '__main__':
     bb = Combobox(
         content,
         root,
-        callback=colorize,
+        callback=color_background,
         height=450, 
         values=caseless_colors,
         scrollbar_size=16)
@@ -765,7 +789,7 @@ if __name__ == '__main__':
     bb.update_idletasks()
 
     flat2 = ButtonFlatHilited(content, text='Apply Combo 2')
-    flat2.config(command=lambda button=flat2: colorize(button))
+    flat2.config(command=lambda button=flat2: color_background(button))
 
     b.grid(column=0, row=0, padx=6, pady=6)
     flat.grid(column=1, row=0, padx=6, pady=6)
