@@ -518,7 +518,7 @@ class Combobox(FrameHilited3):
         self.entry.config(bg=self.formats['highlight_bg'])
         self.drop.config(bg=self.formats['highlight_bg'])
         self.content.config(bg=self.formats['highlight_bg'])
-        # the dropdown buttons respond to so many events that it might be
+        # The dropdown buttons respond to so many events that it might be
         #   a sort of minor miracle to make them colorize instantly. For
         #   now it's enough that they colorize on reload and they are not
         #   on top, they're only seen on dropdown.
