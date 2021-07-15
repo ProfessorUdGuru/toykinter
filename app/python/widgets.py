@@ -755,7 +755,7 @@ class Button(Buttonx):
 
 class ButtonFlatHilited(Buttonx):
     '''
-        A button with no relief or border.
+        A button with no relief or border. Used for the Combobox dropdown.
     '''
     def __init__(self, master, *args, **kwargs):
         Buttonx.__init__(self, master, *args, **kwargs)
@@ -769,6 +769,13 @@ class ButtonFlatHilited(Buttonx):
             overrelief='flat', # relief when hovered by mouse
             bd=0) # prevents sunken relief while pressed
         self.grid_configure(sticky='ew') 
+
+        def highlight(self, evt):
+            self.config(
+                bg=formats['highlight_bg'],
+                fg=formats['fg'],
+                activebackground=formats['fg'],
+                activeforeground=formats['bg'])
 
 class ButtonQuiet(Buttonx):
     ''' Same color as background, no text. '''

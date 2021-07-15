@@ -32,19 +32,6 @@ import dev_tools as dt
 from dev_tools import looky, seeline
 
 
-# class ComboboxArrow(Labelx):
-    # def __init__(self, master, *args, **kwargs):
-        # Labelx.__init__(self, master, *args, **kwargs)
-        # '''
-            # Formatted same as LabelHilited except it has to respond to events.
-            # So instead of doing special formatting on all LabelHilited where
-            # it isn't needed, this is a special case.
-        # '''
-        # self.formats = make_formats_dict()
-        # self.config(
-            # bg=self.formats['highlight_bg'], 
-            # fg=self.formats['fg'],
-            # font=self.formats['output_font'])
 
 class Combobox(FrameHilited3):
     hive = []
@@ -156,8 +143,6 @@ class Combobox(FrameHilited3):
         self.arrow.bind('<Button-1>', self.focus_entry_on_arrow_click, add='+')        
 
         for frm in (self, self.content):
-            # frm.bind('<FocusIn>', self.highlight_arrow)
-            # frm.bind('<FocusOut>', self.unhighlight_arrow)
             frm.bind('<FocusIn>', self.arrow.highlight)
             frm.bind('<FocusOut>', self.arrow.unhighlight)
 
@@ -400,18 +385,16 @@ class Combobox(FrameHilited3):
     def highlight(self, evt):
         for widg in self.buttons:
             widg.config(bg=self.formats['highlight_bg'])
-        widg = evt.widget
-        self.update_idletasks()
-        widg.config(bg=self.formats['bg'])
-        self.selected = widg
-        widg.focus_set()
+        widget = evt.widget
+        widget.config(bg=self.formats['bg'])
+        self.selected = widget
+        widget.focus_set()
 
     def unhighlight(self, evt):
-        widg = evt.widget
         x, y = self.winfo_pointerxy()
         hovered = self.winfo_containing(x,y)
         if hovered in self.buttons:
-            widg.config(bg=self.formats['highlight_bg'])
+            evt.widget.config(bg=self.formats['highlight_bg'])
 
     def hide_drops_on_title_bar_click(self, evt):
         x, y = self.winfo_pointerxy()
@@ -528,15 +511,17 @@ class Combobox(FrameHilited3):
         # print("line", looky(seeline()).lineno, "self.content:", self.content)
         # print("line", looky(seeline()).lineno, "self.buttons:", self.buttons)
         print("line", looky(seeline()).lineno, "running:")
-        # the ones that don't respond to events are working
+        # the widgets that don't respond to events are working
         # the scrollbar, which has its own colorize method, is working
+        # the arrow label has its own highlight methods, it's working
         self.config(bg=self.formats['bg'])
         self.entry.config(bg=self.formats['highlight_bg'])
-        # these respond to events, they aren't working
-        # self.arrow.config(bg=self.formats['highlight_bg'])
         self.drop.config(bg=self.formats['highlight_bg'])
-        for child in self.content.winfo_children():
-            child.config(bg=self.formats['highlight_bg'])
+        self.content.config(bg=self.formats['highlight_bg'])
+        # the dropdown buttons respond to so many events that it might be
+        #   a sort of minor miracle to make them colorize instantly. For
+        #   now it's enough that they colorize on reload and they are not
+        #   on top, they're only seen on dropdown.
         
 
     def callback(self):

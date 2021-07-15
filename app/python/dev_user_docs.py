@@ -109,26 +109,17 @@ Odd cases of the word "tree" will appear in some variables because most of this 
 
 Nothing in this collection of widget classes is completely finished or perfect. It's not my main focus right now. But I will be starting a do list for the project now that I've got it organized into a discrete demo app. So here begins a list of Toykinter's deficits, defects, shortcomings, and unfinished/neglected/forgotten/broken features as well as ways to improve and reformat this demo app. Most of the problems are newer than the code, i.e. some things weren't being updated "till later", and now "later" has rolled around and these things all need to be fixed at once. Instead of delaying the initial commit to this repo any longer, I'm creating a do list:
 
-DO LIST
+DO LIST (easy stuff at top; scary stuff toward bottom unless urgent)
 
 \u2022 make fonts tab smaller so it's not bigger than colors tab
-\u2022 delete_sample() not working in colorizer.py
-\u2022 Combobox dropdown and arrow not recolorizing. Add a combobox.colorize() method, see Scrollbar and Separator for examples.
+\u2022 delete_sample() not working in colorizer.py (it worked once but I don't know what I did different).
 \u2022 title bar is not recolorizing
 \u2022 merge colors branch; add another tab called widgets to display a Text, Separator, and other misc. widgets
-\u2022 Scrollbar.colorize is running nine times on load and 7 more times when changing the color scheme. I only count 6 scrollbars including the comboboxes. Look at what's printing in scrollbar.colorize() to see what all the scrollbars are.
-\u2022 change "table_head_bg" to "head_bg" also in db
-\u2022 colorizer preview area: The buttons and header background in the preview area are right as shown in preview_scheme() but then on APPLY they don't actually use that color. There are three background colors and they actually use one of the others on APPLY. Before changing this, figure out a place in the preview area to show all three background colors and then fix it so when APPLY is pressed, these chosen colors remain as shown in the preview.
-\u2022 There are 2 ways of detecting subclass in styles.py. The old way is a long switch statement in config_generic. The new way is a set of hard-coded global tuples at top of styles.py. Change as much as possible to the new way.
 \u2022 add a status message to some of the widgets
-\u2022 TabBook tabs don't take focus (not important, use the mouse)
 \u2022 The statusbar tooltips on colorizer.py don't work, probably still using the old version. On title bar they work but seem to be too big and not flush w/ bottom of status bar.
 \u2022 Make sure separator.colorize() is working.
-\u2022 Some of the backgrounds are not changing color instantly upon applying a new color scheme.
 \u2022 The active title bar color should be right with somewhat less encouragement.
 \u2022 Need a way to refer to tabs similar to ttk.Notebook's `notebook.index('current')`.
-\u2022 The dropdown menu isn't being used right now because it was never finished. It could be simplified to work with the mouse only instead of trying to make it work with the mouse and the keyboard.
-\u2022 The combobox scrollbar slider seems to be dropping the grab sometimes, or am I just losing my grip?
 \u2022 The logo is yuck.
 \u2022 The font on the TabBook tabs could be smaller.
 \u2022 Every module should have a separate demo i.e. `if __name__ == "__main__"` at bottom.
@@ -136,6 +127,14 @@ DO LIST
 \u2022 Mousewheel scrolling needs to be activated on the Docs tab.
 \u2022 Add a scrollbar to each tab where there's a lot of text which can be reconfigured to a larger font size thus overflowing the fixed size of the tab.
 \u2022 Unused classes and styles need to be weeded out of widgets.py and styles.py. Also in treebard project separate widgets.py into toykinter_widgets.py and treebard_widgets.py so changes in toykinter widgets can be copied easily to the other project.
-\u2022 Combobox is bogging down. Is it because of the large list of values? Is the list being repopulated each time I click to open the dropdown? Can it be fixed? Test it with smaller lists of values.
+\u2022 Combobox is bogging down with a large list of values. In any case where there is a long list of values that has to be accessed frequently and/or needs good response, just use an autofill entry instead of a Combobox. For changing fonts in this little app, it's OK that the Combobox is slow (it's Python), but possibly a refactoring is in order even though the current design is the third or fourth start-over and works well with small lists of values.
+\u2022 Combobox recolorizing is a compromise right now. The dropdown buttons respond to so many events that it might be a sort of minor miracle to make them colorize instantly. For now it's enough that they do colorize on reload. They are not on top, they're only seen on dropdown. It's not top priority compared to other things on this list.
+\u2022 colorizer preview area: The buttons and header background in the preview area are right as shown in preview_scheme() but then on APPLY they don't actually use that color. There are three background colors and they actually use one of the others on APPLY. Before changing this, figure out a place in the preview area to show all three background colors and then fix it so when APPLY is pressed, these chosen colors remain as shown in the preview.
+\u2022 Scrollbar.colorize is running nine times on load and 7 more times when changing the color scheme. I only count 6 scrollbars including the comboboxes. Look at what's printing in scrollbar.colorize() to see what all the scrollbars are.
+\u2022 change "table_head_bg" to "head_bg" also in db
+\u2022 There are 2 ways of detecting subclass in styles.py. The old way is a long switch statement in config_generic. The new way is a set of hard-coded global tuples at top of styles.py. Change as much as possible to the new way.
+\u2022 The dropdown menu isn't being used right now because it was never finished. It could be simplified to work with the mouse only instead of trying to make it work with the mouse and the keyboard.
+\u2022 The combobox scrollbar slider seems to be dropping the grab sometimes, or am I just losing my grip?
+\u2022 TabBook tabs don't take focus (not important, use the mouse)
 
 '''

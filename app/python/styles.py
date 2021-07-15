@@ -89,11 +89,10 @@ bgStd_fgStd_fontOut = ('Label', 'LabelFrame')
 
 bgStd_fgStd_fontIn = ('LabelButtonText',)
 
-bgLite_fgStd_fontIn_insFg = ('Entry', 'Text')
+bgLite_fgStd_fontIn_insFg = ('Entry', 'Text', 'EntryAutofillHilited')
 
 bgStd_fgStd_fontIn_insFg = ('EntryAutofill', 'EntryUnhilited')
 
-# bgLite_fgStd_fontOut = ('LabelHilited', )
 bgLite_fgStd_fontOut = ()
 
 bgHead_fgStd_fontOut = ('LabelHilited2', )
@@ -258,8 +257,9 @@ def config_generic(parent):
     # And give them their own config function here:
 
     def config_labelhilited(lab):
-    # def config_comboboxarrow(lab):
-        print("line", looky(seeline()).lineno, "running:")
+        '''
+            When used for Combobox arrow, it has to respond to events.
+        '''
         lab.formats = formats 
         lab.config(
             bg=formats['highlight_bg'],
@@ -422,8 +422,6 @@ def config_generic(parent):
                 config_labelitalic(widg)
             elif widg.winfo_subclass() == 'LabelHilited':
                 config_labelhilited(widg)
-            # elif widg.winfo_subclass() == 'ComboboxArrow':
-                # config_comboboxarrow(widg)
             elif widg.winfo_subclass() == 'LabelTab':
                 config_labeltab(widg)
             elif widg.winfo_subclass() == 'LabelTip':
