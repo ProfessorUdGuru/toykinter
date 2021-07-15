@@ -3,6 +3,7 @@ from tkinter import colorchooser
 import sqlite3
 from widgets import (
     Frame, Canvas, Button, LabelH3, Label, FrameStay, LabelStay, Entry)
+from scrolling import Scrollbar
 from styles import (get_color_schemes, get_color_schemes_plus, make_formats_dict, 
     get_all_descends, config_generic)
 from files import current_file
@@ -11,7 +12,7 @@ from query_strings import (
     update_color_scheme_null, insert_color_scheme)
 from dev_tools import looky, seeline
 
-PORTWIDTH = 840 # make this bigger if tab gets bigger for ex. if another tab gets bigger this one will too; if it doesn't work out, get rid of move_right & move_left, just a toy not important; if something user can do has the power to make the tabs bigger, then this won't work or at least has to be made into a class or something
+
 
 formats = make_formats_dict()
 
@@ -24,8 +25,8 @@ class Colorizer(Frame):
         self.view = view
 
         self.old_col = 0
-        self.parent.grid_columnconfigure(0, weight=1)
-        self.parent.grid_rowconfigure(0, weight=1)
+        self.parent.columnconfigure(0, weight=1)
+        self.parent.rowconfigure(0, weight=1)
 
         self.view.bind('<Return>', self.apply_scheme)
 
@@ -37,26 +38,31 @@ class Colorizer(Frame):
 
         stripview = Frame(self.parent)
         stripview.grid(column=0, row=0, padx=12, pady=12)
+        # stripview.columnconfigure(0, weight=1)
+        # stripview.rowconfigure(1, weight=0)
 
+        self.parent.update_idletasks()
         self.colors_canvas = Canvas(
             stripview, 
             bd=1, highlightthickness=1, 
             highlightbackground=formats['highlight_bg'], 
-            bg=formats['bg'], 
-            width=PORTWIDTH, height=100)
-
-        hscroll = tk.Scrollbar(
+            bg=formats['bg'],
+            width=840,
+            height=118
+) 
+        hscroll = Scrollbar(
             stripview, orient='horizontal', command=self.colors_canvas.xview)
         self.colors_canvas.configure(xscrollcommand=hscroll.set)
-        hscroll.grid(row=1, column=0, sticky="ew")
+        
         self.colors_canvas.grid(column=0, row=0, sticky='news')
+        hscroll.grid(column=0, row=1, sticky="ew")
 
         self.colors_content = Frame(self.colors_canvas)
 
         bbox1 = Frame(self.parent)
         bbox1.grid(column=0, row=1, padx=12, pady=12, sticky='we')
-        bbox1.grid_columnconfigure(1, weight=1)
-        bbox1.grid_rowconfigure(1, weight=1)
+        bbox1.columnconfigure(1, weight=1)
+        bbox1.rowconfigure(1, weight=1)
 
         b4 = Button(
             bbox1, text='TRY', width=7, command=self.config_local)
@@ -78,8 +84,8 @@ class Colorizer(Frame):
 
         self.colors_table = Frame(bottom)
         self.colors_table.grid(column=0, row=1, columnspan=2)
-        self.colors_table.grid_columnconfigure(0, weight=1)
-        self.colors_table.grid_rowconfigure(0, weight=1)
+        self.colors_table.columnconfigure(0, weight=1)
+        self.colors_table.rowconfigure(0, weight=1)
 
         all_schemes = get_color_schemes()
 
@@ -107,8 +113,8 @@ class Colorizer(Frame):
             column=0, row=2, 
             padx=12, pady=12, 
             sticky='ew', columnspan=2)
-        bbox2.grid_columnconfigure(1, weight=1)
-        bbox2.grid_rowconfigure(0, weight=1)
+        bbox2.columnconfigure(1, weight=1)
+        bbox2.rowconfigure(0, weight=1)
 
         b3 = Button(
             bbox2, 
@@ -360,8 +366,7 @@ class Colorizer(Frame):
             evt.widget.selection_clear()
 
         l_col = [
-            'background 1', 'background 2', 
-            'background 3', 'font color']
+            'background 1', 'background 2', 'background 3', 'font color']
 
         self.h1.grid(
             column=0, row=0, 
@@ -467,15 +472,15 @@ class Colorizer(Frame):
 
         # validate colors
 
-        back = self.r_col['main background'].get()
-        high = self.r_col['highlight background'].get()
-        table = self.r_col['table head background'].get()
+        back = self.r_col['background 1'].get()
+        high = self.r_col['background 2'].get()
+        table = self.r_col['background 3'].get()
         fonts = self.r_col['font color'].get()    
 
         try_these = [
-            (back, self.r_col['main background']), 
-            (high, self.r_col['highlight background']), 
-            (table, self.r_col['table head background']), 
+            (back, self.r_col['background 1']), 
+            (high, self.r_col['background 2']), 
+            (table, self.r_col['background 3']), 
             (fonts, self.r_col['font color'])]
 
         for tup in try_these:

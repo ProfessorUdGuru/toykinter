@@ -10,6 +10,9 @@ from dev_tools import looky, seeline
     When making a new subclass it has to have its own config_* sub-function
     added to config_generic, even if the class it's inheriting from is already
     a sub-class that already has its own config sub-function.
+
+    Some of the more complex custom widgets have their own method w.colorize()
+    which is called here in `config_generic()`.
 '''
 
 
@@ -492,6 +495,9 @@ def config_generic(parent):
                 widg.config(bg=formats['bg'])
 
             elif widg.winfo_subclass() == 'Scrollbar':
+                # to figure out where all the scrollbars are:
+                print("line", looky(seeline()).lineno, "widg:", widg)
+                # this is called in `styles.config_generic()`:
                 widg.colorize()
 
     config_bgStd(parent)

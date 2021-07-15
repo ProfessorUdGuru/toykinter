@@ -333,7 +333,7 @@ class Scrollbar(Canvas):
 
         self.config(bg=self.troughcolor, bd=0, highlightthickness=0)
 
-        self.create_rectangle(
+        self.thumb = self.create_rectangle(
             0, 0, 1, 1, 
             fill=self.slidercolor, 
             width=1,    # this is border width
@@ -439,6 +439,7 @@ class Scrollbar(Canvas):
         self.slidercolor = formats['bg']
         self.troughcolor = formats['table_head_bg']
         self.config(bg=self.troughcolor)
+        self.itemconfig(self.thumb, fill=self.slidercolor)
 
 if __name__ == '__main__':
 

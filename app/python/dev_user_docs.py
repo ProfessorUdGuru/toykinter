@@ -111,19 +111,18 @@ Nothing in this collection of widget classes is completely finished or perfect. 
 
 DO LIST
 
+\u2022 Scrollbar.colorize is running nine times on load and 7 more times when changing the color scheme. I only count 6 scrollbars including the comboboxes. Look at what's printing in scrollbar.colorize() to see what all the scrollbars are.
 \u2022 title bar is not recolorizing
 \u2022 change "table_head_bg" to "head_bg" also in db
 \u2022 colorizer preview area: The buttons and header background in the preview area are right as shown in preview_scheme() but then on APPLY they don't actually use that color. There are three background colors and they actually use one of the others on APPLY. Before changing this, figure out a place in the preview area to show all three background colors and then fix it so when APPLY is pressed, these chosen colors remain as shown in the preview.
-\u2022 There are 2 ways of detecting subclass in styles.py. The old way is a long switch statement in config_generic. The new way is a set of hard-coded global tuples at top of styles.py. Change as much as possible to the new way and standardize/abbreviate list and function names so the commenting isn't needed to explain what they're for.
-\u2022 Combobox dropdown and arrow not recolorizing.
-\u2022 Get rid of the auto-scrolling on the color samples, it will never work right because the user can add samples.
-\u2022 When double-clicking a color sample to try in sample area, it works, but single-clicking to hilite sample and then press TRY doesn't work because single-click is not hiliting the sample. This is OK because the way to highlight is to double click and then tab to the next one and then press TRY. But there should be a tooltip that tells how it works. It's not easy to add the single-click event since the double-click event would try to trigger the single-click event. Why not get rid of the double-click and just run the TRY code on a single-click? User can still tab to the next sample and hit try if they prefer. But it seems like a single-click should give the sample focus and it currently doesn't.
-\u2022 create new color sample not working
+\u2022 There are 2 ways of detecting subclass in styles.py. The old way is a long switch statement in config_generic. The new way is a set of hard-coded global tuples at top of styles.py. Change as much as possible to the new way.
+\u2022 Combobox dropdown and arrow not recolorizing. Add a combobox.colorizer() method, see Scrollbar and Separator for examples.
 \u2022 add a status message to some of the widgets
+\u2022 add another tab called widgets to display a Text, Separator, and other misc. widgets
 \u2022 TabBook tabs don't take focus (not important, use the mouse)
 \u2022 The statusbar tooltips on colorizer.py don't work, probably still using the old version.
 \u2022 There's an icky Tkinter scrollbar on the Colors tab.
-\u2022 There's a call in styles.py to a function colorize() which should be getting an error since there's no such function in styles.py or imported to it. For scrollbar and separator.
+\u2022 Make sure separator.colorize() is working.
 \u2022 Some of the backgrounds are not changing color instantly upon applying a new color scheme.
 \u2022 The active title bar color should be right with somewhat less encouragement.
 \u2022 Need a way to refer to tabs similar to ttk.Notebook's `notebook.index('current')`.
