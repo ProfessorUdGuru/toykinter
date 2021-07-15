@@ -149,7 +149,9 @@ class LabelFrame(LabelFramex):
             LabelFramex.__init__(self, master, *args, **kwargs)
 
             self.config(
-                bg=formats['bg'], font=formats['output_font'], fg=formats['fg']) 
+                bg=formats['bg'], 
+                fg=formats['fg'], 
+                font=formats['output_font']) 
 
 class Messagex(tk.Message):
     def __init__(self, master, *args, **kwargs):
@@ -275,17 +277,6 @@ class Label(Labelx):
             fg=formats['fg'],
             font=formats['output_font'])
 
-class LabelEntrylike(Labelx):
-    ''' 
-        Normal Label that uses the same font as an Entry. 
-    '''
-    def __init__(self, master, *args, **kwargs):
-        Labelx.__init__(self, master, *args, **kwargs)
-        self.config(
-            bg=formats['bg'], 
-            fg=formats['fg'],
-            font=formats['input_font'])
-
 class LabelTest(Labelx):
     ''' 
         Color can be changed for testing/visibility. 
@@ -305,18 +296,10 @@ class LabelItalic(Labelx):
 
     def __init__(self, master, *args, **kwargs):
         Labelx.__init__(self, master, *args, **kwargs)
-        self.config(font=formats['show_font'])
- 
-class LabelItalicHilited(Labelx):
-    ''' 
-        Uses input font and italics to display errors & such. 
-    '''
-
-    def __init__(self, master, *args, **kwargs):
-        Labelx.__init__(self, master, *args, **kwargs)
         self.config(
-            font=formats['show_font'],
-            bg=formats['table_head_bg'])
+            bg=formats['bg'],
+            fg=formats['fg'],
+            font=formats['show_font'])
 
 class LabelHilited(Labelx):
     ''' 
@@ -330,14 +313,17 @@ class LabelHilited(Labelx):
             font=formats['output_font'])
 
 
-class LabelHilited2(Label):
+class LabelHilited2(Labelx):
     ''' 
         Like Label with a different background. 
     '''
     def __init__(self, master, *args, **kwargs):
-        Label.__init__(self, master, *args, **kwargs)
+        Labelx.__init__(self, master, *args, **kwargs)
 
-        self.config(bg=formats['table_head_bg'])
+        self.config(
+            bg=formats['table_head_bg'], 
+            fg=formats['fg'],
+            font=formats['output_font'])
 
 class LabelTip(LabelHilited):
     ''' 
@@ -369,7 +355,10 @@ class LabelNegative(Labelx):
     '''
     def __init__(self, master, *args, **kwargs):
         Labelx.__init__(self, master, *args, **kwargs)
-        self.config(bg=formats['fg'], fg=formats['bg'])
+        self.config(
+            bg=formats['fg'], 
+            fg=formats['bg'],
+            font=formats['output_font'])
 
 class LabelH2(Label):
     ''' 
@@ -379,7 +368,7 @@ class LabelH2(Label):
         Label.__init__(self, master, *args, **kwargs)
 
         self.config(
-            font=formats['heading3'])
+            font=formats['heading2'])
 
 class LabelH3(Label):
     ''' 
@@ -390,60 +379,6 @@ class LabelH3(Label):
 
         self.config(font=formats['heading3'])
 
-class LabelColumn(Labelx):
-    '''
-        For column headings in tables.
-    '''
-    def __init__(self, master, *args, **kwargs):
-        Labelx.__init__(self, master, *args, **kwargs)
-
-        self.config(
-            bg=formats['bg'], 
-            font=formats['heading3'],
-            anchor='w')
-
-class LabelColumnCenter(LabelColumn):
-    ''' 
-        Like LabelColumn for centered table column headings. 
-    '''
-    def __init__(self, master, *args, **kwargs):
-        LabelColumn.__init__(self, master, *args, **kwargs)
-
-class KinTip(FrameHilited5):
-    '''
-        Display kin name when user points to a kin_type button in kin column
-        on events table.
-    '''
-    def __init__(self, master, text='', *args, **kwargs):
-        FrameHilited5.__init__(self, master, *args, **kwargs)
-
-        instrux1 = LabelTip(
-            self, text='Click to make', bd=0)
-        instrux2 = LabelTipBold(
-            self, 
-            text=text)
-        instrux3 = LabelTip(
-            self, text='the current person', bd=0)
-
-        instrux1.grid(padx=1, pady=1, ipadx=3, ipady=3)
-        instrux2.grid(padx=1, pady=1, ipadx=3, ipady=3)
-        instrux3.grid(padx=1, pady=1, ipadx=3, ipady=3)
-
-class LabelSearch(Labelx):
-    ''' 
-        For search results column cells. Since this
-        widget responds to so many different events, and
-        then still has to respond to the colorizer, 
-        the code is simpler if the colorizer can
-        treat this class separately from other labels. 
-    '''
-
-    def __init__(self, master, *args, **kwargs):
-        Labelx.__init__(self, master, *args, **kwargs)
-
-        self.formats = make_formats_dict()
-        self.config(anchor='w')
-
 class LabelBoilerplate(Labelx):
     ''' 
         Like Label for fine print.  
@@ -452,7 +387,10 @@ class LabelBoilerplate(Labelx):
     def __init__(self, master, *args, **kwargs):
         Labelx.__init__(self, master, *args, **kwargs)
 
-        self.config(bg=formats['bg'])
+        self.config(
+            bg=formats['bg'], 
+            fg=formats['fg'], 
+            font=formats['boilerplate'])
 
 class LabelTitleBar(Labelx):
     ''' 
@@ -608,14 +546,14 @@ class LabelButtonText(LabelButtonImage):
         LabelButtonImage.__init__(self, master, *args, **kwargs)
 
         self.config(
+            bg=formats['bg'],
+            fg=formats['fg'],
+            font=formats['input_font'],
             anchor='center',
             borderwidth=1, 
             relief='raised', 
             takefocus=1,
-            bg=formats['bg'],
-            width=width,
-            font=formats['input_font'],
-            fg=formats['fg'])
+            width=width)
 
 class LabelMovable(LabelHilited):
     ''' 
@@ -876,7 +814,7 @@ class Entry(Entryx):
 
 class EntryUnhilited(Entryx):
     '''
-        Background same as Label, Frame, etc.
+        Looks like a Label.
     '''
     def __init__(self, master, *args, **kwargs):
         Entryx.__init__(self, master, *args, **kwargs)
@@ -886,9 +824,7 @@ class EntryUnhilited(Entryx):
             bg=formats['bg'], 
             fg=formats['fg'], 
             font=formats['input_font'], 
-            insertbackground=formats['fg'],
-            disabledbackground=formats['bg'],
-            disabledforeground=formats['fg'])
+            insertbackground=formats['fg'])
 
 class EntryAutofill(EntryUnhilited):
     ''' 
@@ -1114,8 +1050,9 @@ class Text(Textx):
         Textx.__init__(self, master, *args, **kwargs)
         self.config(
             wrap='word', 
-            bg=formats['bg'], 
+            bg=formats['highlight_bg'], 
             fg=formats['fg'],
+            font=formats['input_font'],
             insertbackground=formats['fg'])
 
 class LabelStylable(Textx):
@@ -1169,8 +1106,8 @@ class MessageCopiable(Textx):
         self.tag_configure('center', justify='center')
         self.tag_add('center', '1.0', 'end')
         self.config(state='disabled')
-    # How to use above by example:
-    # www = wdg.MessageCopiable(root, width=32)
+    # How to use:
+    # www = MessageCopiable(root, width=32)
     # www.insert(1.0, 
         # 'Maecenas quis elit eleifend, lobortis turpis at, iaculis '
         # 'odio. Phasellus congue, urna sit amet posuere luctus, mauris '
@@ -1430,7 +1367,7 @@ class CanvasHilited(Canvasx):
 
 '''
     Statusbar messages on focus-in to individual widgets,
-    non-obtrusive tooltips, and non-ttk replacement for ttk.Sizegrip.
+    non-obtrusive tooltips, and replacement for ttk.Sizegrip.
 '''
 
 def run_statusbar_tooltips(visited, status_label, tooltip_label):
@@ -1478,7 +1415,7 @@ class StatusbarTooltips(Frame):
     '''
         To use this:
         In self.make_widgets()...
-            some_statusbar = wdg.StatusbarTooltips(self)
+            some_statusbar = StatusbarTooltips(self)
             some_statusbar.grid(column=0, row=2, sticky='ew') # use last row in toplevel
             visited = (
                 (self.widget1, 
@@ -1487,7 +1424,7 @@ class StatusbarTooltips(Frame):
                 (self.widget2, 
                     'status bar message on focus in', 
                     'tooltip message on mouse hover.'))        
-            wdg.run_statusbar_tooltips(
+            run_statusbar_tooltips(
                 visited, 
                 roles_statusbar.status_label, 
                 roles_statusbar.tooltip_label)
@@ -1516,7 +1453,7 @@ class StatusbarTooltips(Frame):
         relief.grid_columnconfigure(0, weight=1)
 
         self.status_label = Label(
-            relief, cursor='arrow', anchor='w', )
+            relief, cursor='arrow', anchor='w')
         self.tooltip_label = Label(
             relief, bd=2, relief='sunken', anchor='e')
 

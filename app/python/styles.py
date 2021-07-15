@@ -18,18 +18,16 @@ MAX_WINDOW_WIDTH = 0.995
 NEUTRAL_COLOR = '#878787'
 
 '''
-    widget.winfo_class() is a built-in Tkinter method that
-    refers to Tkinter classes such as 'Label' or ttk classes
-    such as 'TLabel'. widget.winfo_subclass() is a custom
-    method that refers to subclasses such as 'Label' that 
-    this app creates by inheriting from Tkinter. The purpose 
-    of this module is to do with Tkinter widgets what they
-    are saying can only be done with ttk widgets: configure
-    widgets by class instead of one at a time. This is supposed
-    to replace or make unnecessary ttk.Style and Windows themes,
-    using methods that novice coders can understand easily while 
-    getting predictable results, whereas ttk widgets fall short 
-    in that regard.
+    widget.winfo_class() is a built-in Tkinter method that refers to 
+    Tkinter classes such as 'Label' or ttk classes such as 'TLabel'.
+    widget.winfo_subclass() is a custom method that refers to subclasses 
+    such as 'Label' that this app creates by inheriting from Tkinter. The 
+    purpose of this module is to do with Tkinter widgets what they are 
+    saying can only be done with ttk widgets: configure widgets by class 
+    instead of one at a time. This is supposed to replace or make 
+    unnecessary ttk.Style and Windows themes, using methods that novice 
+    coders can understand easily while getting predictable results, 
+    whereas ttk widgets fall short in that regard.
 
     The worst thing about this method of reconfiguring values is that
     if you accidentally use a tkinter widget like this: "lab = tk.Label..."
@@ -41,72 +39,76 @@ NEUTRAL_COLOR = '#878787'
         widg.winfo_subclass() == 'LabelStay'):
     AttributeError: 'Label' object has no attribute 'winfo_subclass'
 
+    The other worst thing is (if I recall correctly), you have to do 
+    winfo_class() before you can do winfo_subclass(). 
+
     To use this method of configuration by detecting subclasses, you have to
     remember to not use the parent tkinter classes, only the subclasses.
 '''
 '''
-   Groups of widgets that take common formatting changes
-   when user changes a style preference. If a subclass
-   fits in one of these groups just add its class name
-   to one of these tuples. Otherwise it has to be added
-   to the switch in config_generic() and given a 
-   subfunction there to configure it. Only options that
-   can be changed by user need to be handled here, like
-   fg, bg, and font. The intended result is no styling
-   in the widget construction code since all styles are
-   built into class names.
+    These hard-coded tuples represent groups of widgets that take common 
+    formatting changes when the user changes a style preference. 
+    The tuples below can have new subclasses added to them manually, if the
+    configuration needs of that subclass fit the corresponding subfunction. In
+    case of a fit, then adding the name of the new subclass to a tuple is all
+    you have to do. 
+    Otherwise it has to be added to the switch in `config_generic()` and given
+    a subfunction there to configure it. Only options that can be changed by 
+    the user are handled here, usually fg, bg, and font. The intended result is 
+    no styling in the widget construction code since all styles are built into 
+    subclasses. The reason for going to all this trouble is so that all widgets
+    can be instantly restyled by the user on the press of a button.
+
+    Naming conventions for these tuples and the functions that refer to them:
+    3 parts of camelCase: camel is bg/fg/font; Case is Std/Lite/Head for bg or 
+    In/Out for font (short for standard/highlight/heading or Input/Output); 
+    Example: `bgStd_fgStd_fontIn` for "use standard background color, standard 
+    foreground color, and input font". The name for the corresponding function 
+    is the same as the tuple with "config_" prepended, 
+    e.g: `config_bgStd_fgStd_fontIn()`
+    For font styles see `prefs_to_use[6]` in `make_formats_dict()`.
 '''
 
-# change background to formats['bg']:
-bg_only_bg = (
-    'Frame', 'DatePrefsWidgets', 'PersonsTab', 
-    'NamesTab', 'Toykinter', 'IconMenu', 'Main', 
-    'StatusBarTooltips', 'Colorizer', 'Search', 
-    'Notebook', 'Toplevel', 'LabelEntryPair', 
-    'PersonAdd', 'EditablePairs', 'LabelGoTo', 'FontPicker')
+bgStd = (
+    'Frame', 'Toykinter', 'Main', 'Colorizer', 'Toplevel', 'FontPicker',
+    'StatusbarTooltips')
 
-# change background to formats['table_head_bg']:
-bg_only_table_head = ('FrameHilited2',)
+bgHead = ('FrameHilited2',)
 
-# change background to formats['highlight_bg']:
-bg_only_hilited = (
+bgLite = (
     'FrameHilited', 'FrameHilited1', 'FrameHilited3', 'FrameHilited4', 
-    'LabelTitleBar', 'Sizer', 'KinTip', 'ToolTip',
+    'LabelTitleBar', 'Sizer', 'ToolTip', 'TabBook',
     'ToplevelHilited')
 
-# change background, foreground to standard:
-bg_fg_only_standard = ('Label', 'LabelFrame', 'Sizer')
+bgStd_fgStd = ('Sizer', )
 
-# change background, foreground to standard and font to input
-bg_fg_standard_font_input = (
-    'Table', 'FindingsTable', 'AttributesTable', 'LabelEntrylike')
+bgStd_fgStd_fontOut = ('Label', 'LabelFrame')
 
-# change background to hilited, foreground to standard, font to input
-bg_hilite_fg_std_font_input = ('Entry', )
+bgStd_fgStd_fontIn = ('LabelButtonText',)
 
-# change background to highlighted, foreground to standard and font to output
-bg_highlighted_fg_standard_font_output = ('LabelHilited', )
+bgLite_fgStd_fontIn_insFg = ('Entry', 'Text')
 
-# change background, foreground to standard,
-#    font to output, and normally disabled:    
-bg_fg_font_state_disabled = ('LabelStylable', 'MessageCopiable')
+bgStd_fgStd_fontIn_insFg = ('EntryAutofill', 'EntryUnhilited')
+
+bgLite_fgStd_fontOut = ('LabelHilited', )
+
+bgHead_fgStd_fontOut = ('LabelHilited2', )
+    
+bgStd_fgStd_fontOut_disAbl = ('LabelStylable', 'MessageCopiable')
 
 '''
-    The variable formats can't be global in this module because
-    these are reconfiguration functions and the
-    colors that are current when this module first loads
-    are now wrong when the recolorizer runs. A global variable
-    would only run once when this module is imported so the
-    little config functions have been nested inside of the 
-    main config_generic() in order to prevent connecting to the db
-    once for each of the little functions.
+    The variable `formats` can't be global in this module because these are
+    reconfiguration functions and the colors that were current when this 
+    module first loaded are changed when the recolorizer runs. A global 
+    variable would only run once when this module is imported so the config 
+    subfunctions have been nested inside of the main config_generic() in order 
+    to prevent connecting to the database once for each of the subfunctions.
 '''
 
 def get_all_descends (ancestor, deep_list):
     ''' 
-        So all widgets can be configured at once,
-        this lists every widget in the app by running
-        recursively.
+        So all widgets can be configured at once, this lists every widget in 
+        the app by running recursively.
     '''
 
     lst = ancestor.winfo_children()        
@@ -117,25 +119,69 @@ def get_all_descends (ancestor, deep_list):
 
 def config_generic(parent):
     ''' 
-        Call this for every Toplevel window constructed 
-        to apply consistent styling to tkinter widgets
-        so widgets don't have to be styled individually.
-        When all widgets have 
-        been constructed add this line: config_generic(parent).
-        This is also called in colorizer to change the color of 
-        everything instantly. '''
+        Call this for every Toplevel window constructed to apply consistent 
+        styling to tkinter widgets so widgets don't have to be styled 
+        individually. This is also called in colorizer to change the color 
+        of everything instantly. 
+    '''
 
-    print("line", looky(seeline()).lineno, "parent:", parent)
+    def config_bgStd(widg):
+        widg.config(bg=formats['bg'])
 
-    # def config_labelhilited(lab):
-        # lab.config(
-            # bg=formats['highlight_bg'],
-            # fg=formats['fg'],
-            # font=formats['output_font'])
+    def config_bgLite(widg):
+        widg.config(bg=formats['highlight_bg'])
+       
+    def config_bgHead(widg):
+        widg.config(bg=formats['table_head_bg'])
 
-    def config_labelhilited2(lab):
-            bg=formats['table_head_bg']
-            fg=formats['fg']
+    def config_bgStd_fgStd(widg):
+        widg.config(bg=formats['bg'], fg=formats['fg'])
+
+    def config_bgStd_fgStd_fontOut(widg):
+        widg.config(
+            bg=formats['bg'],
+            fg=formats['fg'],
+            font=formats['output_font'])
+
+    def config_bgLite_fgStd_fontOut(widg):
+        widg.config(
+            bg=formats['highlight_bg'], 
+            fg=formats['fg'],
+            font=formats['output_font']) 
+
+    def config_bgHead_fgStd_fontOut(widg):
+        widg.config(
+            bg=formats['table_head_bg'], 
+            fg=formats['fg'],
+            font=formats['output_font'])  
+
+    def config_bgStd_fgStd_fontIn(widg):
+        widg.config(
+            bg=formats['bg'],
+            fg=formats['fg'],
+            font=formats['input_font'])
+
+    def config_bgLite_fgStd_fontIn_insFg(widg):
+        widg.config( 
+            bg=formats['highlight_bg'], 
+            fg=formats['fg'],
+            font=formats['input_font'],
+            insertbackground=formats['fg'])
+
+    def config_bgStd_fgStd_fontIn_insFg(widg):
+        widg.config(
+            bg=formats['bg'], 
+            fg=formats['fg'], 
+            font=formats['input_font'], 
+            insertbackground=formats['fg'])
+
+    def config_bgStd_fgStd_fontOut_disAbl(widg):
+        widg.config(state='normal')
+        widg.config(
+            bg=formats['bg'],
+            fg=formats['fg'],
+            font=formats['output_font'])
+        widg.config(state='disabled')     
 
     def config_labeltip(lab):
         lab.config(
@@ -163,51 +209,39 @@ def config_generic(parent):
 
     def config_labelnegative(lab):
         lab.config(
-            bg=formats['fg'],
-            fg=formats['bg'])
-
-    def config_labelstay2(lab):
-        lab.config(fg=formats['fg'])
+            bg=formats['fg'], 
+            fg=formats['bg'],
+            font=formats['output_font'])
 
     def config_heading1(lab):
-        lab.config(bg=formats['bg'], 
-        fg=formats['fg'], 
-        font=formats['heading1'])
+        lab.config(
+            bg=formats['bg'], 
+            fg=formats['fg'], 
+            font=formats['heading1'])
 
     def config_heading2(lab):
-        lab.config(bg=formats['bg'], 
-        fg=formats['fg'], 
-        font=formats['heading2'])
+        lab.config(
+            bg=formats['bg'], 
+            fg=formats['fg'], 
+            font=formats['heading2'])
 
     def config_heading3(lab):
-        lab.config(bg=formats['bg'], 
-        fg=formats['fg'], 
-        font=formats['heading3'])
+        lab.config(
+            bg=formats['bg'], 
+            fg=formats['fg'], 
+            font=formats['heading3'])
 
     def config_heading4(lab):
-        lab.config(bg=formats['bg'], 
-        fg=formats['fg'], 
-        font=formats['heading4'])
+        lab.config(
+            bg=formats['bg'], 
+            fg=formats['fg'], 
+            font=formats['heading4'])
         
     def config_boilerplate(lab):
         lab.config(
             bg=formats['bg'], 
             fg=formats['fg'], 
             font=formats['boilerplate'])
-
-    def config_labelcolumn(lab):
-        lab.config(
-            bg=formats['bg'], 
-            fg=formats['fg'], 
-            font=formats['heading3'],
-            anchor='w')
-
-    def config_labelcolumnctr(lab):
-        lab.config(
-            bg=formats['table_head_bg'], 
-            fg=formats['fg'], 
-            font=formats['heading3'],
-            anchor='center') 
 
     # ************* special event widgets ********************
 
@@ -237,18 +271,6 @@ def config_generic(parent):
                 bg=formats['bg'],
                 fg=formats['fg'])
 
-    def config_labelsearch(lab):
-        lab.formats = formats
-        lab.config(
-            bg=formats['bg'], 
-            fg=formats['fg'])
-
-    def config_labeldots(lab):
-        lab.formats = formats # bec. of Enter/Leave...
-        lab.config(
-            bg=formats['bg'],
-            fg=formats['fg'])
-
     def config_labelmovable(lab):
         lab.formats = formats # bec. of FocusIn/FocusOut...
         lab.config(
@@ -266,17 +288,17 @@ def config_generic(parent):
 
     def config_buttons(button):
         button.config(
-            font=(formats['output_font']),
-            activebackground=formats['table_head_bg'],
             bg=formats['bg'],  
-            fg=formats['fg'])
+            fg=formats['fg'],
+            font=(formats['output_font']),
+            activebackground=formats['table_head_bg'])
 
     def config_buttons_plain(button):
         button.config(
-            font=(formats['input_font']),
-            activebackground=formats['table_head_bg'],
             bg=formats['bg'],  
-            fg=formats['fg'])
+            fg=formats['fg'],
+            font=(formats['input_font']),
+            activebackground=formats['table_head_bg'])
 
     def config_buttonflathilited(button):
         button.config(
@@ -287,38 +309,17 @@ def config_generic(parent):
 
     def config_radiobuttons(radio):
         radio.config(
-            bg=formats['bg'], 
+            bg=formats['bg'],
+            fg=formats['fg'], 
             activebackground=formats['highlight_bg'],
-            fg=formats['fg'],
             selectcolor=formats['highlight_bg']) 
 
     def config_radiobuttonhilited(radio):
         radio.config(
-            bg=formats['highlight_bg'], 
+            bg=formats['highlight_bg'],
+            fg=formats['fg'], 
             activebackground=formats['bg'],
-            fg=formats['fg'],
             selectcolor=formats['bg']) 
-
-    def config_fg_standard(widg):
-        widg.config(fg=formats['fg'])
-
-    def config_bg_hilite_fg_std_font_output(widg):
-        widg.config(
-            bg=formats['highlight_bg'], 
-            fg=formats['fg'],
-            font=formats['output_font'])        
-
-    def config_bg_only_bg(widg):
-        widg.config(bg=formats['bg'])
-
-    def config_bg_only_hilited(widg):
-        widg.config(bg=formats['highlight_bg'])
-       
-    def config_bg_only_table_head(widg):
-        widg.config(bg=formats['table_head_bg'])
-
-    def config_bg_fg_only_standard(widg):
-        widg.config(bg=formats['bg'], fg=formats['fg'])
 
     def config_separator(sep):
         ''' 
@@ -339,18 +340,6 @@ def config_generic(parent):
             fg=formats['fg'],
             font=formats['output_font'])
 
-    def config_buttonlabel(widg):
-        widg.config(
-            bg=formats['bg'],
-            fg=formats['fg'],
-            font=formats['input_font'])
-
-    def config_labeldots(widg):
-        widg.config(
-            bg=formats['bg'],
-            fg=formats['fg'],
-            font=formats['heading3'])
-
     def config_labelcopiable(widg):
         widg.config(state='normal')
         widg.config(
@@ -359,15 +348,6 @@ def config_generic(parent):
         widg.config(state='readonly')
         widg.config(readonlybackground=widg.cget('background'))
 
-    def config_entry(widg):
-        widg.config(
-            bg=formats['highlight_bg'],
-            fg=formats['fg'],
-            font=formats['input_font'],
-            insertbackground=formats['fg'],
-            disabledbackground=formats['highlight_bg'],
-            disabledforeground=formats['fg'])
-
     def config_scale(widg):
         widg.config(
             bg=formats['bg'], 
@@ -375,39 +355,6 @@ def config_generic(parent):
             font=formats['output_font'],
             troughcolor=formats['highlight_bg'],
             activebackground=formats['table_head_bg'])
-
-    def config_unhilited_entry(widg):
-        widg.config(
-            bd=0,
-            bg=formats['bg'], 
-            fg=formats['fg'], 
-            font=formats['input_font'], 
-            insertbackground=formats['fg'],
-            disabledbackground=formats['bg'],
-            disabledforeground=formats['fg'])
-
-    def config_bg_fg_standard_font_input(widg):
-        widg.config(
-            bg=formats['bg'],
-            fg=formats['fg'],
-            font=formats['input_font'],
-            insertbackground=formats['fg'],
-            disabledbackground=formats['highlight_bg'],
-            disabledforeground=formats['fg'])
-
-    def config_bg_fg_font_state_disabled(widg):
-        widg.config(state='normal')
-        widg.config(
-            bg=formats['bg'],
-            fg=formats['fg'],
-            font=formats['output_font'])
-        widg.config(state='disabled')
-
-    def config_text(widg):
-        widg.config(
-            bg=formats['bg'],
-            fg=formats['fg'],
-            insertbackground=formats['fg'])
 
     formats = make_formats_dict()
 
@@ -424,47 +371,46 @@ def config_generic(parent):
             if widg.winfo_subclass() == 'FrameStay':
                 pass
 
-            elif widg.winfo_subclass() in bg_only_bg:
-                config_bg_only_bg(widg)
+            elif widg.winfo_subclass() in bgStd:
+                config_bgStd(widg)
 
-            elif widg.winfo_subclass() in bg_only_table_head:
-                config_bg_only_table_head(widg)
+            elif widg.winfo_subclass() in bgHead:
+                config_bgHead(widg)
 
-            elif widg.winfo_subclass() in bg_only_hilited:
-                config_bg_only_hilited(widg)
-
-            elif widg.winfo_subclass() == 'TabBook':
-                config_bg_only_hilited(widg)
+            elif widg.winfo_subclass() in bgLite:
+                config_bgLite(widg)
 
             elif widg.winfo_subclass() == 'Separator':
                 config_separator(widg)
 
             elif widg.winfo_subclass() == 'EntryDefaultText':
                 config_entrydefaulttext(widg)
-        
-        # tkinter.Label is class
-        elif widg.winfo_class() == 'Label':
-            # widgets.Label is subclass
-            if widg.winfo_subclass() in bg_fg_only_standard: # new way
-                config_bg_fg_only_standard(widg)
-            elif widg.winfo_subclass() in bg_highlighted_fg_standard_font_output:
-                config_bg_hilite_fg_std_font_output(widg)
-            elif widg.winfo_subclass() == 'LabelH2': # old way
+
+        elif widg.winfo_class() == 'Label': 
+
+            if widg.winfo_subclass() in bgHead:
+                config_bgHead(widg) 
+          
+            elif widg.winfo_subclass() in bgStd_fgStd:
+                config_bgStd_fgStd(widg)
+
+            elif widg.winfo_subclass() in bgStd_fgStd_fontOut:
+                config_bgStd_fgStd_fontOut(widg)
+
+            elif widg.winfo_subclass() in bgLite_fgStd_fontOut:
+                config_bgLite_fgStd_fontOut(widg)
+
+            elif widg.winfo_subclass() in bgHead_fgStd_fontOut:
+                config_bgHead_fgStd_fontOut(widg)
+
+            elif widg.winfo_subclass() == 'LabelH2':
                 config_heading2(widg)
             elif widg.winfo_subclass() == 'LabelH3':
                 config_heading3(widg)
-            elif widg.winfo_subclass() == 'LabelColumnCenter':
-                config_labelcolumnctr(widg)
-            elif widg.winfo_subclass() == 'LabelColumn':
-                config_labelcolumn(widg)
             elif widg.winfo_subclass() == 'LabelBoilerplate':
                 config_boilerplate(widg)
             elif widg.winfo_subclass() == 'LabelItalic':
                 config_labelitalic(widg)
-            elif widg.winfo_subclass() == 'LabelButtonText':
-                config_buttonlabel(widg)
-            elif widg.winfo_subclass() == 'LabelHilited2':
-                config_labelhilited2(widg)
             elif widg.winfo_subclass() == 'ComboboxArrow':
                 config_comboboxarrow(widg)
             elif widg.winfo_subclass() == 'LabelTab':
@@ -477,50 +423,57 @@ def config_generic(parent):
                 config_labeltipbold(widg)
             elif widg.winfo_subclass() == 'LabelNegative':
                 config_labelnegative(widg)
-            elif widg.winfo_subclass() == 'LabelSearch':
-                config_labelsearch(widg)
-            elif widg.winfo_subclass() == 'LabelDots':
-                config_labeldots(widg)
             elif widg.winfo_subclass() == ('TitleBarButtonSolidBG'):
-                config_bg_only_hilited(widg)
+                config_bgLite(widg)
             elif widg.winfo_subclass() == 'LabelMovable':
                 config_labelmovable(widg)
-            elif widg.winfo_subclass() in bg_only_table_head:
-                config_bg_only_table_head(widg)
 
         elif widg.winfo_class() == 'Entry':
-            if widg.winfo_subclass() in bg_fg_standard_font_input:
-                config_bg_fg_standard_font_input(widg)
+
+            if widg.winfo_subclass() in bgLite_fgStd_fontIn_insFg:
+                config_bgLite_fgStd_fontIn_insFg(widg)
+
             elif widg.winfo_subclass() == 'LabelCopiable':
                 config_labelcopiable(widg)
-            elif widg.winfo_subclass() in ('Entry', 'EntryAutofillHilited'):
-                config_entry(widg)
-            elif widg.winfo_subclass() in ('EntryUnhilited', 'EntryAutofill'):
-                config_unhilited_entry(widg)
+
+            # elif widg.winfo_subclass() in ('EntryUnhilited', 'EntryAutofill'):
+                # config_unhilited_entry(widg)
+
+            elif widg.winfo_subclass() in bgStd_fgStd_fontIn_insFg:
+                config_bgStd_fgStd_fontIn_insFg(widg)
 
         elif widg.winfo_class() == 'Text':
-            if widg.winfo_subclass() in bg_fg_standard_font_input:
-                config_text(widg)
-            elif widg.winfo_subclass() in bg_fg_font_state_disabled:
-                config_bg_fg_font_state_disabled(widg)
+
+            if widg.winfo_subclass() in bgLite_fgStd_fontIn_insFg:
+                config_bgLite_fgStd_fontIn_insFg(widg)
+
+            elif widg.winfo_subclass() in bgStd_fgStd_fontOut_disAbl:
+                config_bgStd_fgStd_fontOut_disAbl(widg)
 
         elif widg.winfo_class() == 'Button':
+
             if widg.winfo_subclass() in ('Button', 'ButtonQuiet'):
                 config_buttons(widg)
+
             elif widg.winfo_subclass() == 'ButtonPlain':
                 config_buttons_plain(widg)
+
             elif widg.winfo_subclass() == 'ButtonFlatHilited':
                 config_buttonflathilited(widg)
 
         elif widg.winfo_class() == 'Message':
+
             if widg.winfo_subclass() == 'Message':
                 config_messages(widg)
+
             elif widg.winfo_subclass() == 'MessageHilited':
                 config_messageshilited(widg)
 
         elif widg.winfo_class() in ('Radiobutton', 'Checkbutton'):
+
             if widg.winfo_subclass() == 'RadiobuttonHilited':
                 config_radiobuttonhilited(widg)
+
             elif widg.winfo_subclass() in ('Radiobutton', 'Checkbutton'):
                 config_radiobuttons(widg)
 
@@ -528,20 +481,20 @@ def config_generic(parent):
             config_scale(widg)
 
         elif widg.winfo_class() == 'Canvas':
+
             if widg.winfo_subclass() == 'Canvas':
-                config_bg_only_bg(widg)
+                config_bgStd(widg)
+
             elif widg.winfo_subclass() == 'CanvasHilited':
-                config_bg_only_hilited(widg)
+                config_bgLite(widg)
+
             elif widg.winfo_subclass() == 'Border':
                 widg.config(bg=formats['bg'])
+
             elif widg.winfo_subclass() == 'Scrollbar':
                 widg.colorize()
-        # elif widg.winfo_class() in ('Frame', 'Toplevel', 'Canvas'):
-            # print("line", looky(seeline()).lineno, "widg:", widg)
-            # if widg.winfo_subclass() == 'Toplevel':
-                # config_bg_only_bg(widg)
 
-    config_bg_only_bg(parent) # important
+    config_bgStd(parent)
 
 def get_opening_settings():
     conn = sqlite3.connect(current_file)
@@ -553,60 +506,70 @@ def get_opening_settings():
     return user_formats
 
 def get_formats():
-    results = get_opening_settings()
-    use_results = []
+    '''
+        Get user and default preferences. For any item, if there's no 
+        user-preference, use the default.
+    '''
+    all_prefs = get_opening_settings()
+    prefs_to_use = []
     x = 0
-    for setting in results[0:7]:
+    for setting in all_prefs[0:7]:
         if setting is None or setting == '':
-            use_results.append(results[x + 7]) # get default if no user setting
+            prefs_to_use.append(all_prefs[x + 7])
         else:
-            use_results.append(results[x])
+            prefs_to_use.append(all_prefs[x])
         x += 1
-    return use_results
+    return prefs_to_use
 
 def make_formats_dict():
     ''' 
         To add a style, add a string to the end of keys list
-        and a line below values.append... 
+        and a line below values.append...
     '''
 
-    use_results = get_formats()
+    prefs_to_use = get_formats()
 
-# use_results: ['#232931', '#393e46', '#2E5447', '#eeeeee', 'courier', 'tahoma', 14]
+# prefs_to_use e.g.: ['#232931', '#393e46', '#2E5447', '#eeeeee', 'courier', 'tahoma', 14]
 
     keys = [
-        'bg', 'highlight_bg', 'table_head_bg', 
-        'fg', 'output_font', 'input_font', 
+        # background, foreground
+        'bg', 'highlight_bg', 'table_head_bg', 'fg', 
+        # standard fonts
+        'output_font', 'input_font',
+        # heading fonts
         'heading1', 'heading2', 'heading3', 'heading4', 
+        # other fonts
         'status', 'boilerplate', 'show_font', 'titlebar_0',
         'titlebar_1', 'titlebar_2', 'titlebar_3',
         'titlebar_hilited_0', 'titlebar_hilited_1', 
-        'titlebar_hilited_2', 'titlebar_hilited_3', 'unshow_font'
+        'titlebar_hilited_2', 'titlebar_hilited_3', 
+        'unshow_font'
     ]
+
     values = []
 
-    values.append(use_results[0])
-    values.append(use_results[1])
-    values.append(use_results[2])
-    values.append(use_results[3])
-    values.append((use_results[4], use_results[6]))
-    values.append((use_results[5], use_results[6]))
-    values.append((use_results[4], use_results[6]*2, 'bold'))
-    values.append((use_results[4], int(use_results[6]*1.5), 'bold'))
-    values.append((use_results[4], int(use_results[6]*1.08), 'bold'))
-    values.append((use_results[4], int(use_results[6]*0.83), 'bold'))
-    values.append((use_results[5], int(use_results[6]*0.83)))
-    values.append((use_results[5], int(use_results[6]*0.66)))
-    values.append((use_results[5], use_results[6], 'italic'))
-    values.append((use_results[5], int(use_results[6]*0.66), 'bold'))
-    values.append((use_results[5], int(use_results[6]*0.88), 'bold'))
-    values.append((use_results[5], int(use_results[6]*1.00), 'bold'))
-    values.append((use_results[5], int(use_results[6]*1.25), 'bold'))
-    values.append((use_results[5], int(use_results[6]*0.66)))
-    values.append((use_results[5], int(use_results[6]*0.88)))
-    values.append((use_results[5], int(use_results[6]*1.00)))
-    values.append((use_results[5], int(use_results[6]*1.25)))
-    values.append((use_results[5], int(use_results[6]*.88), 'italic'))
+    values.append(prefs_to_use[0])
+    values.append(prefs_to_use[1])
+    values.append(prefs_to_use[2])
+    values.append(prefs_to_use[3])
+    values.append((prefs_to_use[4], prefs_to_use[6]))
+    values.append((prefs_to_use[5], prefs_to_use[6]))
+    values.append((prefs_to_use[4], prefs_to_use[6]*2, 'bold'))
+    values.append((prefs_to_use[4], int(prefs_to_use[6]*1.5), 'bold'))
+    values.append((prefs_to_use[4], int(prefs_to_use[6]*1.08), 'bold'))
+    values.append((prefs_to_use[4], int(prefs_to_use[6]*0.83), 'bold'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.83)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.66)))
+    values.append((prefs_to_use[5], prefs_to_use[6], 'italic'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.66), 'bold'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.88), 'bold'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*1.00), 'bold'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*1.25), 'bold'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.66)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.88)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*1.00)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*1.25)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*.88), 'italic'))
 
     formats = dict(zip(keys, values))
     return formats
