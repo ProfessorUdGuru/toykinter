@@ -225,7 +225,7 @@ class Border(Canvas):
                 self.title_1b, self.title_2, self.txt_frm, self.buttonbox, 
                 self.border_top, self.border_left, self.border_right, 
                 self.border_bottom):
-            widg.config(bg=formats['head_bg'])
+            widg.config(bg=formats['table_head_bg'])
 
         left_edge = self.master.winfo_rootx()
         top_edge = self.master.winfo_rooty()

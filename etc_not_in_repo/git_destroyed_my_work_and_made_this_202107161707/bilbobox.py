@@ -176,7 +176,7 @@ class Bilbobox(FrameHilited3):
             tip.destroy() 
 
     def highlight_arrow(self, evt):
-        self.arrow.config(bg=formats['head_bg'])
+        self.arrow.config(bg=formats['table_head_bg'])
 
     def unhighlight_arrow(self, evt):
         self.arrow.config(bg=formats['highlight_bg'])

@@ -103,7 +103,7 @@ class Colorizer(Frame):
         opening_colors = (
             formats['bg'], 
             formats['highlight_bg'], 
-            formats['head_bg'], 
+            formats['table_head_bg'], 
             formats['fg'])
 
         displabel = self.make_colors_table(opening_colors)

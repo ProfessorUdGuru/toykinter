@@ -13,7 +13,7 @@ from dev_tools import looky, seeline
 formats = make_formats_dict()
 
 # print('formats is', formats)
-# formats is {'bg': '#34615f', 'highlight_bg': '#4a8a87', 'head_bg': '#486a8c', 'fg': '#b9ddd9', 'output_font': ('courier', 16), 'input_font': ('tahoma', 16), 'heading1': ('courier', 32, 'bold'), 'heading2': ('courier', 24, 'bold'), 'heading3': ('courier', 17, 'bold'), 'heading4': ('courier', 13, 'bold'), 'status': ('tahoma', 13), 'boilerplate': ('tahoma', 10), 'show_font': ('tahoma', 16, 'italic'), 'titlebar_0': ('tahoma', 10, 'bold'), 'titlebar_1': ('tahoma', 14, 'bold'), 'titlebar_2': ('tahoma', 16, 'bold'), 'titlebar_3': ('tahoma', 20, 'bold'), 'titlebar_hilited_0': ('tahoma', 10), 'titlebar_hilited_1': ('tahoma', 14), 'titlebar_hilited_2': ('tahoma', 16), 'titlebar_hilited_3': ('tahoma', 20), 'unshow_font': ('tahoma', 14, 'italic')}
+# formats is {'bg': '#34615f', 'highlight_bg': '#4a8a87', 'table_head_bg': '#486a8c', 'fg': '#b9ddd9', 'output_font': ('courier', 16), 'input_font': ('tahoma', 16), 'heading1': ('courier', 32, 'bold'), 'heading2': ('courier', 24, 'bold'), 'heading3': ('courier', 17, 'bold'), 'heading4': ('courier', 13, 'bold'), 'status': ('tahoma', 13), 'boilerplate': ('tahoma', 10), 'show_font': ('tahoma', 16, 'italic'), 'titlebar_0': ('tahoma', 10, 'bold'), 'titlebar_1': ('tahoma', 14, 'bold'), 'titlebar_2': ('tahoma', 16, 'bold'), 'titlebar_3': ('tahoma', 20, 'bold'), 'titlebar_hilited_0': ('tahoma', 10), 'titlebar_hilited_1': ('tahoma', 14), 'titlebar_hilited_2': ('tahoma', 16), 'titlebar_hilited_3': ('tahoma', 20), 'unshow_font': ('tahoma', 14, 'italic')}
 
 class Framex(tk.Frame):
     def __init__(self, master, *args, **kwargs):
@@ -102,7 +102,7 @@ class FrameHilited2(Framex):
 
     def __init__(self, master, *args, **kwargs):
         Framex.__init__(self, master, *args, **kwargs)
-        self.config(bg=formats['head_bg'])
+        self.config(bg=formats['table_head_bg'])
 
 class FrameHilited3(Framex):
     ''' 
@@ -190,8 +190,8 @@ class Separator(Framex):
     '''
 
     def __init__(
-        self, master, height=3, 
-        color1=formats['head_bg'], 
+        self, master, height, 
+        color1=formats['table_head_bg'], 
         color2=formats['highlight_bg'], 
         color3=formats['bg'], *args, **kwargs):
         Framex.__init__(self, master, *args, **kwargs)
@@ -240,7 +240,7 @@ class Separator(Framex):
 
     def colorize(self):
         formats = make_formats_dict()
-        self.color1=formats['head_bg'], 
+        self.color1=formats['table_head_bg'], 
         self.color2=formats['highlight_bg'], 
         self.color3=formats['bg']
         if self.height > 0:
@@ -316,7 +316,7 @@ class LabelHilited(Labelx):
             font=self.formats['output_font'])
 
     def highlight(self, evt):
-        self.config(bg=self.formats['head_bg'])
+        self.config(bg=self.formats['table_head_bg'])
 
     def unhighlight(self, evt):
         self.config(bg=self.formats['highlight_bg'])
@@ -330,7 +330,7 @@ class LabelHilited2(Labelx):
         Labelx.__init__(self, master, *args, **kwargs)
 
         self.config(
-            bg=formats['head_bg'], 
+            bg=formats['table_head_bg'], 
             fg=formats['fg'],
             font=formats['output_font'])
 
@@ -369,16 +369,6 @@ class LabelNegative(Labelx):
             fg=formats['bg'],
             font=formats['output_font'])
 
-class LabelH1(Label):
-    ''' 
-        For largest subheadings. 
-    '''
-    def __init__(self, master, *args, **kwargs):
-        Label.__init__(self, master, *args, **kwargs)
-
-        self.config(font=formats['heading1'])
-
-
 class LabelH2(Label):
     ''' 
         For large subheadings. 
@@ -386,7 +376,8 @@ class LabelH2(Label):
     def __init__(self, master, *args, **kwargs):
         Label.__init__(self, master, *args, **kwargs)
 
-        self.config(font=formats['heading2'])
+        self.config(
+            font=formats['heading2'])
 
 class LabelH3(Label):
     ''' 
@@ -396,15 +387,6 @@ class LabelH3(Label):
         Label.__init__(self, master, *args, **kwargs)
 
         self.config(font=formats['heading3'])
-
-class LabelH4(Label):
-    ''' 
-        For tiny subheadings. 
-    '''
-    def __init__(self, master, *args, **kwargs):
-        Label.__init__(self, master, *args, **kwargs)
-
-        self.config(font=formats['heading4'])
 
 class LabelBoilerplate(Labelx):
     ''' 
@@ -485,7 +467,7 @@ class LabelMenuBar(Labelx):
     def __init__(self, master, size='tiny', *args, **kwargs):
         Labelx.__init__(self, master, *args, **kwargs)
 
-        self.config(bg=formats['head_bg'])
+        self.config(bg=formats['table_head_bg'])
 
         if size == 'tiny':
             self.config(font=formats['titlebar_hilited_0'])
@@ -552,7 +534,7 @@ class LabelButtonImage(Labelx):
 
     def on_press(self, evt):
         formats = make_formats_dict()
-        self.config(relief='sunken', bg=formats['head_bg'])
+        self.config(relief='sunken', bg=formats['table_head_bg'])
 
     def on_release(self, evt):
         formats = make_formats_dict()
@@ -738,7 +720,7 @@ class LabelMovable(LabelHilited):
             widg.lift()        
 
     def highlight_on_focus(self, evt):        
-        evt.widget.config(bg=self.formats['head_bg'])
+        evt.widget.config(bg=self.formats['table_head_bg'])
 
     def unhighlight_on_unfocus(self, evt):        
         evt.widget.config(bg=self.formats['highlight_bg'])
@@ -767,7 +749,7 @@ class Button(Buttonx):
         self.config(
             font=(formats['output_font']),
             overrelief=tk.GROOVE, 
-            activebackground=formats['head_bg'],
+            activebackground=formats['table_head_bg'],
             bg=formats['bg'],
             fg=formats['fg'])
 
@@ -804,7 +786,7 @@ class ButtonQuiet(Buttonx):
             text='',
             width=3,
             overrelief=tk.GROOVE, 
-            activebackground=formats['head_bg'],
+            activebackground=formats['table_head_bg'],
             bg=formats['bg'],  
             fg=formats['fg'])
 
@@ -816,7 +798,7 @@ class ButtonPlain(Buttonx):
         self.config(
             font=(formats['input_font']),
             bd=0, 
-            activebackground=formats['head_bg'],
+            activebackground=formats['table_head_bg'],
             bg=formats['bg'],  
             fg=formats['fg'])
         self.bind('<Enter>', self.highlight)
@@ -936,7 +918,7 @@ class EntryDefaultText(Entry):
         var = tk.StringVar()
         var.set(self.default_text)
         self.config(
-            fg=self.formats['head_bg'],
+            fg=self.formats['table_head_bg'],
             bg=self.formats['highlight_bg'], 
             font=self.formats['show_font'], 
             textvariable=var)
@@ -966,12 +948,12 @@ class EntryDefaultText(Entry):
             self.insert(0, self.default_text)
             self.config(
                 font=self.formats['show_font'], 
-                fg=formats['head_bg'])
+                fg=formats['table_head_bg'])
         self.select_clear()
 
     def replace_default_text(self):
         self.insert(0, self.default_text) 
-        self.config(fg=formats['head_bg'], font=self.formats['show_font'])         
+        self.config(fg=formats['table_head_bg'], font=self.formats['show_font'])         
 
 class LabelCopiable(Entryx):
     ''' 
@@ -1082,7 +1064,6 @@ class Textx(tk.Text):
 class Text(Textx):
     def __init__(self, master, *args, **kwargs): 
         Textx.__init__(self, master, *args, **kwargs)
-
         self.config(
             wrap='word', 
             bg=formats['highlight_bg'], 
@@ -1090,21 +1071,15 @@ class Text(Textx):
             font=formats['input_font'],
             insertbackground=formats['fg'])
 
-        self.bind("<Tab>", self.focus_next_window)
-
-    def focus_next_window(self, evt):
-        evt.widget.tk_focusNext().focus()
-        return("break")
-
 class LabelStylable(Textx):
     def __init__(self, master, *args, **kwargs):
         Textx.__init__(self, master, *args, **kwargs)
 
         self.master = master
         self.bind('<Map>', lambda event: self.set_height())
-        self.tag_config('bold', font="courier 12 bold")
-        self.tag_config('italic', font="courier 12 italic")
-        self.config(wrap='word', padx=12, pady=12, bd=0)
+        self.tag_config('bold', font="Helvetica 12 bold")
+        self.tag_config('italic', font="Helvetica 12 italic")
+        self.config(wrap='word', padx=12, pady=12)
 
     def set_height(self):
 
@@ -1282,7 +1257,7 @@ class Scale(Scalex):
             fg=formats['fg'], 
             font=formats['output_font'],
             troughcolor=formats['highlight_bg'],
-            activebackground=formats['head_bg'],
+            activebackground=formats['table_head_bg'],
             highlightthickness=0)
         
 

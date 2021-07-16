@@ -135,7 +135,7 @@ def config_generic(parent):
         widg.config(bg=formats['highlight_bg'])
        
     def config_bgHead(widg):
-        widg.config(bg=formats['head_bg'])
+        widg.config(bg=formats['table_head_bg'])
 
     def config_bgStd_fgStd(widg):
         widg.config(bg=formats['bg'], fg=formats['fg'])
@@ -154,7 +154,7 @@ def config_generic(parent):
 
     def config_bgHead_fgStd_fontOut(widg):
         widg.config(
-            bg=formats['head_bg'], 
+            bg=formats['table_head_bg'], 
             fg=formats['fg'],
             font=formats['output_font'])  
 
@@ -194,7 +194,7 @@ def config_generic(parent):
 
     def config_labeltip2(lab):
         lab.config(
-            bg=formats['head_bg'],
+            bg=formats['table_head_bg'],
             fg=formats['fg'],
             font=formats['status'])
 
@@ -271,13 +271,11 @@ def config_generic(parent):
         if lab.chosen is False:
             lab.config(
                 bg=formats['highlight_bg'],
-                fg=formats['fg'],
-                font=formats['tab_font'])
+                fg=formats['fg'])
         else:
             lab.config(
                 bg=formats['bg'],
-                fg=formats['fg'],
-                font=formats['tab_font'])
+                fg=formats['fg'])
 
     def config_labelmovable(lab):
         lab.formats = formats
@@ -299,14 +297,14 @@ def config_generic(parent):
             bg=formats['bg'],  
             fg=formats['fg'],
             font=(formats['output_font']),
-            activebackground=formats['head_bg'])
+            activebackground=formats['table_head_bg'])
 
     def config_buttons_plain(button):
         button.config(
             bg=formats['bg'],  
             fg=formats['fg'],
             font=(formats['input_font']),
-            activebackground=formats['head_bg'])
+            activebackground=formats['table_head_bg'])
 
     def config_buttonflathilited(button):
         button.config(
@@ -362,7 +360,7 @@ def config_generic(parent):
             fg=formats['fg'], 
             font=formats['output_font'],
             troughcolor=formats['highlight_bg'],
-            activebackground=formats['head_bg'])
+            activebackground=formats['table_head_bg'])
 
     formats = make_formats_dict()
 
@@ -414,14 +412,10 @@ def config_generic(parent):
             elif widg.winfo_subclass() in bgHead_fgStd_fontOut:
                 config_bgHead_fgStd_fontOut(widg)
 
-            elif widg.winfo_subclass() == 'LabelH1':
-                config_heading1(widg)
             elif widg.winfo_subclass() == 'LabelH2':
                 config_heading2(widg)
             elif widg.winfo_subclass() == 'LabelH3':
                 config_heading3(widg)
-            elif widg.winfo_subclass() == 'LabelH4':
-                config_heading4(widg)
             elif widg.winfo_subclass() == 'LabelBoilerplate':
                 config_boilerplate(widg)
             elif widg.winfo_subclass() == 'LabelItalic':
@@ -551,7 +545,7 @@ def make_formats_dict():
 
     keys = [
         # background, foreground
-        'bg', 'highlight_bg', 'head_bg', 'fg', 
+        'bg', 'highlight_bg', 'table_head_bg', 'fg', 
         # standard fonts
         'output_font', 'input_font',
         # heading fonts
@@ -561,7 +555,7 @@ def make_formats_dict():
         'titlebar_1', 'titlebar_2', 'titlebar_3',
         'titlebar_hilited_0', 'titlebar_hilited_1', 
         'titlebar_hilited_2', 'titlebar_hilited_3', 
-        'unshow_font', 'tab_font'
+        'unshow_font'
     ]
 
     values = []
@@ -572,23 +566,22 @@ def make_formats_dict():
     values.append(prefs_to_use[3])
     values.append((prefs_to_use[4], prefs_to_use[6]))
     values.append((prefs_to_use[5], prefs_to_use[6]))
-    values.append((prefs_to_use[4], prefs_to_use[6] * 2, 'bold'))
-    values.append((prefs_to_use[4], int(prefs_to_use[6] * 1.5), 'bold'))
-    values.append((prefs_to_use[4], int(prefs_to_use[6] * 1.125), 'bold'))
-    values.append((prefs_to_use[4], int(prefs_to_use[6] * 0.75), 'bold'))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 0.75)))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 0.66)))
+    values.append((prefs_to_use[4], prefs_to_use[6]*2, 'bold'))
+    values.append((prefs_to_use[4], int(prefs_to_use[6]*1.5), 'bold'))
+    values.append((prefs_to_use[4], int(prefs_to_use[6]*1.08), 'bold'))
+    values.append((prefs_to_use[4], int(prefs_to_use[6]*0.83), 'bold'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.83)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.66)))
     values.append((prefs_to_use[5], prefs_to_use[6], 'italic'))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 0.66), 'bold'))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 0.75), 'bold'))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 1.00), 'bold'))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 1.25), 'bold'))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 0.66)))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 0.75)))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 1.00)))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 1.25)))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * .75), 'italic'))
-    values.append((prefs_to_use[4], int(prefs_to_use[6] * 0.75)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.66), 'bold'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.88), 'bold'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*1.00), 'bold'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*1.25), 'bold'))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.66)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*0.88)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*1.00)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*1.25)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6]*.88), 'italic'))
 
     formats = dict(zip(keys, values))
     return formats

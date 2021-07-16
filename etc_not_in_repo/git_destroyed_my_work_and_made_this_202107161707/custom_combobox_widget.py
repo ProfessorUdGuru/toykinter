@@ -258,7 +258,7 @@ class Combobox(FrameHilited3):
             tip.destroy() 
 
     def highlight_arrow(self, evt):
-        self.arrow.config(bg=self.formats['head_bg'])
+        self.arrow.config(bg=self.formats['table_head_bg'])
 
     def unhighlight_arrow(self, evt):
         self.arrow.config(bg=self.formats['highlight_bg'])

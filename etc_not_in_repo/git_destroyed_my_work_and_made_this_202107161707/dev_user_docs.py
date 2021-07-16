@@ -9,7 +9,6 @@ Toykinter widgets are simply-coded, fully-configurable replacements for:
     \u2022 ttk.Combobox
     \u2022 ttk.Notebook
     \u2022 ttk.Sizegrip
-    \u2022 ttk.Separator
     \u2022 tk.Scrollbar
     \u2022 Windows title bar, window border, and window decorations
     \u2022 tk.Menu
@@ -42,24 +41,13 @@ This code makes the user type until a unique character is reached. For example, 
 
 I wrote this code because none of the autofill entries I could find for Tkinter did what I wanted. Some of them didn't work very well. Others were too complex. When I finally got fed up and tried to make my own, I couldn't believe how easy it was. Maybe I just got lucky.
 
-Recently I translated this code into HTML/JavaScript and extended it to create a much better autofill input. The new JS autofill could probably be translated back into Python. The widget fills in after typing one character, most of the time. Instead of using an alphabetical list, it arranges the value list in order that the values were last used. So if you tab out after entering "Bill", then next time you type a "b", "Bill" will autocomplete instead of "billboard" or "Bilbo", and generally you'd only have to type one character. This new code works wonders in cases where the user would generally be using the same value several times in a row. It was created for filling in long nested place names such as "Denver, Arapahoe County, Colorado, United States of America" by typing a "d". If there's any interest I will try to translate it back into Python and add it to this tab.
-'''
-
-morewidg_docs = '''
-Unlike the ttk.Separator, the Toykinter Separator can be sized and its colors are configured like any Tkinter widget: en masse to match a simple user-defined color scheme. This Separator is horizontal but the code could be extended to make a vertical Separator. Everything below the Separators is a Toykinter widget that works identically to the Tkinter class that it inherits from, except that its colors and fonts can be instantly reconfigured.
-'''
-
-italics = '''
-There's not much you can't do with Tkinter,
-and with Toykinter features added instead of ttk, 
-the user has control of their own color schemes too.
-See the settings tab for examples of font and color controls
-as well as a tabbed widget with the tabs on the bottom instead of on the top.
+Recently I translated this code into HTML/JavaScript and extended it to create a much better autofill input. The new JS autofill could probably be translated back into Python. The widget fills in after typing one character, most of the time. Instead of using an alphabetical list, it arranges the value list in order that the values were last used. So if you tab out after entering "Bill", then next time you type a "b", "Bill" will autocomplete instead of "billboard" or "Bilbo", and generally you'd only have to type one character. This new code is the bee's knees, so if there's any interest I will try to translate it back into Python and add it to this tab.
 '''
 
 dev_docs = '''
 
-Toykinter is not a package or a library. There's nothing to install. It's just plain Python and Tkinter code, written for novices by a novice. Just copy the code and use the widgets just about like any other Tkinter widgets. There's not a drop of ttk here, as the main purpose of Toykinter is to replace ttk widgets with widgets that are fully configurable in the same way that non-ttk Tkinter widgets are configured. This collection of custom widgets also provides a configurable scrollbar and a configurable window border so that your design can be your design without any intrusion from Windows themes or whatever was considered modern GUI design when ttk was added to the Tkinter widget toolkit. There's also an (unfinished) replacement for the Tkinter dropdown menu. Unlike the Tkinter menu, it's configurable like any Tkinter widget. The reason it's unfinished is that I tried to make it work with both keyboard and mouse and I burned out before the project was finished. It could be simplified to work with only the mouse, instead of being finished, or it could be used as a model for starting over.
+Toykinter is not a package or a library. There's nothing to install. It's just plain Python and Tkinter code, written for novices by a novice. Just copy the code and use the widgets just about like any other Tkinter widgets. There's not a drop of ttk here, as the main purpose of Toykinter is to replace ttk widgets with widgets that are fully configurable in the same way that non-ttk Tkinter widgets are configured. This collection of custom widgets also provides a configurable scrollbar and a configurable window border so that your design can be your design without any intrusion from Windows themes or whatever was considered modern GUI design when ttk was added to the Tkinter widget toolkit. There's also an (unfinished) replacement for the Tkinter dropdown menu. Unlike the Tkinter menu, it's configurable like any Tkinter widget. The reason it's unfinished is that I tried to make it work with both keyboard and mouse and I burned out before
+the project was finished. It could be simplified to work with only the mouse, instead of being finished, or it could be used as a model for starting over.
 
 Other ttk widgets that are replaced by Toykinter include the Combobox, Sizegrip and Notebook. The Toykinter versions are fully configurable like any non-ttk Tkinter widget. 
 
@@ -123,26 +111,30 @@ Nothing in this collection of widget classes is completely finished or perfect. 
 
 DO LIST (easy stuff at top; scary stuff toward bottom unless urgent)
 
+\u2022 make fonts tab smaller so it's not bigger than colors tab
+\u2022 delete_sample() not working in colorizer.py (it worked once but I don't know what I did different).
 \u2022 title bar is not recolorizing
-\u2022 add another tab called widgets to display a Text, Separator, and other misc. widgets
+\u2022 merge colors branch; add another tab called widgets to display a Text, Separator, and other misc. widgets
 \u2022 add a status message to some of the widgets
-\u2022 Mousewheel scrolling needs to be activated on the Docs tab.
 \u2022 The statusbar tooltips on colorizer.py don't work, probably still using the old version. On title bar they work but seem to be too big and not flush w/ bottom of status bar.
 \u2022 Make sure separator.colorize() is working.
 \u2022 The active title bar color should be right with somewhat less encouragement.
 \u2022 Need a way to refer to tabs similar to ttk.Notebook's `notebook.index('current')`.
 \u2022 The logo is yuck.
+\u2022 The font on the TabBook tabs could be smaller.
 \u2022 Every module should have a separate demo i.e. `if __name__ == "__main__"` at bottom.
 \u2022 Changing font size should change title bar size.
+\u2022 Mousewheel scrolling needs to be activated on the Docs tab.
+\u2022 Add a scrollbar to each tab where there's a lot of text which can be reconfigured to a larger font size thus overflowing the fixed size of the tab.
 \u2022 Unused classes and styles need to be weeded out of widgets.py and styles.py. Also in treebard project separate widgets.py into toykinter_widgets.py and treebard_widgets.py so changes in toykinter widgets can be copied easily to the other project.
-\u2022 Combobox is bogging down with a large list of values. In any case where there is a long list of values that has to be accessed frequently and/or needs good response, just use an autofill entry instead of a Combobox. For changing fonts in this little app, it's OK that the Combobox is slow (it's Python). But possibly a refactoring is in order even though the current design is the third or fourth start-over and works well with small lists of values.
+\u2022 Combobox is bogging down with a large list of values. In any case where there is a long list of values that has to be accessed frequently and/or needs good response, just use an autofill entry instead of a Combobox. For changing fonts in this little app, it's OK that the Combobox is slow (it's Python), but possibly a refactoring is in order even though the current design is the third or fourth start-over and works well with small lists of values.
 \u2022 Combobox recolorizing is a compromise right now. The dropdown buttons respond to so many events that it might be a sort of minor miracle to make them colorize instantly. For now it's enough that they do colorize on reload. They are not on top, they're only seen on dropdown. It's not top priority compared to other things on this list.
 \u2022 colorizer preview area: The buttons and header background in the preview area are right as shown in preview_scheme() but then on APPLY they don't actually use that color. There are three background colors and they actually use one of the others on APPLY. Before changing this, figure out a place in the preview area to show all three background colors and then fix it so when APPLY is pressed, these chosen colors remain as shown in the preview.
-\u2022 Scrollbar.colorize is running many times on load and several more times when changing the color scheme. I don't see that many scrollbars including the comboboxes. Look at what's printing in scrollbar.colorize() to see where all the scrollbars are.
+\u2022 Scrollbar.colorize is running nine times on load and 7 more times when changing the color scheme. I only count 6 scrollbars including the comboboxes. Look at what's printing in scrollbar.colorize() to see what all the scrollbars are.
+\u2022 change "table_head_bg" to "head_bg" also in db
 \u2022 There are 2 ways of detecting subclass in styles.py. The old way is a long switch statement in config_generic. The new way is a set of hard-coded global tuples at top of styles.py. Change as much as possible to the new way.
 \u2022 The dropdown menu isn't being used right now because it was never finished. It could be simplified to work with the mouse only instead of trying to make it work with the mouse and the keyboard.
 \u2022 The combobox scrollbar slider seems to be dropping the grab sometimes, or am I just losing my grip?
 \u2022 TabBook tabs don't take focus (not important, use the mouse)
-\u2022 Look into making the scrollbars and the app and the tabs work like a modern browser: there should be a hideable vertical scrollbar on the whole window, no horizontal scrollbar on anything, and no separate scrollbars on the tabs. The app should be responsive when manually resizing, especially as regards width since there should be no horizontal scrollbars. I've never looked into doing this for Tkinter since my main app uses a huge table that can't change its layout to be responsive. So I tend to use too many scrollbars by habit. Contents should expand to fill window if main window is manually resized. This demo could certainly be fixed to behave better but I have other things to do right now.
 
 '''

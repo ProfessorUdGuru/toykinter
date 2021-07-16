@@ -196,7 +196,7 @@ def resize_scrolled_content(toplevel, canvas, window):
 
     def resize_window():
         '''
-            Don't try to DETECT scrollbar width (scridth) in this function.
+            Don't try to detect scrollbar width (scridth) in this function.
             For some reason it causes certain combinations of values
             below to freeze the app. Hard-coded is good enough since there
             are only a few sizes of scrollbar. Add 10 to the scrollbar width 
@@ -324,7 +324,7 @@ class Scrollbar(Canvas):
         self.first_x = 0
 
         self.slidercolor = formats['bg']
-        self.troughcolor = formats['head_bg']
+        self.troughcolor = formats['table_head_bg']
 
         if orient == 'vertical':
             self.config(width=width)
@@ -437,7 +437,7 @@ class Scrollbar(Canvas):
     def colorize(self):
         formats = make_formats_dict()
         self.slidercolor = formats['bg']
-        self.troughcolor = formats['head_bg']
+        self.troughcolor = formats['table_head_bg']
         self.config(bg=self.troughcolor)
         self.itemconfig(self.thumb, fill=self.slidercolor)
 

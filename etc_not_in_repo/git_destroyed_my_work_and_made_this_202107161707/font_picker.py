@@ -8,7 +8,6 @@ from query_strings import update_format_fonts, select_font_scheme
 from widgets import Label, Frame, Scale, Entry, Button
 from styles import make_formats_dict, config_generic
 from custom_combobox_widget import Combobox
-from scrolling import resize_scrolled_content
 from dev_tools import looky, seeline
 
 
@@ -16,20 +15,11 @@ from dev_tools import looky, seeline
 formats = make_formats_dict()
 
 class FontPicker(Frame):
-    # def __init__(self, master, view, canvas, content, *args, **kwargs):
-    def __init__(self, master, main, *args, **kwargs):
+    def __init__(self, master, view, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
-        # font_picker = FontPicker(tab3_1, self.view, self.canvas, self.canvas_docs, self.content_docs, self)
+
         self.master = master
-        self.view = main.view
-        self.canvas = main.canvas
-        self.content = main
-        # self.canvas_toyk = main.canvas_toyk
-        self.canvas_docs = main.canvas_docs
-        self.content_docs = main.content_docs
-        # self.view = view
-        # self.canvas = canvas
-        # self.content = content
+        self.view = view
         self.all_fonts = font.families()
 
         conn = sqlite3.connect(current_file)
@@ -50,16 +40,15 @@ class FontPicker(Frame):
                 parameter, there was an error and I didn't know what to do. I 
                 nested it so I wouldn't have to use `self`.
             '''
-            if combo == self.combos["select_input_font"]:
+            if combo == self.combos["input_font_chooser"]:
                 input_sample.config(
                     font=(self.all_fonts[combo.current], self.fontSize))
-            elif combo == self.combos["select_output_font"]:
+            elif combo == self.combos["output_font_chooser"]:
                 output_sample.config(
                     font=(self.all_fonts[combo.current], self.fontSize))
             else:
                 print("case not handled")
-            # update_idletasks() seems to speed up the redrawing of the 
-            #   app with the new font
+            # update_idletasks() speeds up the redrawing of the app with new font
             self.update_idletasks()  
 
         sample_text = ["Sample", "Text ABCDEFGHxyz 0123456789 iIl1 o0O"]
@@ -77,7 +66,6 @@ class FontPicker(Frame):
         input_sample.insert(0, " Input ".join(sample_text))
 
         self.fontSizeVar = tk.IntVar()
-        print("line", looky(seeline()).lineno, "self.font_scheme:", self.font_scheme)
         self.fontSize = self.font_scheme[0]
 
         font_size = Scale(
@@ -85,15 +73,15 @@ class FontPicker(Frame):
             from_=8.0,
             to=26.0,
             tickinterval=6.0,
-            label="Text Size", # Can this be centered over the Scale?
+            label="TEXT SIZE",
             orient="horizontal",
             length=200,
             variable=self.fontSizeVar,
             command=self.show_font_size)
-        print("line", looky(seeline()).lineno, "self.fontSize:", self.fontSize)
+
         font_size.set(self.fontSize)
 
-        combo_names = ["select_output_font", "select_input_font"]
+        combo_names = ["output_font_chooser", "input_font_chooser"]
         self.combos = {}
 
         j = 2
@@ -102,12 +90,12 @@ class FontPicker(Frame):
                 self, self.view, values=self.all_fonts, 
                 height=300, scrollbar_size=12)
             self.combos[name] = cbo
-            name = name.replace("_", " ").title()
+            name = name.replace("_", " ").upper()
             lab = Label(
                 self,
                 text=name)
             lab.grid(column=0, row=j, pady=(24,6))
-            cbo.grid(column=0, row=j+1, pady=(6, 20))
+            cbo.grid(column=0, row=j+1, pady=(6, 24))
             j += 2
 
         apply = Button(
@@ -116,25 +104,19 @@ class FontPicker(Frame):
             command=self.apply)
 
         sample.grid(column=0, row=0)
-        output_sample.grid(padx=24, pady=20)
-        input_sample.grid(padx=24, pady=20)
+        output_sample.grid(padx=24, pady=24)
+        input_sample.grid(padx=24, pady=24)
         font_size.grid(column=0, row=1, pady=24)
         apply.grid(column=0, row=7, sticky="e", padx=(0,24), pady=(0,24))
 
         Combobox.combobox_selected = combobox_selected
 
     def apply(self):
-
-        def resize_scrollbar():
-            self.view.update_idletasks()
-            self.canvas_docs.config(scrollregion=self.canvas_docs.bbox('all'))
-            # self.canvas_toyk.config(scrollregion=self.canvas_toyk.bbox('all'))
-
         self.font_scheme[0] = self.fontSizeVar.get()
-        if len(self.combos["select_output_font"].get()) != 0:
-            self.font_scheme[1] = self.combos["select_output_font"].get()
-        if len(self.combos["select_input_font"].get()) != 0:
-            self.font_scheme[2] = self.combos["select_input_font"].get()
+        if len(self.combos["output_font_chooser"].get()) != 0:
+            self.font_scheme[1] = self.combos["output_font_chooser"].get()
+        if len(self.combos["input_font_chooser"].get()) != 0:
+            self.font_scheme[2] = self.combos["input_font_chooser"].get()
         conn = sqlite3.connect(current_file)
         conn.execute('PRAGMA foreign_keys = 1')
         cur = conn.cursor()
@@ -144,12 +126,6 @@ class FontPicker(Frame):
         conn.close()
 
         config_generic(self.view)
-
-        # resize_scrolled_content(self.view, self.canvas, self.content)
-        # resize_scrolled_content(self.view, self.canvas_docs, self.content_docs)
-
-        resize_scrollbar()
-
 
     def show_font_size(self, evt):
         self.fontSize = self.fontSizeVar.get()

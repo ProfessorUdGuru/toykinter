@@ -17,9 +17,7 @@ class LabelTab(Labelx):
         Labelx.__init__(self, master, *args, **kwargs)
     
         self.formats = make_formats_dict()
-        self.config(font=self.formats['tab_font'])
-
-        self.chosen = False        
+        self.chosen = False
 
         if self.chosen is False:
             self.config(bg=self.formats['bg'], fg=self.formats['fg'])
@@ -86,8 +84,8 @@ class TabBook(Framex):
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
 
-        self.notebook.columnconfigure(0, weight=1, minsize=self.minx)
-        self.notebook.rowconfigure(0, weight=1, minsize=self.miny)
+        self.notebook.grid_columnconfigure(0, weight=1, minsize=self.minx)
+        self.notebook.grid_rowconfigure(0, weight=1, minsize=self.miny)
 
         self.grid_tabs()  
 
@@ -184,8 +182,8 @@ class TabBook(Framex):
 
     def make_active(self, evt=None):
         ''' Open the selected tab & reconfigure it to look open. '''
-        
-        self.formats = make_formats_dict()
+
+        self.formats= make_formats_dict()
 
         # position attributes are needed in the instance
         self.posx = self.winfo_rootx()
@@ -207,7 +205,7 @@ class TabBook(Framex):
                         
             # if evt was spacebar, return key, or mouse button
             elif evt.type in ('2', '4'):
-                self.active.config(fg=self.formats['fg'])
+                self.active.config(fg=formats['fg'])
 
             # remove all pages and regrid the right one
             for k,v in self.tabdict.items():
@@ -220,7 +218,7 @@ class TabBook(Framex):
         for tab in self.tabdict.values():
             tab[1].config(
                 bg=self.formats['highlight_bg'],
-                font=self.formats['tab_font'])
+                font=self.formats['output_font'])
 
 
         # detect which tab is active and set its tab.chosen attribute to True
@@ -236,7 +234,7 @@ class TabBook(Framex):
         #   but does work on user-initiated events
         self.active.config(
             bg=self.formats['bg'],
-            font=self.formats['tab_font'])
+            font=self.formats['heading3'])
 
     def open_tab_alt(self, root_window):
         ''' Bindings for notebook tab accelerators. '''
