@@ -21,7 +21,7 @@ class Toykinter():
     def make_main_canvas_and_border(self):
         self.canvas = Border(
             self.view, 
-            size=3, 
+            size=4, # use 3, 4, 7, or 11
             menubar=True, 
             ribbon_menu=True)
         self.main = Main(self.canvas, self.view, self)

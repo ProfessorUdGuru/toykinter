@@ -165,7 +165,7 @@ class Main(Frame):
         mover = Frame(widgets)
         for i in range(len(split)):
             mov = LabelMovable(mover, text=split[i])
-            mov.grid(column=i, row=0)
+            mov.grid(column=i, row=0, padx=1)
 
         stylin = LabelStylable(widgets, width=75)
         stylin.insert("end", "This label is copiable and ", "italic") 

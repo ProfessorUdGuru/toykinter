@@ -123,7 +123,7 @@ class Border(Canvas):
             icon_size=self.icon_size)
 
         self.txt_frm = FrameTitleBar(self.title_frame)
-        self.logo.pack(side='left', pady=(0,3))
+        self.logo.pack(side='left', pady=(0,3), padx=(0,12))
         self.txt_frm.pack(side='left')
 
         # children of text_frm

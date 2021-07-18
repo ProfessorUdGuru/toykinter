@@ -38,8 +38,6 @@ class Colorizer(Frame):
 
         stripview = Frame(self.parent)
         stripview.grid(column=0, row=0, padx=12, pady=12)
-        # stripview.columnconfigure(0, weight=1)
-        # stripview.rowconfigure(1, weight=0)
 
         self.parent.update_idletasks()
         self.colors_canvas = Canvas(
@@ -124,6 +122,8 @@ class Colorizer(Frame):
 
         self.make_samples()
 
+        # this is from old version of statusbar tooltips, leave this
+        #   as it will work for the new version when added in
         visited = [
 
             (self.colors_content,
@@ -213,10 +213,6 @@ class Colorizer(Frame):
             frm.bind('<FocusOut>', self.unchange_border_color)
             frm.bind('<Key-Delete>', self.delete_sample)
 
-            frm.bind('<Tab>', self.move_right)
-            frm.bind('<Shift-Tab>', self.move_left)
-            frm.bind('<FocusIn>', self.locate_focus, add='+')
-
             z = 0
             for color in scheme[0:3]:
                 lab = LabelStay(
@@ -238,26 +234,6 @@ class Colorizer(Frame):
             if widg.winfo_class() == 'Entry':
                 widg.delete(0, tk.END)
 
-    def move_right(self, evt):
-        # if evt.widget.winfo_x() > PORTWIDTH-250:
-            # self.colors_canvas.xview_moveto(1.0)
-        # self.old_col = evt.widget.grid_info()['column']
-        pass
-
-    def move_left(self, evt):
-        # if evt.widget.winfo_x() < PORTWIDTH:
-            # self.colors_canvas.xview_moveto(0.0)
-        # self.old_col = evt.widget.grid_info()['column']
-        pass
-       
-    def locate_focus(self, event):
-        # new_col = event.widget.grid_info()['column']
-        # if new_col > self.old_col + 1:
-            # self.colors_canvas.xview_moveto(1.0)
-        # elif new_col < self.old_col - 1:
-            # self.colors_canvas.xview_moveto(0.0)
-        pass
-
     def detect_colors(self, frm):
 
         color_scheme = []
@@ -272,9 +248,6 @@ class Colorizer(Frame):
         return color_scheme
 
     def preview_scheme(self, scheme):
-        '''
-
-        '''
         
         trial_widgets = []
         all_widgets_in_tab1 = get_all_descends(
@@ -414,7 +387,6 @@ class Colorizer(Frame):
         conn.close()    
 
     def delete_sample(self, evt):
-        print("line", looky(seeline()).lineno, "evt:", evt)
         dflt = self.colors_content.winfo_children()[0]
         drop_me = self.colors_content.focus_get()
         all_schemes_plus = get_color_schemes_plus()
@@ -422,15 +394,18 @@ class Colorizer(Frame):
         all_schemes = []
         for scheme_plus in all_schemes_plus:
             all_schemes.append(scheme_plus[0:4])
-        if color_scheme in all_schemes:
+        if color_scheme in all_schemes: # try set intersection?
             idx = all_schemes.index(color_scheme)
-            if all_schemes_plus[idx][4] == 1:
+            # don't allow built-in color schemes to be deleted
+            # currently all are set as built_in but that could be changed
+            #   to allow deletion: update `built_in` column of `formats` 
+            #   table in db to `0`
+            if all_schemes_plus[idx][4] == 0:
                 drop_name = drop_me.winfo_name()
                 self.drop_scheme_from_db(drop_name, color_scheme)
 
                 drop_me.destroy()
                 self.resize_color_samples_scrollbar()
-
                 # reset to default scheme; only current scheme can be deleted
                 dflt.focus_set()
                 fix = []
