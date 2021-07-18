@@ -62,17 +62,17 @@ class Colorizer(Frame):
         bbox1.columnconfigure(1, weight=1)
         bbox1.rowconfigure(1, weight=1)
 
-        b4 = Button(
+        self.try_button = Button(
             bbox1, text='TRY', width=7, command=self.config_local)
-        b4.grid(column=0, row=0, sticky='w')
+        self.try_button.grid(column=0, row=0, sticky='w')
 
-        b5 = Button(
+        self.copy_button = Button(
             bbox1, text='COPY', width=7, command=self.copy_scheme)
-        b5.grid(column=1, row=0)
+        self.copy_button.grid(column=1, row=0)
 
-        self.b6 = Button(
+        self.apply_button = Button(
             bbox1, text='APPLY', width=7, command=self.apply_scheme)
-        self.b6.grid(column=2, row=0, sticky='e')
+        self.apply_button.grid(column=2, row=0, sticky='e')
 
         bottom = Frame(self.parent)
         bottom.grid(column=0, row=2, padx=12, pady=12)
@@ -114,36 +114,13 @@ class Colorizer(Frame):
         bbox2.columnconfigure(1, weight=1)
         bbox2.rowconfigure(0, weight=1)
 
-        b3 = Button(
+        self.new_button = Button(
             bbox2, 
             text='CREATE NEW COLOR SAMPLE', 
             command=self.make_new_sample)
-        b3.grid(column=0, row=0, padx=6, pady=6, columnspan=2)
+        self.new_button.grid(column=0, row=0, padx=6, pady=6, columnspan=2)
 
         self.make_samples()
-
-        # this is from old version of statusbar tooltips, leave this
-        #   as it will work for the new version when added in
-        visited = [
-
-            (self.colors_content,
-                "Color Schemes",
-                "Double-click color-scheme sample to select.\n"
-                    "Selected schemes can be deleted with Delete key "
-                    "unless built-in."),
-            (b4, "", 
-                "Press button or double_click color sample to\npreview "
-                "selected color scheme."),
-            (b5, "", 
-                "Copy selected color scheme and change one\n"
-                     "or more colors to create a new scheme."),
-            (self.b6, "",
-                "Press button or the Enter key to apply selected\ncolor "
-                "scheme to the whole application."),
-            (self.colors_table, "",
-                "Type common color or double-click entry to select from dialog."),
-            (b3, "",
-                "Create a new color sample from filled-in entries.")]
 
         self.colors_canvas.create_window(
             0, 0, anchor='nw', window=self.colors_content)
@@ -353,7 +330,7 @@ class Colorizer(Frame):
             ipady=3,
             pady=6)
 
-        entries_combos = []
+        self.entries_combos = []
         j = 1
         for name in l_col:
             lab = Label(
@@ -364,7 +341,7 @@ class Colorizer(Frame):
             ent = Entry(self.colors_table, width=12)
             self.r_col[name] = ent
             ent.grid(column=1, row=j, pady=3)
-            entries_combos.append(ent)
+            self.entries_combos.append(ent)
             ent.bind('<FocusOut>', clear_select)
             ent.bind('<Double-Button-1>', self.open_color_chooser)
             j += 1
@@ -417,7 +394,7 @@ class Colorizer(Frame):
                 for child in self.colors_table.winfo_children():
                     if child.winfo_class() == 'Entry':
                         entries.append(child)
-                self.b6.invoke()
+                self.apply_button.invoke()
 
     def get_new_scheme(self):
         all_schemes = get_color_schemes()

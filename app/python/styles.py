@@ -186,7 +186,13 @@ def config_generic(parent):
             bg=formats['bg'],
             fg=formats['fg'],
             font=formats['output_font'])
-        widg.config(state='disabled')     
+        widg.config(state='disabled')   
+
+    def config_labelstatusbar(lab):
+        lab.config(
+            bg=formats['bg'],
+            fg=formats['fg'],
+            font=formats['status'])
 
     def config_labeltip(lab):
         lab.config(
@@ -421,6 +427,9 @@ def config_generic(parent):
             elif widg.winfo_subclass() in bgHead_fgStd_fontOut:
                 config_bgHead_fgStd_fontOut(widg)
 
+            elif widg.winfo_subclass() == 'LabelStatusbar':
+                config_labelstatusbar(widg)
+
             elif widg.winfo_subclass() == 'LabelH1':
                 config_heading1(widg)
             elif widg.winfo_subclass() == 'LabelH2':
@@ -583,7 +592,7 @@ def make_formats_dict():
     values.append((prefs_to_use[4], int(prefs_to_use[6] * 1.5), 'bold'))
     values.append((prefs_to_use[4], int(prefs_to_use[6] * 1.125), 'bold'))
     values.append((prefs_to_use[4], int(prefs_to_use[6] * 0.75), 'bold'))
-    values.append((prefs_to_use[5], int(prefs_to_use[6] * 0.75)))
+    values.append((prefs_to_use[5], int(prefs_to_use[6] * 0.83)))
     values.append((prefs_to_use[5], int(prefs_to_use[6] * 0.66)))
     values.append((prefs_to_use[5], prefs_to_use[6], 'italic'))
     values.append((prefs_to_use[5], int(prefs_to_use[6] * 0.66), 'bold'))

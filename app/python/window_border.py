@@ -4,8 +4,8 @@ import tkinter as tk
 from scrolling import Scrollbar
 from files import current_file, project_path
 from widgets import (
-    LabelButtonImage, Frame, FrameTitleBar, LabelTitleBar, 
-    StatusbarTooltips, run_statusbar_tooltips, Toplevel, Canvas)
+    LabelButtonImage, Frame, FrameTitleBar, LabelTitleBar, Toplevel, Canvas, 
+    StatusbarTooltips, )
 from styles import make_formats_dict, NEUTRAL_COLOR, config_generic
 from PIL import Image, ImageTk
 import dev_tools as dt
@@ -141,22 +141,22 @@ class Border(Canvas):
         self.title_2.grid(column=2, row=0)
 
         # children of self.buttonbox
-        minn = TitleBarButton(
+        self.minn = TitleBarButton(
             self.buttonbox, icon='min', icon_size=self.icon_size)
         self.maxx = TitleBarButton(
             self.buttonbox, icon='max', icon_size=self.icon_size)
         self.restore = TitleBarButton(
             self.buttonbox, icon='restore', icon_size=self.icon_size)
-        quitt = TitleBarButton(
+        self.quitt = TitleBarButton(
             self.buttonbox, icon='quit', icon_size=self.icon_size)
 
-        minn.grid(column=0, row=0, sticky='w')
+        self.minn.grid(column=0, row=0, sticky='w')
         self.maxx.grid(
             column=1, row=0, sticky='w', padx=(0,3))
         self.restore.grid(
             column=1, row=0, sticky='w', padx=(0,3))
         self.restore.grid_remove()
-        quitt.grid(
+        self.quitt.grid(
             column=2, row=0, sticky='e', 
             padx=(0, self.size))
 
@@ -166,11 +166,11 @@ class Border(Canvas):
 
         # bindings
         self.master.bind('<Map>', self.hide_windows_titlebar)
-        minn.bind('<Button-1>', self.minimize)
+        self.minn.bind('<Button-1>', self.minimize)
         self.maxx.bind('<Button-1>', self.toggle_max_restore)
         self.restore.bind('<Button-1>', self.toggle_max_restore)
-        quitt.bind('<Button-1>', close)
-        x = [i.bind('<Map>', self.recolorize_on_restore) for i in (minn, quitt)]
+        self.quitt.bind('<Button-1>', close)
+        x = [i.bind('<Map>', self.recolorize_on_restore) for i in (self.minn, self.quitt)]
 
         for widg in (
                 self.title_bar, self.title_frame, self.logo, self.title_1, 
@@ -185,18 +185,6 @@ class Border(Canvas):
             widg.bind('<Button-1>', self.start_edge_sizer)
             widg.bind('<B1-Motion>', self.stop_edge_sizer)
             widg.bind('<ButtonRelease-1>', self.stop_edge_sizer)
-
-        visited = (
-            (minn, 'this is a statusbar message1', 'this is a tooltip1'), 
-            (self.maxx, 'this is also a statusbar message2', 'this is a tooltip2'),
-            (self.restore, 'this is a statusbar message3', 'this is a tooltip3'), 
-            (quitt, 'this is also a statusbar message4', 'this is another tooltip4'),
-    )
-
-        run_statusbar_tooltips(
-            visited, 
-            self.statusbar.status_label, 
-            self.statusbar.tooltip_label)
 
         config_generic(self.master)
 
@@ -219,12 +207,6 @@ class Border(Canvas):
         ''' Prepare to drag the window by the title frame. '''
 
         evt.widget.winfo_toplevel().lift()
-        # for widg in (
-                # self.title_bar, self.title_frame, self.logo, self.title_1, 
-                # self.title_1b, self.title_2, self.txt_frm, self.buttonbox, 
-                # self.border_top, self.border_left, self.border_right, 
-                # self.border_bottom):
-            # widg.config(bg=formats['head_bg'])
         self.colorize_border()
 
         left_edge = self.master.winfo_rootx()

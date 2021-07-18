@@ -16,7 +16,6 @@ from dev_tools import looky, seeline
 formats = make_formats_dict()
 
 class FontPicker(Frame):
-    # def __init__(self, master, view, canvas, content, *args, **kwargs):
     def __init__(self, master, main, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
         self.master = master
@@ -64,17 +63,17 @@ class FontPicker(Frame):
 
         sample = Frame(self)
 
-        output_sample = Label(
+        self.output_sample = Label(
             sample,
             text=" Output ".join(sample_text))
 
-        input_sample = Entry(sample, width=50)
-        input_sample.insert(0, " Input ".join(sample_text))
+        self.input_sample = Entry(sample, width=50)
+        self.input_sample.insert(0, " Input ".join(sample_text))
 
         self.fontSizeVar = tk.IntVar()
         self.fontSize = self.font_scheme[0]
 
-        font_size = Scale(
+        self.font_size = Scale(
             self,
             from_=8.0,
             to=26.0,
@@ -84,7 +83,7 @@ class FontPicker(Frame):
             length=200,
             variable=self.fontSizeVar,
             command=self.show_font_size)
-        font_size.set(self.fontSize)
+        self.font_size.set(self.fontSize)
 
         combo_names = ["select_output_font", "select_input_font"]
         self.combos = {}
@@ -103,16 +102,16 @@ class FontPicker(Frame):
             cbo.grid(column=0, row=j+1, pady=(6, 20))
             j += 2
 
-        apply = Button(
+        self.apply_button = Button(
             self,
             text="APPLY",
             command=self.apply)
 
         sample.grid(column=0, row=0)
-        output_sample.grid(padx=24, pady=20)
-        input_sample.grid(padx=24, pady=20)
-        font_size.grid(column=0, row=1, pady=24)
-        apply.grid(column=0, row=7, sticky="e", padx=(0,24), pady=(0,24))
+        self.output_sample.grid(padx=24, pady=20)
+        self.input_sample.grid(padx=24, pady=20)
+        self.font_size.grid(column=0, row=1, pady=24)
+        self.apply_button.grid(column=0, row=7, sticky="e", padx=(0,24), pady=(0,24))
 
         Combobox.combobox_selected = combobox_selected
 

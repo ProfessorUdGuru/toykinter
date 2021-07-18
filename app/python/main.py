@@ -3,7 +3,9 @@
 import tkinter as tk
 from widgets import (
     Frame, LabelH1, LabelH2, LabelH3, LabelH4, Label, Message, Canvas, Text, 
-    EntryAutofillHilited, Separator, LabelMovable, LabelStylable, LabelItalic)
+    EntryAutofillHilited, Separator, LabelMovable, LabelStylable, LabelItalic,
+    StatusbarTooltips, run_statusbar_tooltips,
+)
 from window_border import Border
 from scrolling import Scrollbar    
 from custom_tabbed_widget import TabBook
@@ -31,6 +33,8 @@ class Main(Frame):
         self.make_scrollbars_docs()
         self.make_font_picker()
         self.make_colorizer()
+
+        self.make_tooltips() # last
 
     def make_scrollbars_main(self):
 
@@ -129,10 +133,10 @@ class Main(Frame):
         head1 = LabelH3(content1, text="Simple Toykinter Autofill Entry")
         head1.grid(column=0, row=0, pady=18)
 
-        entry = EntryAutofillHilited(content1, width=50)
-        entry.grid(column=0, row=1)
-        entry.autofill = True
-        entry.config(textvariable=entry.var)
+        self.auto_entry = EntryAutofillHilited(content1, width=50)
+        self.auto_entry.grid(column=0, row=1)
+        self.auto_entry.autofill = True
+        self.auto_entry.config(textvariable=self.auto_entry.var)
 
         text1 = Message(content1, text=autofill_docs, width=1000)
         text1.grid(column=0, row=2, sticky="news")
@@ -143,57 +147,56 @@ class Main(Frame):
         tab3.columnconfigure(0, weight=1)
         tab3.rowconfigure(4, weight=1)
         head3 = LabelH3(tab3, text="More Toykinter Widgets")
-        sep1 = Separator(tab3)
+        self.sep1 = Separator(tab3)
         text3 = Message(tab3, text=morewidg_docs, width=1000)
-        sep2 = Separator(tab3, height=5)
+        self.sep2 = Separator(tab3, height=5)
         widgets = Frame(tab3)
-        txt = Text(widgets, width=36, height=4)
-        txt.insert(
+        self.txt = Text(widgets, width=36, height=4)
+        self.txt.insert(
             0.1, 
             "This Text widget changes fonts and colors instantly and has "
             "all the same options as a tkinter.Text widget, from which it "
             "inherits everything.")
-        labf = Frame(widgets)
-        h1 = LabelH1(labf, text='This Label is heading_1')
-        h2 = LabelH2(labf, text='This Label is heading_2')
-        h3 = LabelH3(labf, text='This Label is heading_3')
-        h4 = LabelH4(labf, text='This Label is heading_4')
+        self.labf = Frame(widgets)
+        h1 = LabelH1(self.labf, text='This Label is heading_1')
+        h2 = LabelH2(self.labf, text='This Label is heading_2')
+        h3 = LabelH3(self.labf, text='This Label is heading_3')
+        h4 = LabelH4(self.labf, text='This Label is heading_4')
 
         movables = "You can move these labels around with the arrow keys. First just Tab or Shift+Tab into the one you want to move."
         split = movables.split()
 
-        mover = Frame(widgets)
+        self.mover = Frame(widgets)
         for i in range(len(split)):
-            mov = LabelMovable(mover, text=split[i])
+            mov = LabelMovable(self.mover, text=split[i])
             mov.grid(column=i, row=0, padx=1)
 
-        stylin = LabelStylable(widgets, width=75)
-        stylin.insert("end", "This label is copiable and ", "italic") 
-        stylin.insert("end", "can also use a ") 
-        stylin.insert("end", "variety of font stylings.", "bold")
+        self.stylin = LabelStylable(widgets, width=75)
+        self.stylin.insert("end", "This label is copiable and ", "italic") 
+        self.stylin.insert("end", "can also use a ") 
+        self.stylin.insert("end", "variety of font stylings.", "bold")
+
+        self.bottom = LabelItalic(
+            widgets, 
+            text=italics,  
+            justify='left', 
+            anchor='w')
 
         head3.grid(column=0, row=0, pady=18)
-        sep1.grid(column=0, row=1, sticky='ew')
+        self.sep1.grid(column=0, row=1, sticky='ew')
         text3.grid(column=0, row=2, sticky="news")
-        sep2.grid(column=0, row=3, sticky='ew')
+        self.sep2.grid(column=0, row=3, sticky='ew')
 
         widgets.grid(column=0, row=4, sticky='news')
-        txt.grid(column=0, row=0, padx=9)
-        labf.grid(column=1, row=0, padx=9, pady=9, sticky='news')
+        self.txt.grid(column=0, row=0, padx=9)
+        self.labf.grid(column=1, row=0, padx=9, pady=9, sticky='news')
         h1.grid(column=0, row=0, sticky='ew')
         h2.grid(column=0, row=1, sticky='ew')
         h3.grid(column=0, row=2, sticky='ew')
         h4.grid(column=0, row=3, sticky='ew')
-        mover.grid(column=0, row=1, sticky='news', columnspan=2, padx=9, pady=9)
-        stylin.grid(column=0, row=2, columnspan=2)
-
-        bottom = LabelItalic(
-            widgets, 
-            text=italics, 
-            # wraplength=500, 
-            justify='left', 
-            anchor='w')
-        bottom.grid(column=0, row=3, columnspan=2, pady=9)
+        self.mover.grid(column=0, row=1, sticky='news', columnspan=2, padx=9, pady=9)
+        self.stylin.grid(column=0, row=2, columnspan=2)
+        self.bottom.grid(column=0, row=3, columnspan=2, pady=9)
 
     def make_scrollbars_toyk(self):
 
@@ -237,7 +240,6 @@ class Main(Frame):
 
         self.content_toyk.columnconfigure(0, weight=1)
         self.content_toyk.rowconfigure(0, weight=1)
-        # message.grid(column=0, row=0, padx=24, sticky="news")
 
         head0.grid(column=0, row=0)
         text0.grid(column=0, row=1, sticky="news")
@@ -296,13 +298,76 @@ class Main(Frame):
         tab3_1 = self.prefsbook.store["fonts"]
         tab3_1.columnconfigure(0, weight=1)
         tab3_1.rowconfigure(0, weight=1)
-        font_picker = FontPicker(tab3_1, self)
-        font_picker.grid(column=0, row=0, sticky="news")
+        self.font_picker = FontPicker(tab3_1, self)
+        self.font_picker.grid(column=0, row=0, sticky="news")
 
     def make_colorizer(self):
-        color_schemer = Colorizer(
+        self.color_schemer = Colorizer(
             self.prefsbook.store["colors"], 
             self.prefsbook,
             self.view)
-        color_schemer.grid(column=0, row=0, sticky="news")
+        self.color_schemer.grid(column=0, row=0, sticky="news")
 
+    def make_tooltips(self):
+        visited = (
+            (self.canvas.minn, '', 'Minimize window.'), 
+            (self.canvas.maxx, '', 'Maximize window.'),
+            (self.canvas.restore, '', 'Restore window.'), 
+            (self.canvas.quitt, '', 'Quit the application.'),
+            (self.canvas.border_top, '', 'Top resizer.'),
+            (self.canvas.logo, '', "This doesn't do anything yet"),
+            (self.canvas.title_frame, '', 'Configurable title bar.'),
+            (self.canvas.border_bottom, "", "Bottom resizer."),
+            (self.canvas.border_left, "", "Left resizer."),
+            (self.canvas.border_right, "", "Right resizer."),
+            (self.auto_entry, 
+                "Autofill Entry", "Words from value list will autocomplete."),
+            (self.txt, 
+                "Text Widget", "Works the same as a Tkinter Text widget."),
+            (self.mover, 
+                "Movable Labels", "Tab into a Label, use arrow keys to move."),
+            (self.sep1, "", "Small separator"),
+            (self.sep2, "", "Medium separator (you can make them fatter)"),
+            (self.labf, "", "Heading fonts in pre-set proportional sizes"),
+            (self.stylin, "", "Configure different styles within one label"),
+            (self.bottom, "", "Italic Label"),
+            (self.font_picker.font_size, 
+                "", "Choose the size in pixels for main text."),
+            (self.font_picker.combos['select_output_font'], 
+                "", "This is not a ttk.Combobox."),
+            (self.font_picker.combos['select_input_font'], 
+                "", "This is a Toykinter Combobox, not ttk."),
+            (self.font_picker.apply_button, 
+                "", "Apply these fonts & sizes to the whole app."),
+            (self.font_picker.input_sample, 
+                "", "How the chosen input font will look."),
+            (self.font_picker.output_sample, 
+                "", "How the chosen output font will look."),
+            (self.color_schemer.colors_content, 
+                "", "Click to try a scheme, or tab in and click Try.\n"
+                "To delete a scheme, select it and press Delete key."),
+            (self.color_schemer.try_button, 
+                "Try Button", "Try the selected color scheme."),
+            (self.color_schemer.copy_button, 
+                "Copy Button", "Copy the selected scheme to easily edit it."),
+            (self.color_schemer.apply_button, 
+                "Apply Button", 
+                "Apply the selected color scheme to the whole app."),
+            (self.color_schemer.new_button, 
+                "New Button", 
+                "Create a new color scheme from the four filled-in Entries above."),
+            (self.color_schemer.entries_combos[0], 
+                "Background 1", "Double-click to select main background color."),
+            (self.color_schemer.entries_combos[1], 
+                "Background 2", "Double-click to select main highlight color."),
+            (self.color_schemer.entries_combos[2], 
+                "Background 3", "Double-click to select second highlight color."),
+            (self.color_schemer.entries_combos[3], 
+                "Font Color", 
+                "For dark background, select light font color & vice versa."),
+    )
+
+        run_statusbar_tooltips(
+            visited, 
+            self.canvas.statusbar.status_label, 
+            self.canvas.statusbar.tooltip_label)

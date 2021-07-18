@@ -276,6 +276,14 @@ class Label(Labelx):
             fg=formats['fg'],
             font=formats['output_font'])
 
+class LabelStatusbar(Labelx):
+    def __init__(self, master, *args, **kwargs):
+        Labelx.__init__(self, master, *args, **kwargs)
+        self.config(
+            bg=formats['bg'], 
+            fg=formats['fg'],
+            font=formats['status'])
+
 class LabelTest(Labelx):
     ''' 
         Color can be changed for testing/visibility. 
@@ -1492,9 +1500,9 @@ class StatusbarTooltips(Frame):
         relief.grid(column=0, row=0, sticky='news')
         relief.grid_columnconfigure(0, weight=1)
 
-        self.status_label = Label(
+        self.status_label = LabelStatusbar(
             relief, cursor='arrow', anchor='w')
-        self.tooltip_label = Label(
+        self.tooltip_label = LabelStatusbar(
             relief, bd=2, relief='sunken', anchor='e')
 
         if resizer is True:
