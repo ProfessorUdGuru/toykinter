@@ -1,4 +1,4 @@
-# bilbobox
+# bilbobox.py
 
 # This is like a combobox but only works with the mouse. Tab key, arrow keys, etc. are not used. It also opens the dropdown list on hover instead of click. I like it but I think it will annoy people by not doing what they expect so I'm putting it back in mothballs for now. At the time this worked, it was using a scrolled canvas class which made things harder instead of easier. So to unbreak this code, just scrape off the unusable cruft leftover from the scrolled canvas class, put a frame in a normal canvas with create_window to replace canvas.content and the like, and add a Toykinter scrollbar where this code expects to see a scrollbar (canvas.vert, canvas.horiz etc.). 
 

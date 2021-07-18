@@ -1,5 +1,6 @@
 # query_strings.py
 
+
 '''
 	Since Sqlite queries are inserted as string in Python code,
 	the queries can be stored here to save space in the modules

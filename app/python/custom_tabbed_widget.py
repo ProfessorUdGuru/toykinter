@@ -24,9 +24,7 @@ class LabelTab(Labelx):
         if self.chosen is False:
             self.config(bg=self.formats['bg'], fg=self.formats['fg'])
         else: 
-            self.config(bg=self.formats['highlight_bg'])
-            
-
+            self.config(bg=self.formats['highlight_bg']) 
 
 class TabBook(Framex):
 

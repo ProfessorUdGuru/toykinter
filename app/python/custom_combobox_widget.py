@@ -1,4 +1,4 @@
-# combobox
+# custom_combobox_widget.py
 
 '''
     Replaces ttk.Combobox with an easily configurable widget.

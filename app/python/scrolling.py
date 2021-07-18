@@ -1,4 +1,4 @@
-# mousewheel_scrolling_without_permanent_dialogs
+# scrolling.py
 
 import tkinter as tk
 from widgets import (Canvas, FrameHilited3, Entry, ToplevelHilited, Text,

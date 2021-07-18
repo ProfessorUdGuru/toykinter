@@ -19,17 +19,12 @@ class FontPicker(Frame):
     # def __init__(self, master, view, canvas, content, *args, **kwargs):
     def __init__(self, master, main, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
-        # font_picker = FontPicker(tab3_1, self.view, self.canvas, self.canvas_docs, self.content_docs, self)
         self.master = master
         self.view = main.view
         self.canvas = main.canvas
         self.content = main
-        # self.canvas_toyk = main.canvas_toyk
         self.canvas_docs = main.canvas_docs
         self.content_docs = main.content_docs
-        # self.view = view
-        # self.canvas = canvas
-        # self.content = content
         self.all_fonts = font.families()
 
         conn = sqlite3.connect(current_file)
@@ -77,7 +72,6 @@ class FontPicker(Frame):
         input_sample.insert(0, " Input ".join(sample_text))
 
         self.fontSizeVar = tk.IntVar()
-        print("line", looky(seeline()).lineno, "self.font_scheme:", self.font_scheme)
         self.fontSize = self.font_scheme[0]
 
         font_size = Scale(
@@ -90,7 +84,6 @@ class FontPicker(Frame):
             length=200,
             variable=self.fontSizeVar,
             command=self.show_font_size)
-        print("line", looky(seeline()).lineno, "self.fontSize:", self.fontSize)
         font_size.set(self.fontSize)
 
         combo_names = ["select_output_font", "select_input_font"]
@@ -128,7 +121,6 @@ class FontPicker(Frame):
         def resize_scrollbar():
             self.view.update_idletasks()
             self.canvas_docs.config(scrollregion=self.canvas_docs.bbox('all'))
-            # self.canvas_toyk.config(scrollregion=self.canvas_toyk.bbox('all'))
 
         self.font_scheme[0] = self.fontSizeVar.get()
         if len(self.combos["select_output_font"].get()) != 0:
@@ -145,11 +137,7 @@ class FontPicker(Frame):
 
         config_generic(self.view)
 
-        # resize_scrolled_content(self.view, self.canvas, self.content)
-        # resize_scrolled_content(self.view, self.canvas_docs, self.content_docs)
-
         resize_scrollbar()
-
 
     def show_font_size(self, evt):
         self.fontSize = self.fontSizeVar.get()

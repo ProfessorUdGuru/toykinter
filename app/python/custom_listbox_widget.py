@@ -179,10 +179,10 @@ class Listbox(FrameHilited4):
         h = g
 
     def store_new_subtopic_name(self):
-        print('174 self.new_subtopic_name is', self.new_subtopic_name)
+        print('self.new_subtopic_name is', self.new_subtopic_name)
 
     def on_ctrl_click(self, evt):
-        print('182 evt.widget is', evt.widget)
+        print('evt.widget is', evt.widget)
         self.pass_ctrl_click()
 
     def pass_ctrl_click(self):
@@ -194,7 +194,7 @@ class Listbox(FrameHilited4):
         print('pass evt to another function in the instance that wants to use the Control-Click event (this should not print)')
 
     def on_delete_key(self, evt):
-        print('187 delete key pressed')
+        print('delete key pressed')
         self.pass_delete_key()
 
     def pass_delete_key(self):
@@ -239,7 +239,7 @@ class Listbox(FrameHilited4):
             self.items = items
             self.make_listbox_content()
         else:
-            print('clw 180 idx is None')
+            print('idx is None')
 
     def curselection(self):
         '''
@@ -374,7 +374,6 @@ if __name__ == '__main__':
 
     def test_curselection():
         selected = lb.curselection()
-        print('264 selected is', selected)
 
     def test_insert():
         new_item = c.get()
@@ -382,7 +381,6 @@ if __name__ == '__main__':
 
     def test_size():
         qty = lb.size()
-        print('qty is', qty)
 
     def test_selection_clear():
         lb.selection_clear()
@@ -396,7 +394,6 @@ if __name__ == '__main__':
     def test_get():
         idx = 4
         got = lb.get(idx)
-        print('got is', got)
     
     root = tk.Tk()
     root.geometry('1200x600+900+100')

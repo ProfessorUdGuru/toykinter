@@ -1,3 +1,5 @@
+# styles.py
+
 import tkinter as tk
 import sqlite3
 from files import current_file
