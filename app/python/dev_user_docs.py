@@ -127,7 +127,8 @@ DO LIST (easy stuff at top; scary stuff toward bottom unless urgent)
 \u2022 The statusbar tooltips on colorizer.py don't work, probably still using the old version. On title bar they work but seem to be too big and not flush w/ bottom of status bar.
 \u2022 Need a way to refer to tabs similar to ttk.Notebook's `notebook.index('current')`.
 \u2022 Every module should have a separate demo i.e. `if __name__ == "__main__"` at bottom.
-\u2022 Changing font size should change title bar size.
+\u2022 Changing font size should change title bar size. Currently this has to be done manually by changing the hard-coded size setting where Border is instantiated in toykinter_demo.py. I think a method will be needed in the Border class which can be called in the font_picker.py module.
+\u2022 Add right-click context help menu, the code for this already exists in treebard_gps repo.
 \u2022 Unused classes and styles need to be weeded out of widgets.py and styles.py. Also in treebard project separate widgets.py into toykinter_widgets.py and treebard_widgets.py so changes in toykinter widgets can be copied easily to the other project.
 \u2022 Combobox is bogging down with a large list of values. In any case where there is a long list of values that has to be accessed frequently and/or needs good response, just use an autofill entry instead of a Combobox. For changing fonts in this little app, it's OK that the Combobox is slow (it's Python). But possibly a refactoring is in order even though the current design is the third or fourth start-over and works well with small lists of values.
 \u2022 Combobox recolorizing is a compromise right now. The dropdown buttons respond to so many events that it might be a sort of minor miracle to make them colorize instantly. For now it's enough that they do colorize on reload. They are not on top, they're only seen on dropdown. It's not top priority compared to other things on this list.
