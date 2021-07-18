@@ -12,9 +12,6 @@ import dev_tools as dt
 from dev_tools import looky, seeline
 
 
-
-formats = make_formats_dict()
-
 def close(evt):
     dlg = evt.widget.winfo_toplevel()
     if dlg.winfo_name() == 'tk':
@@ -65,6 +62,8 @@ class Border(Canvas):
 
         self.changing_values = None
         self.maxxed = False
+
+        self.formats = make_formats_dict()
 
         self.make_widgets()
 
@@ -220,12 +219,13 @@ class Border(Canvas):
         ''' Prepare to drag the window by the title frame. '''
 
         evt.widget.winfo_toplevel().lift()
-        for widg in (
-                self.title_bar, self.title_frame, self.logo, self.title_1, 
-                self.title_1b, self.title_2, self.txt_frm, self.buttonbox, 
-                self.border_top, self.border_left, self.border_right, 
-                self.border_bottom):
-            widg.config(bg=formats['head_bg'])
+        # for widg in (
+                # self.title_bar, self.title_frame, self.logo, self.title_1, 
+                # self.title_1b, self.title_2, self.txt_frm, self.buttonbox, 
+                # self.border_top, self.border_left, self.border_right, 
+                # self.border_bottom):
+            # widg.config(bg=formats['head_bg'])
+        self.colorize_border()
 
         left_edge = self.master.winfo_rootx()
         top_edge = self.master.winfo_rooty()
@@ -352,6 +352,16 @@ class Border(Canvas):
         resizee.geometry('{}x{}+{}+{}'.format(
             new_w, new_h, new_pos_x, new_pos_y))
 
+    def colorize_border(self):
+        for widg in (
+                self.title_bar, self.title_frame, self.logo, self.title_1, 
+                self.title_1b, self.title_2, self.txt_frm, self.buttonbox, 
+                self.border_top, self.border_left, self.border_right, 
+                self.border_bottom):
+            widg.config(bg=self.formats['head_bg'])
+        for widg in (self.title_1, self.title_2):
+            widg.config(fg=self.formats['fg'])
+
 class TitleBarButton(LabelButtonImage):
     def __init__(self, master, icon='', icon_size='tiny', *args, **kwargs):
         LabelButtonImage.__init__(self, master, *args, **kwargs)
@@ -389,6 +399,8 @@ class TitleBarButton(LabelButtonImage):
             relief='raised',
             bg=NEUTRAL_COLOR,
             image=self.tk_img)
+
+formats = make_formats_dict()
 
 class TitleBarButtonSolidBG(TitleBarButton):
     def __init__(self, master, *args, **kwargs):

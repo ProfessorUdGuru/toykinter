@@ -123,10 +123,8 @@ Nothing in this collection of widget classes is completely finished or perfect. 
 
 DO LIST (easy stuff at top; scary stuff toward bottom unless urgent)
 
-\u2022 title bar is not recolorizing
 \u2022 add a status message to some of the widgets
 \u2022 The statusbar tooltips on colorizer.py don't work, probably still using the old version. On title bar they work but seem to be too big and not flush w/ bottom of status bar.
-\u2022 The active title bar color should be right with somewhat less encouragement.
 \u2022 Need a way to refer to tabs similar to ttk.Notebook's `notebook.index('current')`.
 \u2022 Every module should have a separate demo i.e. `if __name__ == "__main__"` at bottom.
 \u2022 Changing font size should change title bar size.
@@ -141,5 +139,6 @@ DO LIST (easy stuff at top; scary stuff toward bottom unless urgent)
 \u2022 TabBook tabs don't take focus (not important, use the mouse)
 \u2022 Look into making the scrollbars and the app and the tabs work like a modern browser: there should be a hideable vertical scrollbar on the whole window, no horizontal scrollbar on anything, and no separate scrollbars on the tabs. The app should be responsive when manually resizing, especially as regards width since there should be no horizontal scrollbars. I've never looked into doing this for Tkinter since my main app uses a huge table that can't change its layout to be responsive. So I tend to use too many scrollbars by habit. Contents should expand to fill window if main window is manually resized. This demo could certainly be fixed to behave better but I have other things to do right now.
 \u2022 Color schemes have a database column `built_in` which prevents the cs from being deleted by user if it's set to 1. All are set to 1 right now but can be deleted in the GUI by first manually setting the column to 0 for that cs. The purpose of the `hidden` column is to allow user to hide cs that he can't delete since it's built-in. I have to go through the color schemes and decide which can be set to 0 in the built_in column. Then code can be written so that if the user tries to delete a built_in cs, the `hidden` column can instead be set to 1. Further coding would get the cs removed from the GUI but set to 1 and 1 in the db for `built_in` and `hidden` respectively. This is overkill for this demo app but would be useful in a real app where certain color schemes are provided out of the box and user can add others. The ones he adds himself would be `built_in = 0` by default.
+\u2022 Using the root to just hold a taskbar icon was an interesting experiment but should probably be rolled back. I think the complications outweigh the advantages. For example, if you minimize the app, there are now two flyouts when hovering over the Python icon on the Windows taskbar. One is the old typewriter which is displayed on the root window. The other is the favicon. Better to accept the limitations of Tkinter and the fact that until an app is packaged as an .exe (I assume), it's going to show on the taskbar with a generic Python icon. In short, get rid of "icon" and "view" and combine them into "root" as Tkinter is normally used. See toykinter_demo.py.
 
 '''

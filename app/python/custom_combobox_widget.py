@@ -502,15 +502,6 @@ class Combobox(FrameHilited3):
                 self.canvas.yview_moveto(1.0)
 
     def colorize(self):
-        # print("line", looky(seeline()).lineno, "self:", self)
-        # print("line", looky(seeline()).lineno, "self.entry:", self.entry)
-        # print("line", looky(seeline()).lineno, "self.arrow:", self.arrow)
-        # print("line", looky(seeline()).lineno, "self.drop:", self.drop)
-        # print("line", looky(seeline()).lineno, "self.canvas:", self.canvas)
-        # print("line", looky(seeline()).lineno, "self.scrollv_combo:", self.scrollv_combo)
-        # print("line", looky(seeline()).lineno, "self.content:", self.content)
-        # print("line", looky(seeline()).lineno, "self.buttons:", self.buttons)
-        print("line", looky(seeline()).lineno, "running:")
         # the widgets that don't respond to events are working
         # the scrollbar, which has its own colorize method, is working
         # the arrow label has its own highlight methods, it's working

@@ -83,7 +83,7 @@ bgHead = ('FrameHilited2',)
 bgLite = (
     'FrameHilited', 'FrameHilited1', 'FrameHilited3', 'FrameHilited4', 
     'LabelTitleBar', 'Sizer', 'ToolTip', 'TabBook',
-    'ToplevelHilited')
+    'ToplevelHilited', 'TitleBarButtonSolidBG')
 
 bgStd_fgStd = ('Sizer', )
 
@@ -257,6 +257,11 @@ def config_generic(parent):
     # And in the highlight/unhighlight methods do this:
     # bg=self.formats['blah'] ...instead of bg=formats['blah']
     # And give them their own config function here:
+
+    def config_border(widg):
+        widg.formats = formats
+        widg.config(bg=formats['bg'])
+        widg.colorize_border()
 
     def config_labelhilited(lab):
         '''
@@ -440,8 +445,8 @@ def config_generic(parent):
                 config_labeltipbold(widg)
             elif widg.winfo_subclass() == 'LabelNegative':
                 config_labelnegative(widg)
-            elif widg.winfo_subclass() == ('TitleBarButtonSolidBG'):
-                config_bgLite(widg)
+            # elif widg.winfo_subclass() == ('TitleBarButtonSolidBG'):
+                # config_bgLite(widg)
             elif widg.winfo_subclass() == 'LabelMovable':
                 config_labelmovable(widg)
 
@@ -506,7 +511,7 @@ def config_generic(parent):
                 config_bgLite(widg)
 
             elif widg.winfo_subclass() == 'Border':
-                widg.config(bg=formats['bg'])
+                config_border(widg)
 
             elif widg.winfo_subclass() == 'Scrollbar':
                 # to figure out where all the scrollbars are:
