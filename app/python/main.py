@@ -18,7 +18,7 @@ from dev_tools import looky, seeline
 
 
 class Main(Frame):
-    def __init__(self, master, view, treebard, *args, **kwargs):
+    def __init__(self, master, root, treebard, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
         '''
             `master` is an instance of `Border` which is an instance of 
@@ -26,7 +26,7 @@ class Main(Frame):
         '''
 
         self.canvas = master 
-        self.view = view
+        self.root = root
         self.treebard = treebard
         self.make_widgets()
         self.populate_tabbook() 
@@ -39,12 +39,12 @@ class Main(Frame):
     def make_scrollbars_main(self):
 
         self.vsb = Scrollbar(
-            self.view, 
+            self.root, 
             hideable=True, 
             command=self.canvas.yview,
             width=20)
         self.hsb = Scrollbar(
-            self.view, 
+            self.root, 
             hideable=True, 
             width=20, 
             orient='horizontal',
@@ -65,7 +65,7 @@ class Main(Frame):
 
         self.notebook = TabBook(
             self,
-            root=self.view, 
+            root=self.root, 
             tabs=[
                 ("toykinter", "T"), ("autofill", "A"), 
                 ("docs", "D"), ("more widgets", "M"), ("settings", "S")],
@@ -79,7 +79,7 @@ class Main(Frame):
 
         self.prefsbook = TabBook(
             prefs,
-            root=self.view,
+            root=self.root,
             tabs=[("colors", "C"), ("fonts", "F")],
             side="se",
             case="upper",
@@ -246,7 +246,7 @@ class Main(Frame):
 
         self.canvas_toyk.create_window(
             0, 0, anchor='nw', window=self.content_toyk)
-        self.view.update_idletasks()
+        self.root.update_idletasks()
         self.canvas_toyk.configure(scrollregion=self.canvas_toyk.bbox("all"))
 
     def make_scrollbars_docs(self):
@@ -291,7 +291,7 @@ class Main(Frame):
         self.content_docs.rowconfigure(0, weight=1)
         message.grid(column=0, row=0, padx=24, sticky="news")
         self.canvas_docs.create_window(0, 0, anchor='nw', window=self.content_docs)
-        self.view.update_idletasks()
+        self.root.update_idletasks()
         self.canvas_docs.configure(scrollregion=self.canvas_docs.bbox("all"))
 
     def make_font_picker(self):
@@ -305,7 +305,7 @@ class Main(Frame):
         self.color_schemer = Colorizer(
             self.prefsbook.store["colors"], 
             self.prefsbook,
-            self.view)
+            self.root)
         self.color_schemer.grid(column=0, row=0, sticky="news")
 
     def make_tooltips(self):
