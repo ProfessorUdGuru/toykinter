@@ -131,3 +131,8 @@ dmypy.json
 # my additions 20210712
 
 etc_not_in_git/
+app/default/default_database.db
+data/settings/default_database.db
+data/toykinter/toykinter.db
+
+
