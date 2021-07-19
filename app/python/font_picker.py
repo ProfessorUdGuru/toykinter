@@ -19,7 +19,7 @@ class FontPicker(Frame):
     def __init__(self, master, main, *args, **kwargs):
         Frame.__init__(self, master, *args, **kwargs)
         self.master = master
-        self.view = main.view
+        self.root = main.root
         self.canvas = main.canvas
         self.content = main
         self.canvas_docs = main.canvas_docs
@@ -91,7 +91,7 @@ class FontPicker(Frame):
         j = 2
         for name in combo_names:
             cbo = Combobox(
-                self, self.view, values=self.all_fonts, 
+                self, self.root, values=self.all_fonts, 
                 height=300, scrollbar_size=12)
             self.combos[name] = cbo
             name = name.replace("_", " ").title()
@@ -118,7 +118,7 @@ class FontPicker(Frame):
     def apply(self):
 
         def resize_scrollbar():
-            self.view.update_idletasks()
+            self.root.update_idletasks()
             self.canvas_docs.config(scrollregion=self.canvas_docs.bbox('all'))
 
         self.font_scheme[0] = self.fontSizeVar.get()
@@ -134,7 +134,7 @@ class FontPicker(Frame):
         cur.close()
         conn.close()
 
-        config_generic(self.view)
+        config_generic(self.root)
 
         resize_scrollbar()
 

@@ -5,6 +5,7 @@ from widgets import (Canvas, FrameHilited3, Entry, ToplevelHilited, Text,
     LabelHilited, ButtonFlatHilited, LabelTip2, CanvasHilited, Framex, Frame)
 from styles import config_generic, make_formats_dict
 import dev_tools as dt
+from dev_tools import looky, seeline
 
 
 
@@ -204,7 +205,7 @@ def resize_scrolled_content(toplevel, canvas, window):
         '''
 
         toplevel.update_idletasks()
-        if toplevel.winfo_name() == 'view':
+        if toplevel.winfo_name() == 'tk':
             bar_height = 96 # menubar + ribbon + statusbar
             scridth = 30
         else:
@@ -234,9 +235,7 @@ class MousewheelScrolling():
             Saving this for later when mousewheel functionality is 
             added to the Combobox dropdown.
         '''
-        
-        # self.scroll_this.yview_scroll(
-            # int(-1*(event.delta/120)), 'units')
+
         # DO NOT DELETE
         try:
             self.scroll_this.yview_scroll(

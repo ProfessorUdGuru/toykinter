@@ -17,18 +17,18 @@ from dev_tools import looky, seeline
 formats = make_formats_dict()
 
 class Colorizer(Frame):
-    def __init__(self, parent, notebook, view, *args, **kwargs):
+    def __init__(self, parent, tabbook, root, *args, **kwargs):
         Frame.__init__(self, parent, *args, **kwargs)
 
         self.parent = parent
-        self.notebook = notebook
-        self.view = view
+        self.tabbook = tabbook
+        self.root = root
 
         self.old_col = 0
         self.parent.columnconfigure(0, weight=1)
         self.parent.rowconfigure(0, weight=1)
 
-        self.view.bind('<Return>', self.apply_scheme)
+        self.root.bind('<Return>', self.apply_scheme)
 
         self.r_col = {}
 
@@ -133,9 +133,9 @@ class Colorizer(Frame):
     def apply_scheme(self, evt=None):
         # APPLY button not invoked by RETURN key unless its tab is on top
         # change index if tab order changes
-        # `self.notebook.index('current')` is from ttk.Notebook, ignoring it for 
+        # `self.tabbook.index('current')` is from ttk.Notebook, ignoring it for 
         #   now, need to add this method to Toykinter TabBook
-        # if self.notebook.index('current') == 2:
+        # if self.tabbook.index('current') == 2:
         self.recolorize()
 
     def recolorize(self):
@@ -145,7 +145,7 @@ class Colorizer(Frame):
             if self.parent.focus_get() == child:
                 frm = child
 
-        foc = self.view.focus_get()
+        foc = self.root.focus_get()
 
         if foc.master != self.colors_content:
             return
@@ -170,8 +170,8 @@ class Colorizer(Frame):
         thbg = color_scheme[2]
         fg = color_scheme[3]
 
-        config_generic(self.view)
-        self.view.config(bg=mbg)
+        config_generic(self.root)
+        self.root.config(bg=mbg)
 
     def make_samples(self):
 
@@ -440,7 +440,7 @@ class Colorizer(Frame):
             if len(tup[0]) == 0:
                 return
         
-        test_color = Frame(self.view) # don't grid this
+        test_color = Frame(self.root) # don't grid this
 
         for tup in try_these:
             try:
@@ -460,8 +460,8 @@ class Colorizer(Frame):
     def copy_scheme(self):
 
         colors = []
-        if self.view.focus_get().master == self.colors_content:
-            for child in self.view.focus_get().winfo_children():
+        if self.root.focus_get().master == self.colors_content:
+            for child in self.root.focus_get().winfo_children():
                 colors.append(child['bg'])
                 child=child
             colors.append(child['fg'])
@@ -480,7 +480,7 @@ class Colorizer(Frame):
             k.insert(0, v)
 
     def open_color_chooser(self, evt):
-        chosen_color = colorchooser.askcolor(parent=self.view)[1]
+        chosen_color = colorchooser.askcolor(parent=self.root)[1]
         if chosen_color:
             evt.widget.delete(0, 'end')
             evt.widget.insert(0, chosen_color)
